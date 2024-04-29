@@ -1,0 +1,21 @@
+Starting dead-end test...
+ - Found 1313 dead-end metabolites.
+ - Found 1085 reactions incapable of sustaining steady-state fluxes in either direction due to these dead-ends.
+ - Found 1607 reversible reactions that can only carry steady-state fluxes in a single direction due to dead-ends.
+Starting duplicate test...
+ - Found 847 reactions that were some type of duplicate:
+   - 14 were completely identical to at least one other reaction.
+   - 99 involve the same metabolites but go in the opposite direction or have the opposite reversibility as at least one other reaction.
+   - 540 involve the same metabolites but with different coefficients as at least one other reaction.
+   - 301 redox reactions oxidize and/or reduce the same metabolites as another redox reaction but use a different pair of the given redox carriers.
+Starting diphosphate test...
+ - Found 185 suspiciously reversible reactions that involve diphosphate.
+Starting loop test...
+ - Found 2504 reactions involved in infinite loops.
+Starting dilution test...
+ - Adjusted lower bounds on exchange reactions so that only the 86 given metabolites could be consumed.
+ - Encountered errors when testing dilution constraints for 30 metabolites; trying to test them again.
+ - Successfully tested all dilution constraints after 2 tries.
+ - Found 582 metabolites for which adding a dilution constraint prevented fluxes through all associated reactions.
+ - Found 1201 reactions that are blocked by one or more dilution constraints.
+4788 of the 13073 reactions in the given GSMM were flagged by at least one of the tests.
