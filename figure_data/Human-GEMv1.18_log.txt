@@ -14,8 +14,8 @@ Starting loop test...
  - Found 2275 reactions involved in infinite loops.
 Starting dilution test...
  - Adjusted lower bounds on exchange reactions so that only the 86 given metabolites could be consumed.
- - Encountered errors when testing dilution constraints for 30 metabolites; trying to test them again.
+ - Encountered errors when testing dilution constraints for 28 metabolites; trying to test them again.
  - Successfully tested all dilution constraints after 2 tries.
- - Found 547 metabolites for which adding a dilution constraint prevented fluxes through all associated reactions.
- - Found 1127 reactions that are blocked by one or more dilution constraints.
-4430 of the 12995 reactions in the given GSMM were flagged by at least one of the tests.
+ - Found 548 metabolites for which adding a dilution constraint prevented fluxes through all associated reactions.
+ - Found 1123 reactions that are blocked by one or more dilution constraints.
+4425 of the 12995 reactions in the given GSMM were flagged by at least one of the tests.
