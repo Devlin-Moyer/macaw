@@ -1,0 +1,140 @@
+{
+"metabolites":[
+{
+"id":"a_out",
+"name":"A (out)",
+"compartment":"out"
+},
+{
+"id":"a_in",
+"name":"A (in)",
+"compartment":"in"
+},
+{
+"id":"b_in",
+"name":"B (in)",
+"compartment":"in"
+},
+{
+"id":"b_out",
+"name":"B (out)",
+"compartment":"out"
+}
+],
+"reactions":[
+{
+"id":"v1",
+"name":"v1 (0, 100)",
+"metabolites":{
+"a_out":1
+},
+"lower_bound":0,
+"upper_bound":100,
+"gene_reaction_rule":""
+},
+{
+"id":"v2",
+"name":"v2 (0, inf)",
+"metabolites":{
+"a_in":1,
+"a_out":-1,
+"b_in":-1,
+"b_out":1
+},
+"lower_bound":0,
+"upper_bound":"inf",
+"gene_reaction_rule":""
+},
+{
+"id":"v3",
+"name":"v3 (0, inf)",
+"metabolites":{
+"a_in":-1,
+"b_in":1
+},
+"lower_bound":0,
+"upper_bound":"inf",
+"gene_reaction_rule":""
+},
+{
+"id":"v4",
+"name":"v4 (0, inf)",
+"metabolites":{
+"b_out":-1
+},
+"lower_bound":0,
+"upper_bound":"inf",
+"gene_reaction_rule":"",
+"objective_coefficient":1.0
+},
+{
+"id":"a_out_dilution",
+"name":"A (out) Dilution",
+"metabolites":{
+"a_out":-1.0
+},
+"lower_bound":0,
+"upper_bound":"inf",
+"gene_reaction_rule":""
+},
+{
+"id":"a_in_dilution",
+"name":"A (in) Dilution",
+"metabolites":{
+"a_in":-1.0
+},
+"lower_bound":0,
+"upper_bound":"inf",
+"gene_reaction_rule":""
+},
+{
+"id":"b_in_dilution",
+"name":"B (in) Dilution",
+"metabolites":{
+"b_in":-1.0
+},
+"lower_bound":0,
+"upper_bound":"inf",
+"gene_reaction_rule":""
+},
+{
+"id":"b_out_dilution",
+"name":"B (out) Dilution",
+"metabolites":{
+"b_out":-1.0
+},
+"lower_bound":0,
+"upper_bound":"inf",
+"gene_reaction_rule":""
+},
+{
+"id":"a_out--a_in_leakage",
+"name":"A Leakage",
+"metabolites":{
+"a_in":1,
+"a_out":-1
+},
+"lower_bound":-1,
+"upper_bound":1,
+"gene_reaction_rule":""
+},
+{
+"id":"b_in--b_out_leakage",
+"name":"B Leakage",
+"metabolites":{
+"b_in":-1,
+"b_out":1
+},
+"lower_bound":-1,
+"upper_bound":1,
+"gene_reaction_rule":""
+}
+],
+"genes":[],
+"id":"leakage_demo",
+"compartments":{
+"in":"",
+"out":""
+},
+"version":"1"
+}
