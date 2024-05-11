@@ -4,6 +4,7 @@ Make a table indicating which test each reaction was flagged by in version 1.15
 of Human-GEM to use to color the nodes in the graph of all pathway networks
 '''
 
+import sys
 import pandas as pd
 from macaw_utils import simplify_test_results
 
@@ -28,11 +29,13 @@ def categorize_rxn(row):
     else:
         return('Multiple')
 
+# get name of model from command-line
+model = sys.argv[1]
 # silence Pandas' most annoying least necessary warning message
 pd.options.mode.chained_assignment = None
 
-edge_list = pd.read_csv('figure_data/Human-GEMv1.15_edge-list.csv')
-all_test_results = pd.read_csv('figure_data/Human-GEMv1.15_test-results.csv')
+edge_list = pd.read_csv(f'figure_data/{model}_edge-list.csv')
+all_test_results = pd.read_csv(f'figure_data/{model}_test-results.csv')
 
 # filter down to reactions that appear in the edge list
 rxn_ids = set(edge_list['source'].unique().tolist())
@@ -42,6 +45,12 @@ test_results = all_test_results[all_test_results['reaction_id'].isin(rxn_ids)]
 test_results['category'] = simplify_test_results(test_results).apply(
     categorize_rxn, axis = 1
 )
+# save to appropriately-named file
+fname_dict = {
+    'Human-GEMv1.15' : '3a',
+    'yeast-GEMv9.0.0' : 'yeast-net',
+    'iML1515' : 'ecoli-net'
+}
 test_results[['reaction_id', 'category']].to_csv(
-    'figure_data/fig_3a_nodes.csv', index = False
+    f'figure_data/fig_{fname_dict[model]}_nodes.csv', index = False
 )
