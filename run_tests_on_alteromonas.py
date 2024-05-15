@@ -12,7 +12,7 @@ except IndexError:
 
 # silence annoying optlang message that prints when you read in a model
 Configuration()
-model = cobra.io.read_sbml_model(f'GSMMs/helen-alteromonas.xml')
+model = cobra.io.read_sbml_model('GSMMs/helen-alteromonas.xml')
 
 # set lower bound on ATP maintenance reaction to 0
 model.reactions.get_by_id('ATPM').lower_bound = 0
