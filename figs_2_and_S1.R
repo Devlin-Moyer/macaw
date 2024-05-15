@@ -156,6 +156,11 @@ human18_kegg <- add_kegg_groups(human18_tests, human_to_gene, human_to_ortholog)
 yeast_kegg <- add_kegg_groups(yeast_tests, yeast_to_gene, yeast_to_ortholog)
 ecoli_kegg <- add_kegg_groups(ecoli_tests, ecoli_to_gene, ecoli_to_ortholog)
 
+# write these to CSV files in case they're useful for other things
+write_csv(human15_kegg, "figure_data/Human-GEMv1.15_results-with-KEGG.csv")
+write_csv(yeast_kegg, "figure_data/yeast-GEMv9.0.0_results-with-KEGG.csv")
+write_csv(ecoli_kegg, "figure_data/iML1515_results-with-KEGG.csv")
+
 fig_2_data <- bind_rows(
   human15_kegg %>% mutate(Model = "Human-GEM"),
   yeast_kegg %>% mutate(Model = "Yeast-GEM"),
@@ -203,7 +208,7 @@ fig_2 <- ggplot() +
     alpha = 0.5
   ) +
   geom_bar(
-    data = fig_5_data,
+    data = fig_2_data,
     mapping = aes(x = kegg_group, y = pct_rxns, fill = Model),
     stat = "identity",
     position = "dodge"
