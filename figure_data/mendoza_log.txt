@@ -1,0 +1,111 @@
+Took 10.0 minutes and 36 seconds to set up
+Took 0 seconds to test LPL_RA9.mat (model 1 out of 86)
+Took 21.0 minutes and 24 seconds to test LPL_CA1.xml (model 2 out of 86)
+Took 17.0 minutes and 30 seconds to test BPE_CA2.xml (model 3 out of 86)
+Took 0 seconds to test LPL_PT1.xml (model 4 out of 86)
+Took 0 seconds to test BPE_RA11.mat (model 5 out of 86)
+Took 0 seconds to test LPL_ME2.xml (model 6 out of 86)
+Took 29.0 minutes and 21 seconds to test PPU_CA1.xml (model 7 out of 86)
+Took 2.0 hours, 6.0 minutes, and 49 seconds to test PPU_PT2.xml (model 8 out of 86)
+Took 0 seconds to test BPE_RA4.mat (model 9 out of 86)
+Took 0 seconds to test LPL_RA11.mat (model 10 out of 86)
+Took 0 seconds to test BPE_ME1.xml (model 11 out of 86)
+Took 0 seconds to test PPU_RA3.xml (model 12 out of 86)
+Took 0 seconds to test PPU_RA7.xml (model 13 out of 86)
+Took 0 seconds to test BPE_RA9.mat (model 14 out of 86)
+Took 0 seconds to test BPE_PT2.xml (model 15 out of 86)
+Error after 0 seconds when testing iBP1870.xml (model 16 out of 86): Every single dilution constraint rendered the model infeasible; something is seriously wrong with either the code or the model.
+Traceback (most recent call last):
+  File "/projectnb/cancer-meta/macaw/lib/python3.8/site-packages/pebble/common.py", line 183, in process_execute
+    return Result(SUCCESS, function(*args, **kwargs))
+  File "run_tests_on_mendoza.py", line 40, in handle_one_model
+    (dilution_results, dilution_edges) = dilution_test(
+  File "/projectnb/cancer-meta/macaw/macaw_flux_based.py", line 301, in dilution_test
+    raise ValueError(msg)
+ValueError: Every single dilution constraint rendered the model infeasible; something is seriously wrong with either the code or the model.
+
+Took 0 seconds to test BPE_RA10.mat (model 17 out of 86)
+Took 11.0 minutes and 42 seconds to test PPU_PT5.xml (model 18 out of 86)
+Took 0 seconds to test BPE_RA3.mat (model 19 out of 86)
+Took 0 seconds to test LPL_CA2.xml (model 20 out of 86)
+Took 0 seconds to test LPL_RA10.mat (model 21 out of 86)
+Took 0 seconds to test BPE_RA12.mat (model 22 out of 86)
+Took 0 seconds to test LPL_PT5.xml (model 23 out of 86)
+Took 0 seconds to test BPE_RA7.mat (model 24 out of 86)
+Took 0 seconds to test LPL_AU1.sbml (model 25 out of 86)
+Took 0 seconds to test PPU_RA4.xml (model 26 out of 86)
+Took 0 seconds to test iJP962.xml (model 27 out of 86)
+Took 0 seconds to test BPE_CA1.xml (model 28 out of 86)
+Took 0 seconds to test LPL_RA12.mat (model 29 out of 86)
+Took 0 seconds to test LPL_AU2.sbml (model 30 out of 86)
+Took 0 seconds to test BPE_RA8.mat (model 31 out of 86)
+Took 0 seconds to test LPL_MS1.sbml (model 32 out of 86)
+Took 0 seconds to test PPU_RA6.xml (model 33 out of 86)
+Took 0 seconds to test LPL_ME1.xml (model 34 out of 86)
+Took 0 seconds to test BPE_RA6.mat (model 35 out of 86)
+Took 0 seconds to test BPE_MD2.xml (model 36 out of 86)
+Took 0 seconds to test PPU_MS2.sbml (model 37 out of 86)
+Took 0 seconds to test BPE_RA5.mat (model 38 out of 86)
+Took 0 seconds to test LPL_MD1.xml (model 39 out of 86)
+Took 0 seconds to test BPE_PT1.xml (model 40 out of 86)
+Took 0 seconds to test PPU_MS1.sbml (model 41 out of 86)
+Took 0 seconds to test LPL_RA5.mat (model 42 out of 86)
+Took 0 seconds to test PPU_RA11.xml (model 43 out of 86)
+Took 0 seconds to test PPU_CA2.xml (model 44 out of 86)
+Took 0 seconds to test BPE_AU1.sbml (model 45 out of 86)
+Took 57.0 minutes and 15 seconds to test PPU_PT3.xml (model 46 out of 86)
+Took 0 seconds to test LPL_MD2.xml (model 47 out of 86)
+Took 0 seconds to test LPL_AU3.sbml (model 48 out of 86)
+Took 0 seconds to test LPL_RA8.mat (model 49 out of 86)
+Took 0 seconds to test LPL_RA3.mat (model 50 out of 86)
+Took 0 seconds to test BPE_PT4.xml (model 51 out of 86)
+Error after 0 seconds when testing iLP728.xml (model 52 out of 86): The lower bound must be less than or equal to the upper bound (0 <= -0.000835).
+Traceback (most recent call last):
+  File "/projectnb/cancer-meta/macaw/lib/python3.8/site-packages/pebble/common.py", line 183, in process_execute
+    return Result(SUCCESS, function(*args, **kwargs))
+  File "run_tests_on_mendoza.py", line 35, in handle_one_model
+    (loops, loop_edges) = loop_test(
+  File "/projectnb/cancer-meta/macaw/macaw_flux_based.py", line 44, in loop_test
+    r.lower_bound = 0
+  File "/projectnb/cancer-meta/macaw/lib/python3.8/site-packages/cobra/util/context.py", line 111, in wrapper
+    func(self, new_value)
+  File "/projectnb/cancer-meta/macaw/lib/python3.8/site-packages/cobra/core/reaction.py", line 370, in lower_bound
+    self._check_bounds(value, self._upper_bound)
+  File "/projectnb/cancer-meta/macaw/lib/python3.8/site-packages/cobra/core/reaction.py", line 293, in _check_bounds
+    raise ValueError(
+ValueError: The lower bound must be less than or equal to the upper bound (0 <= -0.000835).
+
+Took 4.0 minutes and 45 seconds to test PPU_PT4.xml (model 53 out of 86)
+Took 0 seconds to test PPU_RA5.xml (model 54 out of 86)
+Took 0 seconds to test BPE_ME2.xml (model 55 out of 86)
+Took 0 seconds to test LPL_RA7.mat (model 56 out of 86)
+Took 0 seconds to test BPE_RA2.mat (model 57 out of 86)
+Took 0 seconds to test BPE_MD1.xml (model 58 out of 86)
+Took 0 seconds to test BPE_PT5.xml (model 59 out of 86)
+Took 0 seconds to test LPL_RA2.mat (model 60 out of 86)
+Took 0 seconds to test PPU_RA8.xml (model 61 out of 86)
+Took 0 seconds to test PPU_MD3.xml (model 62 out of 86)
+Took 0 seconds to test LPL_PT4.xml (model 63 out of 86)
+Took 0 seconds to test BPE_MS2.sbml (model 64 out of 86)
+Took 0 seconds to test BPE_MS1.sbml (model 65 out of 86)
+Took 0 seconds to test PPU_RA10.xml (model 66 out of 86)
+Took 0 seconds to test PPU_RA2.xml (model 67 out of 86)
+Took 0 seconds to test LPL_MD3.xml (model 68 out of 86)
+Took 0 seconds to test BPE_PT3.xml (model 69 out of 86)
+Took 0 seconds to test LPL_PT2.xml (model 70 out of 86)
+Took 0 seconds to test PPU_ME2.xml (model 71 out of 86)
+Took 0 seconds to test BPE_RA1.mat (model 72 out of 86)
+Took 0 seconds to test LPL_RA1.mat (model 73 out of 86)
+Took 10.0 minutes and 38 seconds to test BPE_MD3.xml (model 74 out of 86)
+Took 40.0 minutes and 11 seconds to test PPU_PT1.xml (model 75 out of 86)
+Took 0 seconds to test LPL_MS2.sbml (model 76 out of 86)
+Took 0 seconds to test PPU_RA1.xml (model 77 out of 86)
+Took 0 seconds to test LPL_RA4.mat (model 78 out of 86)
+Took 0 seconds to test PPU_RA9.xml (model 79 out of 86)
+Took 0 seconds to test PPU_AU1.sbml (model 80 out of 86)
+Took 0 seconds to test PPU_ME1.xml (model 81 out of 86)
+Took 0 seconds to test PPU_MD2.xml (model 82 out of 86)
+Took 0 seconds to test PPU_RA12.xml (model 83 out of 86)
+Took 0 seconds to test LPL_RA6.mat (model 84 out of 86)
+Took 0 seconds to test PPU_MD1.xml (model 85 out of 86)
+Took 0 seconds to test LPL_PT3.xml (model 86 out of 86)

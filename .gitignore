@@ -9,3 +9,4 @@ share/
 pyvenv.cfg
 .R*
 *.Rproj
+.Rproj.user

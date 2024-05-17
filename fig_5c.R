@@ -48,7 +48,7 @@ fig_5c <- fig_5c_data %>%
       axis.text.x = element_text(angle = 45, hjust = 1, margin = margin(t = 0)),
       legend.title = element_text(size = 8),
       legend.text = element_text(size = 8),
-      legend.box.spacing = unit(0, "mm")
+      legend.box.spacing = unit(0, "mm"),
       # add a bit more space between each item in the legend cuz we have two
       # lines of text for one of the things
       legend.spacing.y = unit(2, "mm"),

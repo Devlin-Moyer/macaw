@@ -33,8 +33,11 @@ def handle_one_model(version):
     dupes = (simplified_results['duplicate_test'] != 'ok').sum()
     dead_ends = (simplified_results['dead_end_test'] != 'ok').sum()
     loops = (simplified_results['loop_test'] != 'ok').sum()
+    flagged = len(simple_results[simple_results.loc[
+        :, simple_results.columns.str.contains('test')
+    ].apply(lambda col: col != 'ok', axis = 1).any(axis = 1)])
     all_rxns = len(model.reactions)
-    return((all_rxns, dupes, dead_ends, loops))
+    return((all_rxns, flagged, dupes, dead_ends, loops))
 
 setup_start = time.time()
 # silence annoying optlang message that prints when you read in a model
@@ -54,6 +57,7 @@ iterator = future.result()
 out_dict = {
     'version' : list(),
     'all_rxns' : list(),
+    'flagged' : list(),
     'duplicates' : list(),
     'dead-ends' : list(),
     'loops' : list()
@@ -65,9 +69,10 @@ while True:
     start_time = time.time()
     try:
         # update dict with numbers from the current model
-        (all_rxns, dupes, dead_ends, loops) = next(iterator)
+        (all_rxns, flagged, dupes, dead_ends, loops) = next(iterator)
         out_dict['version'].append(f'1.{i}')
         out_dict['all_rxns'].append(all_rxns)
+        out_dict['flagged'].append(flagged)
         out_dict['duplicates'].append(dupes)
         out_dict['dead-ends'].append(dead_ends)
         out_dict['loops'].append(loops)
