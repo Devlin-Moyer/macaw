@@ -49,7 +49,8 @@ def handle_one_model(model_path):
     dead_ends = (simplified_results['dead_end_test'] != 'ok').sum()
     dils = (simplified_results['dilution_test'] != 'ok').sum()
     loops = (simplified_results['loop_test'] != 'ok').sum()
-    return((dupes, dead_ends, dils, loops))
+    all_rxns = len(model.reactions)
+    return((all_rxns, dupes, dead_ends, dils, loops))
 
 setup_start = time.time()
 # silence annoying optlang message that prints when you read in a model
@@ -72,6 +73,7 @@ iterator = future.result()
 # prepare a dict to track the number of reactions flagged by each test
 out_dict = {
     'model' : list(),
+    'all_rxns' : list().
     'duplicates' : list(),
     'dead-ends' : list(),
     'dilution-blocked' : list(),
@@ -84,8 +86,9 @@ while True:
     start_time = time.time()
     try:
         # update dict with numbers from the current model
-        (dupes, dead_ends, dils, loops) = next(iterator)
+        (all_rxns, dupes, dead_ends, dils, loops) = next(iterator)
         out_dict['model'].append(model_paths[i])
+        out_dict['all_rxns'].append(all_rxns)
         out_dict['duplicates'].append(dupes)
         out_dict['dead-ends'].append(dead_ends)
         out_dict['dilution-blocked'].append(dils)
