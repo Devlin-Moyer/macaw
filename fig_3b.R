@@ -90,22 +90,21 @@ plot_data <- bind_rows(lapply(
 ))
 
 fig <- plot_data %>%
-  ggplot(aes(x = pathway_size, col = flagged_by)) +
-    geom_density(aes(y = (after_stat(scaled) * after_stat(n)) + 1)) +
+  ggplot(aes(x = pathway_size, fill = flagged_by)) +
+    geom_histogram(show.legend = F) +
+    facet_wrap(. ~ flagged_by) +
     scale_x_log10() +
     scale_y_log10() +
     labs(
-      x = "Size of Pathway",
-      y = "# Pathways + 1",
-      col = "Pathway Had\n\u22651 Reaction\nFlagged By"
+      x = "# Reactions in Pathway",
+      y = "# Pathways"
     ) +
     theme(
       text = element_text(color = "black", size = 8),
       axis.text = element_text(color = "black", size = 6),
       panel.grid = element_blank(),
-      legend.key.size = unit(1/8, "in"),
-      legend.title.align = 0.5,
-      legend.box.spacing = unit(0, "in")
+      strip.background = element_blank(),
+      strip.clip = "off"
     )
 
-ggsave("figures/fig_3b.png", height = 1.5, width = 3.5, units = "in", dpi = 600)
+ggsave("figures/fig_3b.png", height = 2, width = 2.75, units = "in", dpi = 600)

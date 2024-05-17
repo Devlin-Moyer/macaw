@@ -1,0 +1,38 @@
+---
+title: "Mendoza et al. 2019 and AGORA2 figures"
+output: html_document
+date: '2024-05-16'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+theme_set(theme_bw())
+```
+
+```{r}
+mendoza_data <- read_csv("figure_data/fig_mendoza.csv", show_col_types = F) %>%
+  mutate(organism = case_when(
+    grepl("BPE", model) ~ "Bordetella pertussis",
+    grepl("LPL", model) ~ "Lactobacillus plantarum",
+    grepl("PPU", model) ~ "Pseudomonas putida"
+  )) %>%
+  mutate(method = case_when(
+    grepl("_AU", model) ~ "AuReMe",
+    grepl("_CA", model) ~ "CarveMe",
+    grepl("_ME", model) ~ "Merlin",
+    grepl("_MD", model) ~ "MetaDraft",
+    grepl("_MS", model) ~ "ModelSEED",
+    grepl("_PT", model) ~ "Pathway Tools",
+    grepl("_RA", model) ~ "RAVEN"
+  ))
+```
+
+```{r}
+mendoza_data %>%
+  geom_violin(aes(x = organism,))
+```
+

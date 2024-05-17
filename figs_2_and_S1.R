@@ -168,6 +168,13 @@ fig_2_data <- bind_rows(
 ) %>%
   group_by(Model, kegg_group) %>%
   summarize(
+    any_pct = as.integer(100*sum(
+      (dead_end_test == "bad") |
+      (dilution_test == "bad") |
+      (diphosphate_test == "bad") |
+      (duplicate_test == "bad") |
+      (loop_test == "bad")
+    )/n()),
     dilution_pct = as.integer(100*sum(dilution_test == "bad")/n()),
     loop_pct = as.integer(100*sum(loop_test == "bad")/n()),
     duplicate_pct = as.integer(100*sum(duplicate_test == "bad")/n()),
@@ -176,17 +183,24 @@ fig_2_data <- bind_rows(
     .groups = "drop"
   ) %>%
   pivot_longer(
-    c(dilution_pct, loop_pct, duplicate_pct, dead_end_pct, diphosphate_pct),
-    names_to = "test", values_to = "pct_rxns"
+    c(
+      any_pct,
+      dead_end_pct,
+      dilution_pct,
+      diphosphate_pct,
+      duplicate_pct,
+      loop_pct
+    ), names_to = "test", values_to = "pct_rxns"
   ) %>%
   mutate(test = gsub("_pct", " test", test)) %>%
   mutate(test = gsub("dead_end", "dead-end", test)) %>%
+  mutate(test = gsub("any", "Any", test)) %>%
   mutate(kegg_group = relevel(as.factor(kegg_group), "Not in KEGG")) %>%
   mutate(Model = factor(Model, c("Human-GEM", "Yeast-GEM", "iML1515"))) %>%
   mutate(test = toTitleCase(test)) %>%
   mutate(test = factor(test, c(
-    "Dilution Test", "Loop Test", "Dead-End Test", "Duplicate Test",
-    "Diphosphate Test"
+    "Any Test", "Dead-End Test", "Dilution Test", "Diphosphate Test",
+    "Duplicate Test", "Loop Test"
   )))
 
 # make a separate dataframe of coordinates to use for grey rectangles to put
@@ -230,7 +244,8 @@ fig_2 <- ggplot() +
   )
 
 ggsave(
-  "figures/fig_2.png", fig_2, height = 5.25, width = 3.25, units = "in", dpi = 600
+  "figures/fig_2.png", fig_2, height = 5.25, width = 3.25, units = "in",
+  dpi = 600
 )
 
 fig_S1_data <- bind_rows(
@@ -239,6 +254,13 @@ fig_S1_data <- bind_rows(
 ) %>%
   group_by(Version, kegg_group) %>%
   summarize(
+    any_pct = as.integer(100*sum(
+      (dead_end_test == "bad") |
+        (dilution_test == "bad") |
+        (diphosphate_test == "bad") |
+        (duplicate_test == "bad") |
+        (loop_test == "bad")
+    )/n()),
     dilution_pct = as.integer(100*sum(dilution_test == "bad")/n()),
     loop_pct = as.integer(100*sum(loop_test == "bad")/n()),
     duplicate_pct = as.integer(100*sum(duplicate_test == "bad")/n()),
@@ -247,16 +269,23 @@ fig_S1_data <- bind_rows(
     .groups = "drop"
   ) %>%
   pivot_longer(
-    c(dilution_pct, loop_pct, duplicate_pct, dead_end_pct, diphosphate_pct),
-    names_to = "test", values_to = "pct_rxns"
+    c(
+      any_test,
+      dead_end_pct,
+      dilution_pct,
+      diphosphate_pct,
+      duplicate_pct,
+      loop_pct
+    ), names_to = "test", values_to = "pct_rxns"
   ) %>%
   mutate(kegg_group = relevel(as.factor(kegg_group), "Not in KEGG")) %>%
   mutate(test = gsub("_pct", " test", test)) %>%
   mutate(test = gsub("dead_end", "dead-end", test)) %>%
+  mutate(test = gsub("any", "Any", test)) %>%
   mutate(test = toTitleCase(test)) %>%
   mutate(test = factor(test, c(
-    "Dilution Test", "Loop Test", "Dead-End Test", "Duplicate Test",
-    "Diphosphate Test"
+    "Any Test", "Dead-End Test", "Dilution Test", "Diphosphate Test",
+    "Duplicate Test", "Loop Test"
   )))
 
 fig_S1 <- ggplot() +

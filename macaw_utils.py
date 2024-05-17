@@ -5,6 +5,23 @@ Miscellaneous minor utility functions
 
 import math
 
+def time_str(start, end):
+    '''
+    Given two time.time objects, return a string with the hours, minutes and
+    seconds between the two times
+    '''
+    (hrs, rem) = divmod(end - start, 3600)
+    (mins, secs) = divmod(rem, 60)
+    secs = round(secs)
+    if hrs == 0:
+        if mins == 0:
+            msg = f'{secs} seconds'
+        else:
+            msg = f'{mins} minutes and {secs} seconds'
+    else:
+        msg = f'{hrs} hours, {mins} minutes, and {secs} seconds'
+    return(msg)
+
 def flip_reaction(reaction):
     '''
     Switch the products and reactants and upper and lower bounds for the given
