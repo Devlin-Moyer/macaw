@@ -165,10 +165,10 @@ def simplify_test_results(given_df):
     if any(c.startswith('duplicate_test') for c in df.columns):
         df['duplicate_test'] = df.apply(
             lambda row: 'bad' if (
-                ~row['duplicate_test_exact'].isin(['ok', 'N/A']) or
-                ~row['duplicate_test_directions'].isin(['ok', 'N/A']) or
-                ~row['duplicate_test_coefficients'].isin(['ok', 'N/A']) or
-                ~row['duplicate_test_redox'].isin(['ok', 'N/A'])
+                (row['duplicate_test_exact'] not in ['ok', 'N/A']) or
+                (row['duplicate_test_directions'] not in ['ok', 'N/A']) or
+                (row['duplicate_test_coefficients'] not in ['ok', 'N/A']) or
+                (row['duplicate_test_redox'] not in ['ok', 'N/A'])
             ) else 'ok',
             axis = 1
         )

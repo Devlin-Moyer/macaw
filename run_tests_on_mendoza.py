@@ -73,7 +73,7 @@ iterator = future.result()
 # prepare a dict to track the number of reactions flagged by each test
 out_dict = {
     'model' : list(),
-    'all_rxns' : list().
+    'all_rxns' : list(),
     'duplicates' : list(),
     'dead-ends' : list(),
     'dilution-blocked' : list(),
@@ -93,7 +93,7 @@ while True:
         out_dict['dead-ends'].append(dead_ends)
         out_dict['dilution-blocked'].append(dils)
         out_dict['loops'].append(loops)
-        msg = f'Took {time_str(start_time, time.time()} to test '
+        msg = f'Took {time_str(start_time, time.time())} to test '
         msg += f'{model_paths[i]} (model {i+1} out of {len(model_paths)})'
         print(msg)
     except (StopIteration, IndexError):
@@ -112,10 +112,8 @@ while True:
     finally:
         # make sure we always increment the iterator
         i += 1
-wrap_up_start = time.time()
 # close the ProcessPool
 pool.close()
 pool.join()
-print(f'Took {time_str(wrap_up_start, time.time())} to close & join the ProcessPool')
 # turn the dict into a Pandas DataFrame and write to CSV
 pd.DataFrame(out_dict).to_csv('figure_data/fig_mendoza.csv', index = False)

@@ -97,10 +97,8 @@ while True:
     finally:
         # make sure we always increment the iterator
         i += 1
-wrap_up_start = time.time()
 # close the ProcessPool
 pool.close()
 pool.join()
-print(f'Took {time_str(wrap_up_start, time.time())} to close & join the ProcessPool')
 # turn the dict into a Pandas DataFrame and write to CSV
 pd.DataFrame(out_dict).to_csv('figure_data/fig_agora.csv', index = False)
