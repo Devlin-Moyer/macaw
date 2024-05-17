@@ -1,11 +1,11 @@
 # run_tests_on_agora.py
 
-import sys
+import time
 from optlang.glpk_interface import Configuration
+import sys
 import logging
 import os
 from pebble import ProcessPool, ProcessExpired
-import time
 import cobra
 from macaw_main import dead_end_test, duplicate_test, loop_test
 from macaw_utils import time_str, simplify_test_results
@@ -13,9 +13,7 @@ import pandas as pd
 
 def handle_one_model(model_path):
     model = cobra.io.read_sbml_model(f'GSMMs/AGORA2/{model_path}')
-    # TODO: figure out if they all have ATP maintenance reactions
-    # call tests separately cuz we're skipping the diphosphate test and don't
-    # need to bother creating pathways
+    # call tests separately cuz we're skipping some tests and pathway-making
     (dead_end_results, dead_end_edges) = dead_end_test(
         model, use_names = True, add_suffixes = True, verbose = 0
     )

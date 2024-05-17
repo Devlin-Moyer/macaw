@@ -1,11 +1,11 @@
 # run_tests_on_mendoza.py
 
-import sys
+import time
 from optlang.glpk_interface import Configuration
+import sys
 import logging
 import os
 from pebble import ProcessPool, ProcessExpired
-import time
 import cobra
 from macaw_main import dead_end_test, duplicate_test, loop_test, dilution_test
 from macaw_utils import time_str, simplify_test_results
