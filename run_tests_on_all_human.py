@@ -13,6 +13,7 @@ from macaw_utils import time_str, simplify_test_results
 import pandas as pd
 
 def handle_one_model(version):
+    start_time = time.time()
     model = cobra.io.read_sbml_model(f'GSMMs/Human-GEMv{version}.xml')
     # call tests separately cuz we're skipping some and pathway-making
     (dead_end_results, dead_end_edges) = dead_end_test(
@@ -37,7 +38,8 @@ def handle_one_model(version):
         :, simplified_results.columns.str.contains('test')
     ].apply(lambda col: col != 'ok', axis = 1).any(axis = 1)])
     all_rxns = len(model.reactions)
-    return((all_rxns, flagged, dupes, dead_ends, loops))
+    time_msg = time_str(start_time, time.time())
+    return((all_rxns, flagged, dupes, dead_ends, loops, time_msg))
 
 setup_start = time.time()
 # silence annoying optlang message that prints when you read in a model
@@ -66,17 +68,16 @@ out_dict = {
 i = 0
 print(f'Took {time_str(setup_start, time.time())} to set up')
 while True:
-    start_time = time.time()
     try:
         # update dict with numbers from the current model
-        (all_rxns, flagged, dupes, dead_ends, loops) = next(iterator)
+        (all_rxns, flagged, dupes, dead_ends, loops, time_msg) = next(iterator)
         out_dict['version'].append(f'1.{i}')
         out_dict['all_rxns'].append(all_rxns)
         out_dict['flagged'].append(flagged)
         out_dict['duplicates'].append(dupes)
         out_dict['dead-ends'].append(dead_ends)
         out_dict['loops'].append(loops)
-        msg = f'Took {time_str(start_time, time.time())} to test version 1.{i}'
+        msg = f'Took {time_msg} to test version 1.{i}'
         print(msg)
     except (StopIteration, IndexError):
         # should only happen if we've reached the end of the list
@@ -84,8 +85,7 @@ while True:
     except (Exception, ProcessExpired) as error:
         # if we encounter an error for a particular model, just print which one
         # but continue working on the rest
-        msg = f'Error after {time_str(start_time, time.time())} when testing '
-        msg += f'version 1.{i}: {error}'
+        msg = f'Error when testing version 1.{i}: {error}'
         # some errors don't come with tracebacks, but if this does, print it
         if hasattr(error, 'traceback'):
             msg += f'\n{error.traceback}'

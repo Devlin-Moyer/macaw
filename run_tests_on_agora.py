@@ -12,6 +12,7 @@ from macaw_utils import time_str, simplify_test_results
 import pandas as pd
 
 def handle_one_model(model_path):
+    start_time = time.time()
     model = cobra.io.read_sbml_model(f'GSMMs/AGORA2/{model_path}')
     # call tests separately cuz we're skipping some tests and pathway-making
     (dead_end_results, dead_end_edges) = dead_end_test(
@@ -35,7 +36,8 @@ def handle_one_model(model_path):
     dead_ends = (simplified_results['dead_end_test'] != 'ok').sum()
     loops = (simplified_results['loop_test'] != 'ok').sum()
     all_rxns = len(model.reactions)
-    return((all_rxns, dupes, dead_ends, loops))
+    time_msg = time_str(start_time, time.time())
+    return((all_rxns, dupes, dead_ends, loops, time_msg))
 
 setup_start = time.time()
 # silence annoying optlang message that prints when you read in a model
@@ -67,17 +69,16 @@ out_dict = {
 i = 0
 print(f'Took {time_str(setup_start, time.time())} to set up')
 while True:
-    start_time = time.time()
     try:
         # update dict with numbers from the current model
-        (all_rxns, dupes, dead_ends, loops) = next(iterator)
+        (all_rxns, dupes, dead_ends, loops, time_msg) = next(iterator)
         out_dict['model'].append(model_paths[i])
         out_dict['all_rxns'].append(all_rxns)
         out_dict['duplicates'].append(dupes)
         out_dict['dead-ends'].append(dead_ends)
         out_dict['loops'].append(loops)
-        msg = f'Took {time_str(start_time, time.time())} to test '
-        msg += f'{model_paths[i]} (model {i+1} out of {len(model_paths)})'
+        msg = f'Took {time_msg} to test {model_paths[i]} (model {i+1} out of '
+        msg += f'{len(model_paths)})'
         print(msg)
     except (StopIteration, IndexError):
         # should only happen if we've reached the end of the list
@@ -85,9 +86,8 @@ while True:
     except (Exception, ProcessExpired) as error:
         # if we encounter an error for a particular model, just print which one
         # but continue working on the rest
-        msg = f'Error after {time_str(start_time, time.time())} when testing '
-        msg += f'{model_paths[i]} (model {i+1} out of {len(model_paths)}): '
-        msg += f'{error}'
+        msg = f'Error when testing {model_paths[i]} (model {i+1} out of '
+        msg += f'{len(model_paths)}): {error}'
         # some errors don't come with tracebacks, but if this does, print it
         if hasattr(error, 'traceback'):
             msg += f'\n{error.traceback}'
