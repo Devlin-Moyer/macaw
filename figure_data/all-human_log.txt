@@ -1,153 +1,153 @@
-Took 1.0 hours, 34.0 minutes, and 3 seconds to set up
-Error after 22.0 minutes and 24 seconds when testing version 1.0: name 'simple_results' is not defined
+Took 1.0 hours, 25.0 minutes, and 2 seconds to set up
+Error after 19.0 minutes and 13 seconds when testing version 1.0: name 'simplfied_results' is not defined
 Traceback (most recent call last):
   File "/projectnb/cancer-meta/macaw/lib/python3.8/site-packages/pebble/common.py", line 183, in process_execute
     return Result(SUCCESS, function(*args, **kwargs))
   File "run_tests_on_all_human.py", line 36, in handle_one_model
-    flagged = len(simple_results[simple_results.loc[
-NameError: name 'simple_results' is not defined
+    flagged = len(simplfied_results[simplified_results.loc[
+NameError: name 'simplfied_results' is not defined
 
-Error after 2.0 minutes and 2 seconds when testing version 1.1: name 'simple_results' is not defined
+Error after 2.0 minutes and 9 seconds when testing version 1.1: name 'simplfied_results' is not defined
 Traceback (most recent call last):
   File "/projectnb/cancer-meta/macaw/lib/python3.8/site-packages/pebble/common.py", line 183, in process_execute
     return Result(SUCCESS, function(*args, **kwargs))
   File "run_tests_on_all_human.py", line 36, in handle_one_model
-    flagged = len(simple_results[simple_results.loc[
-NameError: name 'simple_results' is not defined
+    flagged = len(simplfied_results[simplified_results.loc[
+NameError: name 'simplfied_results' is not defined
 
-Error after 0 seconds when testing version 1.2: name 'simple_results' is not defined
+Error after 0 seconds when testing version 1.2: name 'simplfied_results' is not defined
 Traceback (most recent call last):
   File "/projectnb/cancer-meta/macaw/lib/python3.8/site-packages/pebble/common.py", line 183, in process_execute
     return Result(SUCCESS, function(*args, **kwargs))
   File "run_tests_on_all_human.py", line 36, in handle_one_model
-    flagged = len(simple_results[simple_results.loc[
-NameError: name 'simple_results' is not defined
+    flagged = len(simplfied_results[simplified_results.loc[
+NameError: name 'simplfied_results' is not defined
 
-Error after 0 seconds when testing version 1.3: name 'simple_results' is not defined
+Error after 0 seconds when testing version 1.3: name 'simplfied_results' is not defined
 Traceback (most recent call last):
   File "/projectnb/cancer-meta/macaw/lib/python3.8/site-packages/pebble/common.py", line 183, in process_execute
     return Result(SUCCESS, function(*args, **kwargs))
   File "run_tests_on_all_human.py", line 36, in handle_one_model
-    flagged = len(simple_results[simple_results.loc[
-NameError: name 'simple_results' is not defined
+    flagged = len(simplfied_results[simplified_results.loc[
+NameError: name 'simplfied_results' is not defined
 
-Error after 0 seconds when testing version 1.4: name 'simple_results' is not defined
+Error after 0 seconds when testing version 1.4: name 'simplfied_results' is not defined
 Traceback (most recent call last):
   File "/projectnb/cancer-meta/macaw/lib/python3.8/site-packages/pebble/common.py", line 183, in process_execute
     return Result(SUCCESS, function(*args, **kwargs))
   File "run_tests_on_all_human.py", line 36, in handle_one_model
-    flagged = len(simple_results[simple_results.loc[
-NameError: name 'simple_results' is not defined
+    flagged = len(simplfied_results[simplified_results.loc[
+NameError: name 'simplfied_results' is not defined
 
-Error after 0 seconds when testing version 1.5: name 'simple_results' is not defined
+Error after 0 seconds when testing version 1.5: name 'simplfied_results' is not defined
 Traceback (most recent call last):
   File "/projectnb/cancer-meta/macaw/lib/python3.8/site-packages/pebble/common.py", line 183, in process_execute
     return Result(SUCCESS, function(*args, **kwargs))
   File "run_tests_on_all_human.py", line 36, in handle_one_model
-    flagged = len(simple_results[simple_results.loc[
-NameError: name 'simple_results' is not defined
+    flagged = len(simplfied_results[simplified_results.loc[
+NameError: name 'simplfied_results' is not defined
 
-Error after 0 seconds when testing version 1.6: name 'simple_results' is not defined
+Error after 0 seconds when testing version 1.6: name 'simplfied_results' is not defined
 Traceback (most recent call last):
   File "/projectnb/cancer-meta/macaw/lib/python3.8/site-packages/pebble/common.py", line 183, in process_execute
     return Result(SUCCESS, function(*args, **kwargs))
   File "run_tests_on_all_human.py", line 36, in handle_one_model
-    flagged = len(simple_results[simple_results.loc[
-NameError: name 'simple_results' is not defined
+    flagged = len(simplfied_results[simplified_results.loc[
+NameError: name 'simplfied_results' is not defined
 
-Error after 0 seconds when testing version 1.7: name 'simple_results' is not defined
+Error after 0 seconds when testing version 1.7: name 'simplfied_results' is not defined
 Traceback (most recent call last):
   File "/projectnb/cancer-meta/macaw/lib/python3.8/site-packages/pebble/common.py", line 183, in process_execute
     return Result(SUCCESS, function(*args, **kwargs))
   File "run_tests_on_all_human.py", line 36, in handle_one_model
-    flagged = len(simple_results[simple_results.loc[
-NameError: name 'simple_results' is not defined
+    flagged = len(simplfied_results[simplified_results.loc[
+NameError: name 'simplfied_results' is not defined
 
-Error after 1.0 hours, 13.0 minutes, and 3 seconds when testing version 1.8: name 'simple_results' is not defined
+Error after 1.0 hours, 4.0 minutes, and 21 seconds when testing version 1.8: name 'simplfied_results' is not defined
 Traceback (most recent call last):
   File "/projectnb/cancer-meta/macaw/lib/python3.8/site-packages/pebble/common.py", line 183, in process_execute
     return Result(SUCCESS, function(*args, **kwargs))
   File "run_tests_on_all_human.py", line 36, in handle_one_model
-    flagged = len(simple_results[simple_results.loc[
-NameError: name 'simple_results' is not defined
+    flagged = len(simplfied_results[simplified_results.loc[
+NameError: name 'simplfied_results' is not defined
 
-Error after 4.0 minutes and 43 seconds when testing version 1.9: name 'simple_results' is not defined
+Error after 0 seconds when testing version 1.9: name 'simplfied_results' is not defined
 Traceback (most recent call last):
   File "/projectnb/cancer-meta/macaw/lib/python3.8/site-packages/pebble/common.py", line 183, in process_execute
     return Result(SUCCESS, function(*args, **kwargs))
   File "run_tests_on_all_human.py", line 36, in handle_one_model
-    flagged = len(simple_results[simple_results.loc[
-NameError: name 'simple_results' is not defined
+    flagged = len(simplfied_results[simplified_results.loc[
+NameError: name 'simplfied_results' is not defined
 
-Error after 0 seconds when testing version 1.10: name 'simple_results' is not defined
+Error after 4.0 minutes and 5 seconds when testing version 1.10: name 'simplfied_results' is not defined
 Traceback (most recent call last):
   File "/projectnb/cancer-meta/macaw/lib/python3.8/site-packages/pebble/common.py", line 183, in process_execute
     return Result(SUCCESS, function(*args, **kwargs))
   File "run_tests_on_all_human.py", line 36, in handle_one_model
-    flagged = len(simple_results[simple_results.loc[
-NameError: name 'simple_results' is not defined
+    flagged = len(simplfied_results[simplified_results.loc[
+NameError: name 'simplfied_results' is not defined
 
-Error after 0 seconds when testing version 1.11: name 'simple_results' is not defined
+Error after 5.0 minutes and 51 seconds when testing version 1.11: name 'simplfied_results' is not defined
 Traceback (most recent call last):
   File "/projectnb/cancer-meta/macaw/lib/python3.8/site-packages/pebble/common.py", line 183, in process_execute
     return Result(SUCCESS, function(*args, **kwargs))
   File "run_tests_on_all_human.py", line 36, in handle_one_model
-    flagged = len(simple_results[simple_results.loc[
-NameError: name 'simple_results' is not defined
+    flagged = len(simplfied_results[simplified_results.loc[
+NameError: name 'simplfied_results' is not defined
 
-Error after 0 seconds when testing version 1.12: name 'simple_results' is not defined
+Error after 3.0 minutes and 12 seconds when testing version 1.12: name 'simplfied_results' is not defined
 Traceback (most recent call last):
   File "/projectnb/cancer-meta/macaw/lib/python3.8/site-packages/pebble/common.py", line 183, in process_execute
     return Result(SUCCESS, function(*args, **kwargs))
   File "run_tests_on_all_human.py", line 36, in handle_one_model
-    flagged = len(simple_results[simple_results.loc[
-NameError: name 'simple_results' is not defined
+    flagged = len(simplfied_results[simplified_results.loc[
+NameError: name 'simplfied_results' is not defined
 
-Error after 9.0 minutes and 20 seconds when testing version 1.13: name 'simple_results' is not defined
+Error after 0 seconds when testing version 1.13: name 'simplfied_results' is not defined
 Traceback (most recent call last):
   File "/projectnb/cancer-meta/macaw/lib/python3.8/site-packages/pebble/common.py", line 183, in process_execute
     return Result(SUCCESS, function(*args, **kwargs))
   File "run_tests_on_all_human.py", line 36, in handle_one_model
-    flagged = len(simple_results[simple_results.loc[
-NameError: name 'simple_results' is not defined
+    flagged = len(simplfied_results[simplified_results.loc[
+NameError: name 'simplfied_results' is not defined
 
-Error after 7.0 minutes and 37 seconds when testing version 1.14: name 'simple_results' is not defined
+Error after 1.0 minutes and 52 seconds when testing version 1.14: name 'simplfied_results' is not defined
 Traceback (most recent call last):
   File "/projectnb/cancer-meta/macaw/lib/python3.8/site-packages/pebble/common.py", line 183, in process_execute
     return Result(SUCCESS, function(*args, **kwargs))
   File "run_tests_on_all_human.py", line 36, in handle_one_model
-    flagged = len(simple_results[simple_results.loc[
-NameError: name 'simple_results' is not defined
+    flagged = len(simplfied_results[simplified_results.loc[
+NameError: name 'simplfied_results' is not defined
 
-Error after 2.0 minutes and 53 seconds when testing version 1.15: name 'simple_results' is not defined
+Error after 4.0 minutes and 27 seconds when testing version 1.15: name 'simplfied_results' is not defined
 Traceback (most recent call last):
   File "/projectnb/cancer-meta/macaw/lib/python3.8/site-packages/pebble/common.py", line 183, in process_execute
     return Result(SUCCESS, function(*args, **kwargs))
   File "run_tests_on_all_human.py", line 36, in handle_one_model
-    flagged = len(simple_results[simple_results.loc[
-NameError: name 'simple_results' is not defined
+    flagged = len(simplfied_results[simplified_results.loc[
+NameError: name 'simplfied_results' is not defined
 
-Error after 50.0 minutes and 33 seconds when testing version 1.16: name 'simple_results' is not defined
+Error after 52.0 minutes and 32 seconds when testing version 1.16: name 'simplfied_results' is not defined
 Traceback (most recent call last):
   File "/projectnb/cancer-meta/macaw/lib/python3.8/site-packages/pebble/common.py", line 183, in process_execute
     return Result(SUCCESS, function(*args, **kwargs))
   File "run_tests_on_all_human.py", line 36, in handle_one_model
-    flagged = len(simple_results[simple_results.loc[
-NameError: name 'simple_results' is not defined
+    flagged = len(simplfied_results[simplified_results.loc[
+NameError: name 'simplfied_results' is not defined
 
-Error after 0 seconds when testing version 1.17: name 'simple_results' is not defined
+Error after 0 seconds when testing version 1.17: name 'simplfied_results' is not defined
 Traceback (most recent call last):
   File "/projectnb/cancer-meta/macaw/lib/python3.8/site-packages/pebble/common.py", line 183, in process_execute
     return Result(SUCCESS, function(*args, **kwargs))
   File "run_tests_on_all_human.py", line 36, in handle_one_model
-    flagged = len(simple_results[simple_results.loc[
-NameError: name 'simple_results' is not defined
+    flagged = len(simplfied_results[simplified_results.loc[
+NameError: name 'simplfied_results' is not defined
 
-Error after 0 seconds when testing version 1.18: name 'simple_results' is not defined
+Error after 0 seconds when testing version 1.18: name 'simplfied_results' is not defined
 Traceback (most recent call last):
   File "/projectnb/cancer-meta/macaw/lib/python3.8/site-packages/pebble/common.py", line 183, in process_execute
     return Result(SUCCESS, function(*args, **kwargs))
   File "run_tests_on_all_human.py", line 36, in handle_one_model
-    flagged = len(simple_results[simple_results.loc[
-NameError: name 'simple_results' is not defined
+    flagged = len(simplfied_results[simplified_results.loc[
+NameError: name 'simplfied_results' is not defined
 
