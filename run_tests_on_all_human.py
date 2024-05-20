@@ -33,7 +33,7 @@ def handle_one_model(version):
     dupes = (simplified_results['duplicate_test'] != 'ok').sum()
     dead_ends = (simplified_results['dead_end_test'] != 'ok').sum()
     loops = (simplified_results['loop_test'] != 'ok').sum()
-    flagged = len(simplfied_results[simplified_results.loc[
+    flagged = len(simplified_results[simplified_results.loc[
         :, simplified_results.columns.str.contains('test')
     ].apply(lambda col: col != 'ok', axis = 1).any(axis = 1)])
     all_rxns = len(model.reactions)

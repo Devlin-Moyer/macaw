@@ -75,6 +75,20 @@ filter_sizes <- function(df, test) {
   return(out)
 }
 
+# for all reactions flagged by a particular test, get the list of the numbers
+# of reactions in each pathway containing each reaction and find the median.
+# i.e. if 4 of the 10 reactions in a particular pathway were flagged by the
+# given test, you'd add 4 10s to the list of pathway sizes you're taking the
+# median of. so it's kind of like a weighted median (Juan is calling it a C50
+# because it apparently resembles a similarly named statistic used in the
+# context of long read sequencing data)
+compute_c50 <- function(df, test) {
+  df %>%
+    filter(!!as.symbol(test) != "ok") %>%
+    pull(pathway_size) %>%
+    median()
+}
+
 results <- read_csv(
   "figure_data/Human-GEMv1.15_test-results.csv", show_col_types = FALSE
 ) %>%
@@ -82,16 +96,37 @@ results <- read_csv(
   get_pathway_sizes()
 
 tests <- c(
-  "any", "dilution_test", "loop_test", "dead_end_test", "duplicate_test",
+  "dilution_test", "loop_test", "dead_end_test", "duplicate_test",
   "diphosphate_test"
 )
 plot_data <- bind_rows(lapply(
-  tests, function(t) filter_sizes(results, t)
+  c("any", tests), function(t) filter_sizes(results, t)
 ))
+c50s <- bind_cols(
+  c(
+    "Dilution Test", "Loop Test", "Dead-End Test", "Duplicate Test",
+    "Diphosphate Test"
+  ), sapply(tests, function(t) compute_c50(results, t))
+)
+colnames(c50s) <- c("flagged_by", "label")
+c50s <- c50s %>%
+  # add columns for the coordinates of each label
+  mutate(x = 500, y = 1500) %>%
+  mutate(label = paste0("C50 = ", label))
 
-fig <- plot_data %>%
-  ggplot(aes(x = pathway_size, fill = flagged_by)) +
-    geom_histogram(show.legend = F) +
+fig <- ggplot() +
+    geom_histogram(
+      data = plot_data,
+      mapping = aes(x = pathway_size, fill = flagged_by),
+      bins = 30,
+      show.legend = F
+    ) +
+    geom_text(
+      data = c50s,
+      mapping = aes(x = x, y = y, label = label),
+      hjust = 1,
+      size = 6 * 0.36 # approximate a font size of 6
+    ) +
     facet_wrap(. ~ flagged_by) +
     scale_x_log10() +
     scale_y_log10() +
@@ -104,7 +139,7 @@ fig <- plot_data %>%
       axis.text = element_text(color = "black", size = 6),
       panel.grid = element_blank(),
       strip.background = element_blank(),
-      strip.clip = "off"
+      #strip.clip = "off"
     )
 
 ggsave("figures/fig_3b.png", height = 2, width = 2.75, units = "in", dpi = 600)
