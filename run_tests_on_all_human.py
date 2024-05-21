@@ -79,7 +79,7 @@ while True:
         out_dict['loops'].append(loops)
         msg = f'Took {time_msg} to test version 1.{i}'
         print(msg)
-    except (StopIteration, IndexError):
+    except StopIteration:
         # should only happen if we've reached the end of the list
         break
     except (Exception, ProcessExpired) as error:

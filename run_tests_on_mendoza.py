@@ -97,7 +97,7 @@ while True:
         msg = f'Took {time_msg} to test {model_paths[i]} (model {i+1} out of '
         msg += f'{len(model_paths)})'
         print(msg)
-    except (StopIteration, IndexError):
+    except StopIteration:
         # should only happen if we've reached the end of the list
         break
     except (Exception, ProcessExpired) as error:

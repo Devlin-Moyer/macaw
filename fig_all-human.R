@@ -52,3 +52,8 @@ fig <- ggplot(plot_data, aes(x = model_version, y = prop, col = test, group = te
 ggsave(
   "figures/fig_all-human.png", height = 2.5, width = 5, units = "in", dpi = 600
 )
+
+#ggplot(all_human_data, aes(x = model_version, y = all_rxns)) +
+#  geom_line(group = 1) +
+#  scale_y_continuous(limits = c(0, NA)) +
+#  labs(x = "Version of Human-GEM", y = "Total # Reactions")

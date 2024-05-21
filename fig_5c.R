@@ -26,7 +26,7 @@ fig_5c <- fig_5c_data %>%
   )) %>%
   # make a heatmap
   ggplot(aes(x = gene, y = condition, fill = impact)) +
-    geom_tile(col = "black", size = 0.5) +
+    geom_tile(col = "black", linewidth = 0.5) +
     # Juan said to use a pastel color palette
     scale_fill_brewer(palette = "Set3") +
     labs(x = "", y = "", fill = "Measured or Predicted\nImpact of Knockout") +
@@ -51,7 +51,7 @@ fig_5c <- fig_5c_data %>%
       legend.box.spacing = unit(0, "mm"),
       # add a bit more space between each item in the legend cuz we have two
       # lines of text for one of the things
-      legend.spacing.y = unit(2, "mm"),
+      legend.spacing.y = unit(2, "mm")
     ) +
     # without this, legend.spacing.y only affects the space between the title
     # of the legend and the contents of the legend and not the space between

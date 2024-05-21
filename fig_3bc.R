@@ -1,6 +1,7 @@
 # fig_3bc.R
 
 library(tools)
+library(scales)
 library(ggupset)
 suppressMessages(library(tidyverse))
 theme_set(theme_bw())
@@ -90,8 +91,8 @@ compute_c50 <- function(df, test) {
     median()
 }
 
-make_hists <- function(results, out_fname) {
-  hist_data <- results %>%
+make_hists <- function(results, out_fname, x_coord, y_coord) {
+  better_results <- results %>%
     simplify_results() %>%
     get_pathway_sizes()
   tests <- c(
@@ -99,18 +100,18 @@ make_hists <- function(results, out_fname) {
     "diphosphate_test"
   )
   hist_data <- bind_rows(lapply(
-    c("any", tests), function(t) filter_sizes(hist_data, t)
+    c("any", tests), function(t) filter_sizes(better_results, t)
   ))
   c50s <- bind_cols(
     c(
       "Dilution Test", "Loop Test", "Dead-End Test", "Duplicate Test",
       "Diphosphate Test"
-    ), sapply(tests, function(t) compute_c50(hist_data, t))
+    ), sapply(tests, function(t) compute_c50(better_results, t))
   )
   colnames(c50s) <- c("flagged_by", "label")
   c50s <- c50s %>%
     # add columns for the coordinates of each label
-    mutate(x = 500, y = 1500) %>%
+    mutate(x = x_coord, y = y_coord) %>%
     mutate(label = paste0("C50 = ", label))
   hist_fig <- ggplot() +
     geom_histogram(
@@ -127,7 +128,10 @@ make_hists <- function(results, out_fname) {
     ) +
     facet_wrap(. ~ flagged_by) +
     scale_x_log10() +
-    scale_y_log10() +
+    scale_y_continuous(
+      trans = pseudo_log_trans(base = 10),
+      breaks = c(1, 10, 100, 1000)
+    ) +
     labs(
       x = "# Reactions in Pathway",
       y = "# Pathways"
@@ -137,7 +141,7 @@ make_hists <- function(results, out_fname) {
       axis.text = element_text(color = "black", size = 6),
       panel.grid = element_blank(),
       strip.background = element_blank(),
-      trip.clip = "off"
+      strip.clip = "off"
     )
   ggsave(out_fname, height = 2, width = 2.75, units = "in", dpi = 600)
 }
@@ -166,7 +170,7 @@ condense_results <- function(row) {
 human_results <- read_csv(
   "figure_data/Human-GEMv1.15_test-results.csv", show_col_types = FALSE
 )
-make_hists(human_results, "figures/fig_3b.png")
+make_hists(human_results, "figures/fig_3b.png", 500, 1500)
 human_results$flagged_by <- apply(human_results, 1, condense_results)
 fig_3c <- human_results %>%
   filter(sapply(human_results$flagged_by, length) > 0) %>%
@@ -187,10 +191,11 @@ ggsave(
 
 # now do the histograms for yeast-GEM and iML1515
 make_hists(
-  read_csv("figure_data/yeast-GEMv9.0.0", show_col_types = FALSE),
-  "figures/yeast-GEM_hists.png"
+  read_csv(
+    "figure_data/yeast-GEMv9.0.0_test-results.csv", show_col_types = FALSE
+  ), "figures/yeast-GEM_hists.png", 1300, 300
 )
 make_hists(
   read_csv("figure_data/iML1515_test-results.csv", show_col_types = FALSE),
-  "figures/iML1515_hists.png"
+  "figures/iML1515_hists.png", 1000, 125
 )
