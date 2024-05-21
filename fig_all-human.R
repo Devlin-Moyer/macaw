@@ -1,0 +1,54 @@
+# fig_all-human.R
+# plot the proportions of reactions flagged by each test against the version
+# number for each version of Human-GEM to see how that changed over time
+
+suppressMessages(library(tidyverse))
+theme_set(theme_bw())
+
+all_human_data <- read_csv(
+  "figure_data/fig_all-human.csv", show_col_types = FALSE, col_types = "fiiiii"
+)
+plot_data <- all_human_data %>%
+  # replace counts with proportions, then drop the counts
+  mutate(flagged_prop = flagged/all_rxns) %>%
+  mutate(dupe_prop = duplicates/all_rxns) %>%
+  mutate(dead_prop = `dead-ends`/all_rxns) %>%
+  mutate(loop_prop = loops/all_rxns) %>%
+  select(-flagged, -duplicates, -`dead-ends`, -loops, -all_rxns) %>%
+  # pivot cuz it'll be easier to plot this way
+  pivot_longer(-model_version, names_to = "test", values_to = "prop") %>%
+  # make more human-readable for figure
+  mutate(test = case_when(
+    test == "flagged_prop" ~ "Any Test",
+    test == "dupe_prop" ~ "Duplicate Test",
+    test == "dead_prop" ~ "Dead-End Test",
+    test == "loop_prop" ~ "Loop Test"
+  ))
+
+plot_data$model_version
+
+fig <- ggplot(plot_data, aes(x = model_version, y = prop, col = test, group = test)) +
+  geom_line() +
+  scale_x_discrete(
+    # tick mark every other version
+    labels = c(
+      "1.0", "", "1.2", "", "1.4", "", "1.6", "", "1.8", "", "1.10", "", "1.12",
+      "", "1.14", "", "1.16", "", "1.18"
+    )
+  ) +
+  labs(
+    x = "Version of Human-GEM",
+    y = "Proportion of All Reactions",
+    col = "Flagged by"
+  ) +
+  theme(
+    axis.text = element_text(color = "black", size = 6),
+    axis.title = element_text(size = 8),
+    legend.text = element_text(size = 8),
+    legend.title = element_text(size = 8),
+    legend.title.align = 0.5
+  )
+
+ggsave(
+  "figures/fig_all-human.png", height = 2.5, width = 5, units = "in", dpi = 600
+)

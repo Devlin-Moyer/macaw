@@ -1,4 +1,4 @@
-version,all_rxns,flagged,duplicates,dead-ends,loops
+model_version,all_rxns,flagged,duplicates,dead-ends,loops
 1.0,15185,3580,637,855,2619
 1.1,15185,3561,635,855,2602
 1.2,14691,3786,633,1095,2594

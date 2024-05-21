@@ -1,6 +1,7 @@
-# fig_3b.R
+# fig_3bc.R
 
 library(tools)
+library(ggupset)
 suppressMessages(library(tidyverse))
 theme_set(theme_bw())
 
@@ -89,34 +90,31 @@ compute_c50 <- function(df, test) {
     median()
 }
 
-results <- read_csv(
-  "figure_data/Human-GEMv1.15_test-results.csv", show_col_types = FALSE
-) %>%
-  simplify_results() %>%
-  get_pathway_sizes()
-
-tests <- c(
-  "dilution_test", "loop_test", "dead_end_test", "duplicate_test",
-  "diphosphate_test"
-)
-plot_data <- bind_rows(lapply(
-  c("any", tests), function(t) filter_sizes(results, t)
-))
-c50s <- bind_cols(
-  c(
-    "Dilution Test", "Loop Test", "Dead-End Test", "Duplicate Test",
-    "Diphosphate Test"
-  ), sapply(tests, function(t) compute_c50(results, t))
-)
-colnames(c50s) <- c("flagged_by", "label")
-c50s <- c50s %>%
-  # add columns for the coordinates of each label
-  mutate(x = 500, y = 1500) %>%
-  mutate(label = paste0("C50 = ", label))
-
-fig <- ggplot() +
+make_hists <- function(results, out_fname) {
+  hist_data <- results %>%
+    simplify_results() %>%
+    get_pathway_sizes()
+  tests <- c(
+    "dilution_test", "loop_test", "dead_end_test", "duplicate_test",
+    "diphosphate_test"
+  )
+  hist_data <- bind_rows(lapply(
+    c("any", tests), function(t) filter_sizes(hist_data, t)
+  ))
+  c50s <- bind_cols(
+    c(
+      "Dilution Test", "Loop Test", "Dead-End Test", "Duplicate Test",
+      "Diphosphate Test"
+    ), sapply(tests, function(t) compute_c50(hist_data, t))
+  )
+  colnames(c50s) <- c("flagged_by", "label")
+  c50s <- c50s %>%
+    # add columns for the coordinates of each label
+    mutate(x = 500, y = 1500) %>%
+    mutate(label = paste0("C50 = ", label))
+  hist_fig <- ggplot() +
     geom_histogram(
-      data = plot_data,
+      data = hist_data,
       mapping = aes(x = pathway_size, fill = flagged_by),
       bins = 30,
       show.legend = F
@@ -139,7 +137,60 @@ fig <- ggplot() +
       axis.text = element_text(color = "black", size = 6),
       panel.grid = element_blank(),
       strip.background = element_blank(),
-      #strip.clip = "off"
+      trip.clip = "off"
     )
+  ggsave(out_fname, height = 2, width = 2.75, units = "in", dpi = 600)
+}
 
-ggsave("figures/fig_3b.png", height = 2, width = 2.75, units = "in", dpi = 600)
+# condense all the different test result columns into a single one that lists
+# all tests each reaction was flagged by
+condense_results <- function(row) {
+  dupe <- (row["duplicate_test_exact"] != "ok") |
+    (row["duplicate_test_directions"] != "ok") |
+    (row["duplicate_test_coefficients"] != "ok") |
+    (row["duplicate_test_redox"] != "ok")
+  dead <- !grepl("(ok|only)", row["dead_end_test"])
+  diphos <- (row["diphosphate_test"] != "ok")
+  loop <- (row["loop_test"] != "ok")
+  dil <- !grepl("(ok|always)", row["dilution_test"])
+  result <- character()
+  if (dil) {result[length(result) + 1] <- "Dilution Test"}
+  if (loop) {result[length(result) + 1] <- "Loop Test"}
+  if (dupe) {result[length(result) + 1] <- "Duplicate Test"}
+  if (dead) {result[length(result) + 1] <- "Dead-end Test"}
+  if (diphos) {result[length(result) + 1] <- "Diphosphate Test"}
+  return(result)
+}
+
+# start with figures 3b and 3c
+human_results <- read_csv(
+  "figure_data/Human-GEMv1.15_test-results.csv", show_col_types = FALSE
+)
+make_hists(human_results, "figures/fig_3b.png")
+human_results$flagged_by <- apply(human_results, 1, condense_results)
+fig_3c <- human_results %>%
+  filter(sapply(human_results$flagged_by, length) > 0) %>%
+  ggplot(aes(x = flagged_by)) +
+    geom_bar(fill = "black", width = 0.5) +
+    scale_x_upset() +
+    labs(x = "", y = "# Reactions") +
+    theme(
+      panel.grid = element_blank(),
+      axis.title.y = element_text(vjust = -20),
+      axis.text.y = element_text(color = "black"),
+      plot.margin = unit(c(0.125, 0.125, -0.125, -0.125), "in")
+    ) +
+    theme_combmatrix(combmatrix.label.text = element_text(color = "black"))
+ggsave(
+  "figures/fig_3c.png", height = 2.25, width = 3.25, units = "in", dpi = 600
+)
+
+# now do the histograms for yeast-GEM and iML1515
+make_hists(
+  read_csv("figure_data/yeast-GEMv9.0.0", show_col_types = FALSE),
+  "figures/yeast-GEM_hists.png"
+)
+make_hists(
+  read_csv("figure_data/iML1515_test-results.csv", show_col_types = FALSE),
+  "figures/iML1515_hists.png"
+)

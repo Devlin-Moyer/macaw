@@ -57,7 +57,7 @@ future = pool.map(handle_one_model, versions)
 iterator = future.result()
 # prepare a dict to track the number of reactions flagged by each test
 out_dict = {
-    'version' : list(),
+    'model_version' : list(),
     'all_rxns' : list(),
     'flagged' : list(),
     'duplicates' : list(),
@@ -71,7 +71,7 @@ while True:
     try:
         # update dict with numbers from the current model
         (all_rxns, flagged, dupes, dead_ends, loops, time_msg) = next(iterator)
-        out_dict['version'].append(f'1.{i}')
+        out_dict['model_version'].append(f'1.{i}')
         out_dict['all_rxns'].append(all_rxns)
         out_dict['flagged'].append(flagged)
         out_dict['duplicates'].append(dupes)
