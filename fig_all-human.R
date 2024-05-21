@@ -25,8 +25,6 @@ plot_data <- all_human_data %>%
     test == "loop_prop" ~ "Loop Test"
   ))
 
-plot_data$model_version
-
 fig <- ggplot(plot_data, aes(x = model_version, y = prop, col = test, group = test)) +
   geom_line() +
   scale_x_discrete(
@@ -46,14 +44,12 @@ fig <- ggplot(plot_data, aes(x = model_version, y = prop, col = test, group = te
     axis.title = element_text(size = 8),
     legend.text = element_text(size = 8),
     legend.title = element_text(size = 8),
-    legend.title.align = 0.5
+    legend.title.align = 0.5,
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor.y = element_blank(),
+    legend.box.spacing = unit(0, "in")
   )
 
 ggsave(
-  "figures/fig_all-human.png", height = 2.5, width = 5, units = "in", dpi = 600
+  "figures/fig_all-human.png", height = 2, width = 4, units = "in", dpi = 600
 )
-
-#ggplot(all_human_data, aes(x = model_version, y = all_rxns)) +
-#  geom_line(group = 1) +
-#  scale_y_continuous(limits = c(0, NA)) +
-#  labs(x = "Version of Human-GEM", y = "Total # Reactions")
