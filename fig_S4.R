@@ -1,10 +1,12 @@
-# fig_all-human.R
+# fig_S4.R
 # plot the proportions of reactions flagged by each test against the version
 # number for each version of Human-GEM to see how that changed over time
 
 suppressMessages(library(tidyverse))
 theme_set(theme_bw())
 
+# TODO: change this to a bind_rows(lapply(list.files())) situation now that we
+# have the whole batching thing set up
 all_human_data <- read_csv(
   "figure_data/fig_all-human.csv", show_col_types = FALSE, col_types = "fiiiii"
 )
@@ -51,5 +53,5 @@ fig <- ggplot(plot_data, aes(x = model_version, y = prop, col = test, group = te
   )
 
 ggsave(
-  "figures/fig_all-human.png", height = 2, width = 4, units = "in", dpi = 600
+  "figures/fig_S4.png", height = 2, width = 4, units = "in", dpi = 600
 )

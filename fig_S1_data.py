@@ -1,4 +1,4 @@
-# find_exch_dead-ends.py
+# fig_S1_data.py
 '''
 Find all dead-end pathways that contain an irreversible exchange reaction
 '''

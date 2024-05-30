@@ -1,7 +1,7 @@
-# fig_3a_data.py
+# fig_3a_S2a_S3a_data.py
 '''
-Make a table indicating which test each reaction was flagged by in version 1.15
-of Human-GEM to use to color the nodes in the graph of all pathway networks
+Make tables indicating which test each reaction was flagged by in Human-GEM,
+yeast-GEM, and iML1515 to use to color the networks
 '''
 
 import sys
@@ -48,9 +48,9 @@ test_results['category'] = simplify_test_results(test_results).apply(
 # save to appropriately-named file
 fname_dict = {
     'Human-GEMv1.15' : '3a',
-    'yeast-GEMv9.0.0' : 'yeast-net',
-    'iML1515' : 'ecoli-net'
+    'yeast-GEMv9.0.0' : 'S2a',
+    'iML1515' : 'S3a'
 }
 test_results[['reaction_id', 'category']].to_csv(
-    f'figure_data/fig_{fname_dict[model]}_nodes.csv', index = False
+    f'figure_data/fig_{fname_dict[model]}_data.csv', index = False
 )

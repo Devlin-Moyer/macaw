@@ -11,7 +11,8 @@ suppressMessages(library(tidyverse))
 load_image_as_panel <- function(path) {
   img <- readPNG(path)
   panel <- ggplot() + background_image(img) + theme_void() +
-    coord_fixed(ratio = dim(img)[1] / dim(img)[2])
+    coord_fixed(ratio = dim(img)[1] / dim(img)[2]) +
+    theme(plot.margin = unit(c(-0.3,0,-0.3,0), "in"))
   return(panel)
 }
 
@@ -76,10 +77,10 @@ fig_5a <- load_image_as_panel("figures/fig_5a.png")
 fig_5b <- load_image_as_panel("figures/fig_5b.png")
 
 (fig_5a / fig_5b / free(fig_5c)) +
-  plot_layout(heights = c(1.25, 1.25, 1)) +
+  plot_layout(heights = unit(c(1.8, 2.75, 1.5), "in")) +
   plot_annotation(tag_levels = "A") &
   theme(plot.tag = element_text(size = 12, hjust = 1, vjust = -5))
 
 ggsave(
-  "figures/fig_5.png", height = 5.75, width = 5, units = "in", dpi = 600
+  "figures/fig_5.png", height = 6.6, width = 5, units = "in", dpi = 600
 )

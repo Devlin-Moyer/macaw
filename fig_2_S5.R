@@ -1,4 +1,4 @@
-# figs_2_and_S1.R
+# fig_2_S5.R
 
 library(jsonlite)
 library(tools)
@@ -277,7 +277,7 @@ ggsave(
   dpi = 600
 )
 
-fig_S1_data_1 <- bind_rows(
+fig_S5_data_1 <- bind_rows(
   human15_kegg %>% mutate(Version = "1.15"),
   human18_kegg %>% mutate(Version = "1.18")
 ) %>%
@@ -296,7 +296,7 @@ fig_S1_data_1 <- bind_rows(
     .groups = "drop"
   )
 
-fig_S1_data_2 <- bind_rows(
+fig_S5_data_2 <- bind_rows(
   human15_kegg %>% mutate(Version = "1.15"),
   human18_kegg %>% mutate(Version = "1.18")
 ) %>%
@@ -316,7 +316,7 @@ fig_S1_data_2 <- bind_rows(
   ) %>%
   mutate(kegg_group = "All Reactions")
 
-fig_S1_data <- bind_rows(fig_S1_data_1, fig_S1_data_2) %>%
+fig_S5_data <- bind_rows(fig_S5_data_1, fig_S5_data_2) %>%
   pivot_longer(
     c(
       any_pct,
@@ -336,7 +336,7 @@ fig_S1_data <- bind_rows(fig_S1_data_1, fig_S1_data_2) %>%
     "Any Test", "Dead-End Test", "Dilution Test", "Duplicate Test", "Loop Test"
   )))
 
-fig_S1 <- ggplot() +
+fig_S5 <- ggplot() +
   scale_x_discrete() +
   geom_rect(
     data = rect_df,
@@ -371,6 +371,6 @@ fig_S1 <- ggplot() +
   )
 
 ggsave(
-  "figures/fig_S1.png", height = 5, width = 3.25, units = "in", plot = fig_S1,
+  "figures/fig_S5.png", height = 5, width = 3.25, units = "in", plot = fig_S1,
   dpi = 600
 )

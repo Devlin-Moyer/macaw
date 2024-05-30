@@ -1,4 +1,4 @@
-# figs_2_and_S1_data.py
+# fig_2_S5_data.py
 '''
 Make CSV files with internal model IDs and gene IDs for all reactions in 
 in Human-GEM, Yeast-GEM, and iML1515. For reactions associated with more than

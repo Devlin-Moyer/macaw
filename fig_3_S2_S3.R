@@ -1,4 +1,4 @@
-# fig_3.R
+# fig_3_S2_S3.R
 
 lib <- "/usr3/graduate/dcmoyer/R/x86_64-pc-linux-gnu-library/4.2"
 library(tools)
@@ -207,15 +207,16 @@ ggsave(
   "figures/fig_3.png", height = 10, width = 8, units = "in", dpi = 600
 )
 
-# now do the histograms for yeast-GEM and iML1515
-fig_yeast_b <- make_hists(
+# then do figures S2 and S3
+# TODO: patchwork together the histograms with the Cytoscape networks
+fig_S2b <- make_hists(
   read_csv(
     "figure_data/yeast-GEMv9.0.0_test-results.csv", show_col_types = FALSE
   ), 1300, 300
 )
-ggsave("figures/yeast-GEM_hists.png")
-fig_ecoli_b <- make_hists(
+ggsave("figures/fig_S2b.png")
+fig_S3b <- make_hists(
   read_csv("figure_data/iML1515_test-results.csv", show_col_types = FALSE),
   1000, 125
 )
-ggsave("figures/iML1515_hists.png")
+ggsave("figures/fig_S3b.png")
