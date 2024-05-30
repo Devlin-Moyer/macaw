@@ -1,14 +1,16 @@
 # figs_2_and_S1.R
 
-# load packages
-
 library(jsonlite)
 library(tools)
 suppressMessages(library(tidyverse))
 theme_set(theme_bw())
 
+##### Define Functions #####
+
 simplify_results <- function(df) {
   out <- df %>%
+    # ignore results of diphosphate test
+    select(-diphosphate_test) %>%
     mutate(
       duplicate_test = ifelse(
         (
@@ -19,7 +21,6 @@ simplify_results <- function(df) {
         ), "bad", "ok"
       ),
       dead_end_test = ifelse(grepl("(ok|only)", dead_end_test), "ok", "bad"),
-      diphosphate_test = ifelse(diphosphate_test != "ok", "bad", "ok"),
       loop_test = ifelse(loop_test != "ok", "bad", "ok"),
       dilution_test = ifelse(grepl("(ok|always)", dilution_test), "ok", "bad")
     ) %>%
@@ -77,6 +78,8 @@ add_kegg_groups <- function(
       TRUE ~ kegg_group
     ))
 }
+
+##### Load and Reformat Data #####
 
 # read in the test results for both versions of Yeast-GEM, iML1515, and both
 # versions of Human-GEM
@@ -161,7 +164,10 @@ write_csv(human15_kegg, "figure_data/Human-GEMv1.15_results-with-KEGG.csv")
 write_csv(yeast_kegg, "figure_data/yeast-GEMv9.0.0_results-with-KEGG.csv")
 write_csv(ecoli_kegg, "figure_data/iML1515_results-with-KEGG.csv")
 
-fig_2_data <- bind_rows(
+##### Make Figures #####
+
+# get proportions of reactions in each KEGG group flagged by each or any test
+fig_2_data_1 <- bind_rows(
   human15_kegg %>% mutate(Model = "Human-GEM"),
   yeast_kegg %>% mutate(Model = "Yeast-GEM"),
   ecoli_kegg %>% mutate(Model = "iML1515")
@@ -171,23 +177,45 @@ fig_2_data <- bind_rows(
     any_pct = as.integer(100*sum(
       (dead_end_test == "bad") |
       (dilution_test == "bad") |
-      (diphosphate_test == "bad") |
       (duplicate_test == "bad") |
       (loop_test == "bad")
     )/n()),
-    dilution_pct = as.integer(100*sum(dilution_test == "bad")/n()),
-    loop_pct = as.integer(100*sum(loop_test == "bad")/n()),
-    duplicate_pct = as.integer(100*sum(duplicate_test == "bad")/n()),
     dead_end_pct = as.integer(100*sum(dead_end_test == "bad")/n()),
-    diphosphate_pct = as.integer(100*sum(diphosphate_test == "bad")/n()),
+    dilution_pct = as.integer(100*sum(dilution_test == "bad")/n()),
+    duplicate_pct = as.integer(100*sum(duplicate_test == "bad")/n()),
+    loop_pct = as.integer(100*sum(loop_test == "bad")/n()),
+    .groups = "drop"
+  )
+
+# do the same but without first grouping by KEGG category (also do it on
+# *_tests and not *_kegg so each reaction only appears once)
+fig_2_data_2 <- bind_rows(
+  human15_kegg %>% mutate(Model = "Human-GEM"),
+  yeast_kegg %>% mutate(Model = "Yeast-GEM"),
+  ecoli_kegg %>% mutate(Model = "iML1515")
+) %>%
+  group_by(Model) %>%
+  summarize(
+    any_pct = as.integer(100*sum(
+      (dead_end_test == "bad") |
+      (dilution_test == "bad") |
+      (duplicate_test == "bad") |
+      (loop_test == "bad")
+    )/n()),
+    dead_end_pct = as.integer(100*sum(dead_end_test == "bad")/n()),
+    dilution_pct = as.integer(100*sum(dilution_test == "bad")/n()),
+    duplicate_pct = as.integer(100*sum(duplicate_test == "bad")/n()),
+    loop_pct = as.integer(100*sum(loop_test == "bad")/n()),
     .groups = "drop"
   ) %>%
+  mutate(kegg_group = "All Reactions")
+
+fig_2_data <- bind_rows(fig_2_data_1, fig_2_data_2) %>%
   pivot_longer(
     c(
       any_pct,
       dead_end_pct,
       dilution_pct,
-      diphosphate_pct,
       duplicate_pct,
       loop_pct
     ), names_to = "test", values_to = "pct_rxns"
@@ -195,19 +223,21 @@ fig_2_data <- bind_rows(
   mutate(test = gsub("_pct", " test", test)) %>%
   mutate(test = gsub("dead_end", "dead-end", test)) %>%
   mutate(test = gsub("any", "Any", test)) %>%
+  # have all reactions come before reactions not in KEGG, then all groups in
+  # alphabetical order
   mutate(kegg_group = relevel(as.factor(kegg_group), "Not in KEGG")) %>%
+  mutate(kegg_group = relevel(kegg_group, "All Reactions")) %>%
   mutate(Model = factor(Model, c("Human-GEM", "Yeast-GEM", "iML1515"))) %>%
   mutate(test = toTitleCase(test)) %>%
   mutate(test = factor(test, c(
-    "Any Test", "Dead-End Test", "Dilution Test", "Diphosphate Test",
-    "Duplicate Test", "Loop Test"
+    "Any Test", "Dead-End Test", "Dilution Test", "Duplicate Test", "Loop Test"
   )))
 
 # make a separate dataframe of coordinates to use for grey rectangles to put
 # behind every other group of bars instead of using normal gridlines
 rect_df <- data.frame(
   starts = seq(0.5, n_distinct(fig_2_data$kegg_group), by = 2),
-  ends = seq(1.5, n_distinct(fig_2_data$kegg_group), by = 2)
+  ends = seq(1.5, n_distinct(fig_2_data$kegg_group)+1, by = 2)
 )
 
 fig_2 <- ggplot() +
@@ -236,7 +266,6 @@ fig_2 <- ggplot() +
     axis.text = element_text(color = "black", size = 6),
     axis.text.x = element_text(angle = 45, hjust = 1),
     strip.background = element_blank(),
-    strip.clip = "off",
     panel.grid = element_blank(),
     legend.key.size = unit(1/8, "in"),
     legend.title.align = 0.5,
@@ -244,11 +273,11 @@ fig_2 <- ggplot() +
   )
 
 ggsave(
-  "figures/fig_2.png", fig_2, height = 5.25, width = 3.25, units = "in",
+  "figures/fig_2.png", fig_2, height = 5, width = 3.5, units = "in",
   dpi = 600
 )
 
-fig_S1_data <- bind_rows(
+fig_S1_data_1 <- bind_rows(
   human15_kegg %>% mutate(Version = "1.15"),
   human18_kegg %>% mutate(Version = "1.18")
 ) %>%
@@ -256,36 +285,55 @@ fig_S1_data <- bind_rows(
   summarize(
     any_pct = as.integer(100*sum(
       (dead_end_test == "bad") |
-        (dilution_test == "bad") |
-        (diphosphate_test == "bad") |
-        (duplicate_test == "bad") |
-        (loop_test == "bad")
+      (dilution_test == "bad") |
+      (duplicate_test == "bad") |
+      (loop_test == "bad")
     )/n()),
-    dilution_pct = as.integer(100*sum(dilution_test == "bad")/n()),
-    loop_pct = as.integer(100*sum(loop_test == "bad")/n()),
-    duplicate_pct = as.integer(100*sum(duplicate_test == "bad")/n()),
     dead_end_pct = as.integer(100*sum(dead_end_test == "bad")/n()),
-    diphosphate_pct = as.integer(100*sum(diphosphate_test == "bad")/n()),
+    dilution_pct = as.integer(100*sum(dilution_test == "bad")/n()),
+    duplicate_pct = as.integer(100*sum(duplicate_test == "bad")/n()),
+    loop_pct = as.integer(100*sum(loop_test == "bad")/n()),
+    .groups = "drop"
+  )
+
+fig_S1_data_2 <- bind_rows(
+  human15_kegg %>% mutate(Version = "1.15"),
+  human18_kegg %>% mutate(Version = "1.18")
+) %>%
+  group_by(Version) %>%
+  summarize(
+    any_pct = as.integer(100*sum(
+      (dead_end_test == "bad") |
+      (dilution_test == "bad") |
+      (duplicate_test == "bad") |
+      (loop_test == "bad")
+    )/n()),
+    dead_end_pct = as.integer(100*sum(dead_end_test == "bad")/n()),
+    dilution_pct = as.integer(100*sum(dilution_test == "bad")/n()),
+    duplicate_pct = as.integer(100*sum(duplicate_test == "bad")/n()),
+    loop_pct = as.integer(100*sum(loop_test == "bad")/n()),
     .groups = "drop"
   ) %>%
+  mutate(kegg_group = "All Reactions")
+
+fig_S1_data <- bind_rows(fig_S1_data_1, fig_S1_data_2) %>%
   pivot_longer(
     c(
-      any_test,
+      any_pct,
       dead_end_pct,
       dilution_pct,
-      diphosphate_pct,
       duplicate_pct,
       loop_pct
     ), names_to = "test", values_to = "pct_rxns"
   ) %>%
   mutate(kegg_group = relevel(as.factor(kegg_group), "Not in KEGG")) %>%
+  mutate(kegg_group = relevel(kegg_group, "All Reactions")) %>%
   mutate(test = gsub("_pct", " test", test)) %>%
   mutate(test = gsub("dead_end", "dead-end", test)) %>%
   mutate(test = gsub("any", "Any", test)) %>%
   mutate(test = toTitleCase(test)) %>%
   mutate(test = factor(test, c(
-    "Any Test", "Dead-End Test", "Dilution Test", "Diphosphate Test",
-    "Duplicate Test", "Loop Test"
+    "Any Test", "Dead-End Test", "Dilution Test", "Duplicate Test", "Loop Test"
   )))
 
 fig_S1 <- ggplot() +
@@ -323,6 +371,6 @@ fig_S1 <- ggplot() +
   )
 
 ggsave(
-  "figures/fig_S1.png", height = 5.25, width = 3, units = "in", plot = fig_S1,
+  "figures/fig_S1.png", height = 5, width = 3.25, units = "in", plot = fig_S1,
   dpi = 600
 )

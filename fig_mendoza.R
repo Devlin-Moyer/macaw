@@ -1,8 +1,8 @@
 # fig_mendoza.R
 
-library(ComplexHeatmap)
-library(circlize)
-library(tidyverse)
+suppressMessages(library(ComplexHeatmap))
+suppressMessages(library(circlize))
+suppressMessages(library(tidyverse))
 theme_set(theme_bw())
 
 # read in summarized test results from the models
@@ -10,9 +10,6 @@ mendoza_data <- read_csv("figure_data/fig_mendoza.csv", show_col_types = F)
 
 # reformat data to prepare for making a heatmap
 heatmap_data <- mendoza_data %>%
-  # remove results from manually-curated models since the one for L. plantarum
-  # has invalid bounds and just two doesn't give us much to work with
-  filter(!grepl("(iBP1870|iJP962)", model)) %>%
   # unpack information in model filenames into separate columns
   separate(model, c("organism", "method", NA)) %>%
   mutate(method = case_when(
@@ -25,20 +22,23 @@ heatmap_data <- mendoza_data %>%
     grepl("RA", method) ~ "RAVEN"
   )) %>%
   # turn numbers of reactions into proportions of all reactions
-  mutate(dupe_prop = duplicates/all_rxns) %>%
+  mutate(any_prop = flagged/all_rxns) %>%
   mutate(dead_prop = `dead-ends`/all_rxns) %>%
   mutate(dil_prop = `dilution-blocked`/all_rxns) %>%
+  mutate(dupe_prop = duplicates/all_rxns) %>%
   mutate(loop_prop = loops/all_rxns) %>%
   # drop count columns now that we have proportions
-  select(-duplicates, -`dead-ends`, -`dilution-blocked`, -loops, -all_rxns) %>%
+  select(
+    -flagged, -`dead-ends`, -`dilution-blocked`, -duplicates, -loops, -all_rxns
+  ) %>%
   # pivot twice to get into appropriate format for heatmap
   pivot_longer(
-    c(dupe_prop, dead_prop, dil_prop, loop_prop),
+    c(any_prop, dead_prop, dil_prop, dupe_prop, loop_prop),
     names_to = "test",
     values_to = "prop"
   ) %>%
   pivot_wider(
-    c(organism, test),
+    id_cols = c(organism, test),
     names_from = "method",
     values_from = "prop",
     # average together proportions from the different parameter combinations for
@@ -46,7 +46,7 @@ heatmap_data <- mendoza_data %>%
     values_fn = mean
   ) %>%
   # get rows in a helpful order and give them unique rownames
-  arrange(test) %>%
+  arrange(test, organism) %>%
   unite(org_test, c(organism, test)) %>%
   column_to_rownames("org_test") %>%
   # put columns in alphabetical order
@@ -54,6 +54,7 @@ heatmap_data <- mendoza_data %>%
 
 # make two named vectors to make annotation bars
 row_names <- c(
+  "BPE_any_prop", "LPL_any_prop", "PPU_any_prop",
   "BPE_dead_prop", "LPL_dead_prop", "PPU_dead_prop",
   "BPE_dil_prop", "LPL_dil_prop", "PPU_dil_prop",
   "BPE_dupe_prop", "LPL_dupe_prop", "PPU_dupe_prop",
@@ -61,10 +62,11 @@ row_names <- c(
 )
 org_names <- c("B. pertussis", "L. plantarum", "P. putida")
 org_ann_bar <- structure(
-  rep(org_names, 4), names = row_names
+  rep(org_names, 5), names = row_names
 )
 test_ann_bar <- structure(
   c(
+    rep("Any", 3),
     rep("Dead-end", 3),
     rep("Dilution", 3),
     rep("Duplicate", 3),
@@ -73,18 +75,17 @@ test_ann_bar <- structure(
 )
 
 # make two more named vectors to control colors in annotation bars
-org_colors <- structure(c("#BEBADA", "#FDB462", "#8DD3C7"), names = org_names)
+org_colors <- structure(c("#BEBADA", "#FCCDE5", "#8DD3C7"), names = org_names)
 test_colors <- structure(
-  c("#FFFF33", "#B3DE69", "#FB8072", "#80B1D3"),
-  names = c("Dead-end", "Dilution", "Duplicate", "Loop")
+  c("#FDB462", "#FFFF33", "#B3DE69", "#FB8072", "#80B1D3"),
+  names = c("Any", "Dead-end", "Dilution", "Duplicate", "Loop")
 )
-
 # make colormap for the main heatmap
 col_fun = colorRamp2(c(0, max(heatmap_data)), c("white", "red"))
 
 # finally make the heatmap
 png(
-  "figures/fig_mendoza.png", height = 5.75, width = 4.5, unit = "in", res = 600
+  "figures/fig_mendoza.png", height = 6.5, width = 4.25, unit = "in", res = 600
 )
 Heatmap(
   heatmap_data, name = "Mean Proportion\nof Reactions\nFlagged by Test",
@@ -98,6 +99,6 @@ Heatmap(
     Organism = org_ann_bar,
     col = list(Organism = org_colors, Test = test_colors)
   ),
-  height = unit(4, "in"), width = unit(2.5, "in")
+  height = unit(5, "in"), width = unit(2.25, "in")
 )
 dev.off()
