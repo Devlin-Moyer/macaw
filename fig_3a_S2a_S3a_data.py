@@ -52,5 +52,5 @@ fname_dict = {
     'iML1515' : 'S3a'
 }
 test_results[['reaction_id', 'category']].to_csv(
-    f'figure_data/fig_{fname_dict[model]}_data.csv', index = False
+    f'figure_data/fig_{fname_dict[model]}_node-list.csv', index = False
 )

@@ -2,6 +2,7 @@
 
 # load packages
 library(png)
+library(ggplot2)
 library(ggpubr)
 library(patchwork)
 suppressMessages(library(tidyverse))
@@ -12,7 +13,7 @@ load_image_as_panel <- function(path) {
   img <- readPNG(path)
   panel <- ggplot() + background_image(img) + theme_void() +
     coord_fixed(ratio = dim(img)[1] / dim(img)[2]) +
-    theme(plot.margin = unit(c(-0.3,0,-0.3,0), "in"))
+    theme(plot.margin = unit(c(0,0,0,0), "in"))
   return(panel)
 }
 

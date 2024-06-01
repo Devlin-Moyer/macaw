@@ -2,13 +2,28 @@
 
 lib <- "/usr3/graduate/dcmoyer/R/x86_64-pc-linux-gnu-library/4.2"
 library(tools)
-library(scales)
-library(ggupset, lib.loc = lib)
 library(png)
+library(ggplot2)
 library(ggpubr, lib.loc = lib)
+library(ggupset, lib.loc = lib)
+library(scales)
 library(patchwork)
 suppressMessages(library(tidyverse))
 theme_set(theme_bw())
+
+# read in a PNG file and turn it into a ggplot object so it can be patchworked
+# together with actual ggplot plots into a single figure
+load_image_as_panel <- function(path) {
+  img <- readPNG(path)
+  panel <- ggplot() + background_image(img) + theme_void() +
+    coord_fixed(ratio = dim(img)[1] / dim(img)[2]) +
+    labs(tag = "A") +
+    theme(
+      plot.margin = unit(c(0, 0, 0, 0), "in"),
+      plot.tag.location = "panel",
+    )
+  return(panel)
+}
 
 simplify_results <- function(df) {
   out <- df %>%
@@ -24,9 +39,8 @@ simplify_results <- function(df) {
       ),
       # make sure all the other columns just say "bad" or "ok"
       dead_end_test = ifelse(grepl("(ok|only)", dead_end_test), "ok", "bad"),
-      diphosphate_test = ifelse(diphosphate_test != "ok", "bad", "ok"),
+      dilution_test = ifelse(grepl("(ok|always)", dilution_test), "ok", "bad"),
       loop_test = ifelse(loop_test != "ok", "bad", "ok"),
-      dilution_test = ifelse(grepl("(ok|always)", dilution_test), "ok", "bad")
     ) %>%
     # drop all the specific duplicate test columns
     select(
@@ -48,7 +62,6 @@ get_pathway_sizes <- function(df) {
       (pathway == 0) & (
         (dead_end_test != "ok") |
         (dilution_test != "ok") |
-        (diphosphate_test != "ok") |
         (duplicate_test != "ok") |
         (loop_test != "ok")
       ), nrow(df) + row_num, pathway
@@ -99,20 +112,15 @@ make_hists <- function(results, x_coord, y_coord) {
   better_results <- results %>%
     simplify_results() %>%
     get_pathway_sizes()
-  tests <- c(
-    "dilution_test", "loop_test", "dead_end_test", "duplicate_test",
-    "diphosphate_test"
-  )
+  tests <- c("dead_end_test", "dilution_test", "duplicate_test", "loop_test")
   hist_data <- bind_rows(lapply(
     c("any", tests), function(t) filter_sizes(better_results, t)
   ))
-  c50s <- bind_cols(
-    c(
-      "Dilution Test", "Loop Test", "Dead-End Test", "Duplicate Test",
-      "Diphosphate Test"
-    ), sapply(tests, function(t) compute_c50(better_results, t))
+  c50s <- data.frame(
+    flagged_by = c(
+      "Dead-End Test", "Dilution Test", "Duplicate Test", "Loop Test"
+    ), label = sapply(tests, function(t) compute_c50(better_results, t))
   )
-  colnames(c50s) <- c("flagged_by", "label")
   c50s <- c50s %>%
     # add columns for the coordinates of each label
     mutate(x = x_coord, y = y_coord) %>%
@@ -136,16 +144,21 @@ make_hists <- function(results, x_coord, y_coord) {
       trans = pseudo_log_trans(base = 10),
       breaks = c(1, 10, 100, 1000)
     ) +
+    scale_fill_manual(
+      values = c("#FDB462", "#FFFF33", "#B3DE69", "#FB8072", "#80B1D3")
+    ) +
     labs(
       x = "# Reactions in Pathway",
-      y = "# Pathways"
+      y = "# Pathways",
+      tag = "B"
     ) +
     theme(
       text = element_text(color = "black", size = 8),
       axis.text = element_text(color = "black", size = 8),
       panel.grid = element_blank(),
       strip.background = element_blank(),
-      strip.clip = "off"
+      strip.clip = "off",
+      plot.margin = unit(c(0,0,0,0), "in"),
     )
   return(hist_fig)
 }
@@ -158,7 +171,6 @@ condense_results <- function(row) {
     (row["duplicate_test_coefficients"] != "ok") |
     (row["duplicate_test_redox"] != "ok")
   dead <- !grepl("(ok|only)", row["dead_end_test"])
-  diphos <- (row["diphosphate_test"] != "ok")
   loop <- (row["loop_test"] != "ok")
   dil <- !grepl("(ok|always)", row["dilution_test"])
   result <- character()
@@ -166,57 +178,91 @@ condense_results <- function(row) {
   if (loop) {result[length(result) + 1] <- "Loop Test"}
   if (dupe) {result[length(result) + 1] <- "Duplicate Test"}
   if (dead) {result[length(result) + 1] <- "Dead-end Test"}
-  if (diphos) {result[length(result) + 1] <- "Diphosphate Test"}
   return(result)
 }
 
-# start with figure 3
+make_upset <- function(data) {
+  data$flagged_by <- apply(data, 1, condense_results)
+  fig <- data %>%
+    filter(sapply(data$flagged_by, length) > 0) %>%
+    ggplot(aes(x = flagged_by)) +
+      geom_bar(fill = "black", width = 0.5) +
+      scale_x_upset() +
+      labs(x = "", y = "# Reactions", tag = "C") +
+      theme(
+        panel.grid = element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_text(size = 8),
+        axis.text.y = element_text(color = "black"),
+        plot.margin = unit(c(0, 0, 0, 0.5), "in"),
+        plot.background = element_rect(fill = "transparent")
+      ) +
+      theme_combmatrix(combmatrix.label.text = element_text(color = "black"))
+  return(fig)
+}
+
+# figure 3
 human_results <- read_csv(
   "figure_data/Human-GEMv1.15_test-results.csv", show_col_types = FALSE
-)
-fig_3b <- make_hists(human_results, 500, 1500)
+) %>% select(-diphosphate_test)
 
-human_results$flagged_by <- apply(human_results, 1, condense_results)
-fig_3c <- human_results %>%
-  filter(sapply(human_results$flagged_by, length) > 0) %>%
-  ggplot(aes(x = flagged_by)) +
-    geom_bar(fill = "black", width = 0.5) +
-    scale_x_upset() +
-    labs(x = "", y = "# Reactions") +
-    theme(
-      panel.grid = element_blank(),
-      axis.title.x = element_blank(),
-      axis.title.y = element_text(size = 8),
-      axis.text.y = element_text(color = "black"),
-      plot.margin = unit(c(0.125, 0.125, -0.125, 0.5), "in")
-    ) +
-    theme_combmatrix(combmatrix.label.text = element_text(color = "black"))
+fig_3a <- load_image_as_panel("figures/fig_3a.png") +
+  theme(plot.tag.position = c(0.01,1))
+fig_3b <- make_hists(human_results, 500, 1500) +
+  theme(plot.tag.position = c(-0.24, 1.1))
+fig_3c <- make_upset(human_results) +
+  theme(plot.tag.position = c(-0.45, 0.95))
 
-# now that we've created the ggplot objects for panels b and c, read in panel a
-# (that we made by hand in Cytoscape) and patchwork all three together
-fig_3a_raw <- readPNG("figures/fig_3a.png")
-fig_3a <- ggplot() + background_image(fig_3a_raw) + theme_void() +
-  # preserve aspect ratio so patchwork doesn't distort the image
-  coord_fixed(ratio = dim(fig_3a_raw)[1] / dim(fig_3a_raw)[2])
-
-(fig_3a / (free(fig_3b) | fig_3c + plot_layout(widths = unit(3, "in")))) +
-  plot_layout(heights = c(4.5, 1)) +
-  plot_annotation(tag_levels = "A") &
-  theme(plot.tag = element_text(size = 12, hjust = 1, vjust = -5))
+(free(fig_3a) / (free(fig_3b) | free(fig_3c))) +
+  plot_layout(heights = c(2.6, 1)) &
+  theme(
+    plot.tag.location = "panel",
+    plot.tag = element_text(size = 12)
+  )
 ggsave(
-  "figures/fig_3.png", height = 10, width = 8, units = "in", dpi = 600
+  "figures/fig_3.png", height = 7.5, width = 5.5, units = "in", dpi = 600
 )
 
-# then do figures S2 and S3
-# TODO: patchwork together the histograms with the Cytoscape networks
-fig_S2b <- make_hists(
-  read_csv(
-    "figure_data/yeast-GEMv9.0.0_test-results.csv", show_col_types = FALSE
-  ), 1300, 300
+# figure S2
+yeast_results <- read_csv(
+  "figure_data/yeast-GEMv9.0.0_test-results.csv", show_col_types = FALSE
+) %>% select(-diphosphate_test)
+
+fig_S2a <- load_image_as_panel("figures/fig_S2a.png") +
+  theme(plot.tag.position = c(0.004,0.96))
+fig_S2b <- make_hists(yeast_results, 1300, 300) +
+  theme(plot.tag.position = c(-0.11,1.05))
+fig_S2c <- make_upset(yeast_results) +
+  theme(plot.tag.position = c(-0.25,0.95))
+
+(fig_S2a / ((free(fig_S2b) | fig_S2c) + plot_layout(widths = c(1.3, 1)))) +
+  plot_layout(heights = c(2.1, 1)) &
+  theme(
+    plot.tag.location = "panel",
+    plot.tag = element_text(size = 12)
+  )
+ggsave(
+  "figures/fig_S2.png", height = 7.25, width = 7.5, units = "in", dpi = 600
 )
-ggsave("figures/fig_S2b.png")
-fig_S3b <- make_hists(
-  read_csv("figure_data/iML1515_test-results.csv", show_col_types = FALSE),
-  1000, 125
+
+# figure S3
+ecoli_results <- read_csv(
+  "figure_data/iML1515_test-results.csv", show_col_types = FALSE
+) %>% select(-diphosphate_test)
+
+fig_S3a <- load_image_as_panel("figures/fig_S3a.png") +
+  theme(plot.tag.position = c(-0.025,0.97))
+fig_S3b <- make_hists(ecoli_results, 1000, 125) +
+  theme(plot.tag.position = c(-0.11,1.05))
+fig_S3c <- make_upset(ecoli_results) +
+  theme(plot.tag.position = c(-0.27,0.95))
+(fig_S3a / ((free(fig_S3b) | fig_S3c) + plot_layout(widths = c(1.4, 1)))) +
+  plot_layout(heights = c(3.75, 1)) &
+  theme(
+    plot.tag = element_text(size = 12),
+    plot.tag.location = "panel"
+  )
+
+ggsave(
+  "figures/fig_S3.png", height = 9.5, width = 7.5, units = "in", dpi = 600
 )
-ggsave("figures/fig_S3b.png")

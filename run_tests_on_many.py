@@ -8,7 +8,7 @@ import sys
 import logging
 import os
 import numpy as np
-from pebble import ProcessPool, ProcessExpired
+from pebble import ProcessPool
 import time
 import cobra
 from macaw_main import dead_end_test, dilution_test, duplicate_test, loop_test
@@ -25,100 +25,59 @@ def handle_one_model(model_path):
         model = cobra.io.load_matlab_model(model_path)
     else:
         model = cobra.io.read_sbml_model(model_path)
-    # get the appropriate set of pairs of IDs for redox carrier metabolites
-    if 'Human-GEM' in model_path:
-        redox_pairs = [
-            # NAD+ and NADH in every compartment they both exist in
-            ('MAM02552c', 'MAM02553c'), ('MAM02552e', 'MAM02553e'),
-            ('MAM02552m', 'MAM02553m'), ('MAM02552n', 'MAM02553n'),
-            ('MAM02552r', 'MAM02553r'), ('MAM02552x', 'MAM02553x'),
-            # NADP+ and NADPH in every compartment they both exist in
-            ('MAM02554c', 'MAM02555c'), ('MAM02554l', 'MAM02555l'),
-            ('MAM02554m', 'MAM02555m'), ('MAM02554n', 'MAM02555n'),
-            ('MAM02554r', 'MAM02555r'), ('MAM02554x', 'MAM02555x'),
-            # FAD and FADH2 in every compartment they both exist in
-            ('MAM01802c', 'MAM01803c'), ('MAM01802m', 'MAM01803m'),
-            ('MAM01802r', 'MAM01803r'), ('MAM01802x', 'MAM01803x'),
-            # ubiquinone and ubiquinol in every compartment they both exist in
-            ('MAM03103c', 'MAM03102c'), ('MAM03103e', 'MAM03102e'),
-            ('MAM03103m', 'MAM03102m'),
-            # ferricytochrome c and ferrocytochrome c
-            ('MAM01824c', 'MAM01826c'), ('MAM01824m', 'MAM01826m'),
-            # ferricytochrome b5 and ferrocytochrome b5
-            ('MAM01823c', 'MAM01825c'),
-            # thioredoxin
-            ('MAM02990c', 'MAM02666c'), ('MAM02990m', 'MAM02666m'),
-            # mitothioredoxin
-            ('MAM02487m', 'MAM02486m'),
-            # oxygen and hydrogen peroxide
-            ('MAM02630c', 'MAM02041c'), ('MAM02630e', 'MAM02041e'),
-            ('MAM02630l', 'MAM02041l'), ('MAM02630m', 'MAM02041m'),
-            ('MAM02630n', 'MAM02041n'), ('MAM02630r', 'MAM02041r'),
-            ('MAM02630x', 'MAM02041x')
-        ]
-        # see if this version is from before they reformatted metabolite IDs
-        try:
-            model.metabolites.get_by_id('MAR02552c')
-        except KeyError:
-            redox_pairs = [
-                (pair[0].replace('MAR', 'm'), pair[1].replace('MAR', 'm'))
-                for pair in redox_pairs
-            ]
-        proton_ids = [m.id for m in model.metabolites if '02039' in m.id]
-    else:
-        # everything other than Human-GEM uses a variety of different formats
-        # for metabolite IDs (BiGG, ModelSEED, KEGG, MetaCyc) but doesn't have
-        # any subcellular compartments
-        redox_pairs = [
-            # NAD(H)
-            ('nad', 'nadh'), ('C00003', 'C00004'),
-            ('cpd00003', 'cpd00004'), ('NAD', 'NADH'), ('00010', '00013'),
-            # NADP(H)
-            ('nadp', 'nadph'), ('C00006', 'C00005'),
-            ('cpd00006', 'cpd00005'), ('NADP', 'NADPH'), ('00002', '00005'),
-            # FAD(H2)
-            ('fad', 'fadh2'), ('C00016', 'C01352'),
-            ('cpd00015', 'cpd00982'), ('FAD', 'FADH2'), ('00251', '00247'),
-            # FMN(H2)
-            ('fmn', 'fmnh2'), ('C00061', 'C01847'),
-            ('cpd00050', 'cpd01270'), ('FMN', 'FMNH2'), ('00622', '00575'),
-            # riboflavin
-            ('ribflv', 'rbflvrd'), ('C00255', 'C01007'),
-            ('cpd00220', 'cpd00739'), ('RIBOFLAVIN', 'CPD-316'),
-            # ubiquinones and ubiquinols
-            ('q', 'qh2'), ('C00399', 'C00390'), ('cpd28301', 'cpd28300'),
-            ('01220', '01121'), ('cpd25985', 'cpd26399'),
-            ('CPD0-1118', 'CPD0-2061'), ('cpd28290', 'cpd28015'),
-            ('cpd11669', 'cpd11665'), ('UBIQUINONE-2', 'QH2'),
-            ('q6', 'q6h2'), ('cpd15290', 'cpd15291'),
-            ('UBIQUINONE-6', 'UBIQUINOL-30'), ('cpd25792', 'cpd25913'),
-            ('CPD-9717', 'CPD-9955'), ('q8', 'q8h2'), ('cpd15560', 'cpd15561'),
-            ('cpd15560', 'cpd29608'), ('UBIQUINONE-8', 'CPD-9956'),
-            ('q9', 'q9h2'), ('cpd01351', 'cpd25914'),
-            ('UBIQUINONE-9', 'CPD-9957'), ('q10', 'q10h2'),
-            ('cpd08232', 'cpd25915'), ('UBIQUINONE-10', 'CPD-9958'),
-            # glutathione
-            ('gthox', 'gthrd'), ('C00127', 'C00051'), ('cpd00111', 'cpd00042'),
-            ('OXIDIZED-GLUTATHIONE', 'GLUTATHIONE'),
-            # oxygen and hydrogen peroxide
-            ('o2', 'h2o2'), ('C00007', 'C00027'), ('cpd00007', 'cpd00025'),
-            ('OXYGEN-MOLECULE', 'HYDROGEN-PEROXIDE'), ('00249', '00410')
-        ]
-        proton_ids = ['h', 'C00080', 'cpd00067', 'PROTON']
-        # some models added compartment suffixes and some didn't, so try
-        # different compartment suffixes until at least one of the proton IDs is
-        # a metabolite ID that's actually in the model
-        all_ids = [m.id for m in model.metabolites]
-        if not any(p in all_ids for p in proton_ids):
-            for suffix in ['_c', '_c0', '[c]']:
-                new_proton_ids = [p + suffix for p in proton_ids]
-                if any(p in all_ids for p in new_proton_ids):
-                    # update the lists of proton IDs and redox carrier pairs
-                    proton_ids = new_proton_ids
-                    redox_pairs = [
-                        (m1 + suffix, m2 + suffix) for (m1, m2) in redox_pairs
-                    ]
-                    break
+    # the different models from the Mendoza paper used a variety of formats
+    # for their metabolite IDs (BiGG, ModelSeed, KEGG, etc.), so include many
+    # IDs for each pair then filter down to the ones actually present in the
+    # given model
+    redox_pairs = [
+        # NAD(H)
+        ('nad', 'nadh'), ('C00003', 'C00004'), ('cpd00003', 'cpd00004'),
+        ('NAD', 'NADH'),
+        # NADP(H)
+        ('nadp', 'nadph'), ('C00006', 'C00005'), ('cpd00006', 'cpd00005'),
+        ('NADP', 'NADPH'),
+        # FAD(H2)
+        ('fad', 'fadh2'), ('C00016', 'C01352'), ('cpd00015', 'cpd00982'),
+        ('FAD', 'FADH2'),
+        # FMN(H2)
+        ('fmn', 'fmnh2'), ('C00061', 'C01847'), ('cpd00050', 'cpd01270'),
+        ('FMN', 'FMNH2'),
+        # riboflavin
+        ('ribflv', 'rbflvrd'), ('C00255', 'C01007'), ('cpd00220', 'cpd00739'),
+        ('RIBOFLAVIN', 'CPD-316'),
+        # ubiquinones and ubiquinols
+        ('q', 'qh2'), ('C00399', 'C00390'), ('cpd28301', 'cpd28300'),
+        ('cpd25985', 'cpd26399'), ('CPD0-1118', 'CPD0-2061'),
+        ('cpd28290', 'cpd28015'), ('cpd11669', 'cpd11665'),
+        ('UBIQUINONE-2', 'QH2'), ('q6', 'q6h2'), ('cpd15290', 'cpd15291'),
+        ('UBIQUINONE-6', 'UBIQUINOL-30'), ('cpd25792', 'cpd25913'),
+        ('CPD-9717', 'CPD-9955'), ('q8', 'q8h2'), ('cpd15560', 'cpd15561'),
+        ('cpd15560', 'cpd29608'), ('UBIQUINONE-8', 'CPD-9956'), ('q9', 'q9h2'),
+        ('cpd01351', 'cpd25914'), ('UBIQUINONE-9', 'CPD-9957'),
+        ('q10', 'q10h2'), ('cpd08232', 'cpd25915'),
+        ('UBIQUINONE-10', 'CPD-9958'),
+        # glutathione
+        ('gthox', 'gthrd'), ('C00127', 'C00051'), ('cpd00111', 'cpd00042'),
+        ('OXIDIZED-GLUTATHIONE', 'GLUTATHIONE'),
+        # oxygen and hydrogen peroxide
+        ('o2', 'h2o2'), ('C00007', 'C00027'), ('cpd00007', 'cpd00025'),
+        ('OXYGEN-MOLECULE', 'HYDROGEN-PEROXIDE')
+    ]
+    proton_ids = ['h', 'C00080', 'cpd00067', 'PROTON']
+    # some models added compartment suffixes and some didn't, so try
+    # different compartment suffixes until at least one of the proton IDs is
+    # a metabolite ID that's actually in the model
+    all_ids = [m.id for m in model.metabolites]
+    if not any(p in all_ids for p in proton_ids):
+        for suffix in ['_c', '_c0', '[c]']:
+            new_proton_ids = [p + suffix for p in proton_ids]
+            if any(p in all_ids for p in new_proton_ids):
+                # update the lists of proton IDs and redox carrier pairs
+                proton_ids = new_proton_ids
+                redox_pairs = [
+                    (m1 + suffix, m2 + suffix) for (m1, m2) in redox_pairs
+                ]
+                break
     # it's okay if the given model only contains metabolites with some of these
     # IDs; just filter them out and report how many were left
     all_mets = [m.id for m in model.metabolites]

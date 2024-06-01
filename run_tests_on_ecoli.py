@@ -44,13 +44,9 @@ redox_pairs = [
 ]
 # protons in all compartments
 proton_ids = ['h_c', 'h_e', 'h_p']
-# diphosphate only seems to be present in the cytosolic compartment
-ppi_ids = ['ppi_c']
-# IDs for inorganic (mono)phosphate
-pi_ids = ['pi_c', 'pi_e', 'pi_p']
 
 (test_results, edge_list) = run_all_tests(
-    model, redox_pairs, proton_ids, ppi_ids, pi_ids, in_media, timeout = 360,
+    model, redox_pairs, proton_ids, media_mets = in_media, timeout = 360,
     use_names = True, add_suffixes = True, threads = threads
 )
 

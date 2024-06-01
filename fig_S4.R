@@ -5,29 +5,33 @@
 suppressMessages(library(tidyverse))
 theme_set(theme_bw())
 
-# TODO: change this to a bind_rows(lapply(list.files())) situation now that we
-# have the whole batching thing set up
 all_human_data <- read_csv(
-  "figure_data/fig_all-human.csv", show_col_types = FALSE, col_types = "fiiiii"
+  "figure_data/fig_S4_data.csv", show_col_types = FALSE, col_types = "fiiiii"
 )
 plot_data <- all_human_data %>%
   # replace counts with proportions, then drop the counts
-  mutate(flagged_prop = flagged/all_rxns) %>%
-  mutate(dupe_prop = duplicates/all_rxns) %>%
+  mutate(any_prop = flagged/all_rxns) %>%
   mutate(dead_prop = `dead-ends`/all_rxns) %>%
+  mutate(dil_prop = `dilution-blocked`/all_rxns) %>%
+  mutate(dupe_prop = duplicates/all_rxns) %>%
   mutate(loop_prop = loops/all_rxns) %>%
-  select(-flagged, -duplicates, -`dead-ends`, -loops, -all_rxns) %>%
+  select(
+    -flagged, -`dead-ends`, -`dilution-blocked`, duplicates, -loops, -all_rxns
+  ) %>%
   # pivot cuz it'll be easier to plot this way
   pivot_longer(-model_version, names_to = "test", values_to = "prop") %>%
   # make more human-readable for figure
   mutate(test = case_when(
-    test == "flagged_prop" ~ "Any Test",
-    test == "dupe_prop" ~ "Duplicate Test",
+    test == "any_prop" ~ "Any Test",
     test == "dead_prop" ~ "Dead-End Test",
+    test == "dil_prop" ~ "Dilution Test",
+    test == "dupe_prop" ~ "Duplicate Test",
     test == "loop_prop" ~ "Loop Test"
   ))
 
-fig <- ggplot(plot_data, aes(x = model_version, y = prop, col = test, group = test)) +
+fig <- ggplot(
+  plot_data, aes(x = model_version, y = prop, col = test, group = test)
+) +
   geom_line() +
   scale_x_discrete(
     # tick mark every other version
