@@ -1,28 +1,25 @@
 # fig_3_S2_S3.R
 
 lib <- "/usr3/graduate/dcmoyer/R/x86_64-pc-linux-gnu-library/4.2"
-library(tools)
-library(png)
-library(ggplot2)
+library(tools, lib.loc = lib)
+library(png, lib.loc = lib)
+library(ggplot2, lib.loc = lib)
 library(ggpubr, lib.loc = lib)
 library(ggupset, lib.loc = lib)
-library(scales)
-library(patchwork)
-suppressMessages(library(tidyverse))
+library(scales, lib.loc = lib)
+library(patchwork, lib.loc = lib)
+suppressMessages(library(tidyverse, lib.loc = lib))
 theme_set(theme_bw())
 
 # read in a PNG file and turn it into a ggplot object so it can be patchworked
 # together with actual ggplot plots into a single figure
 load_image_as_panel <- function(path) {
   img <- readPNG(path)
+  asp_rat <- dim(img)[1] / dim(img)[2]
   panel <- ggplot() + background_image(img) + theme_void() +
-    coord_fixed(ratio = dim(img)[1] / dim(img)[2]) +
-    labs(tag = "A") +
-    theme(
-      plot.margin = unit(c(0, 0, 0, 0), "in"),
-      plot.tag.location = "panel",
-    )
-  return(panel)
+    coord_fixed(ratio = asp_rat)
+  # return both the ggplot object and the aspect ratio
+  return(list(panel, asp_rat))
 }
 
 simplify_results <- function(df) {
@@ -145,20 +142,18 @@ make_hists <- function(results, x_coord, y_coord) {
       breaks = c(1, 10, 100, 1000)
     ) +
     scale_fill_manual(
-      values = c("#FDB462", "#FFFF33", "#B3DE69", "#FB8072", "#80B1D3")
+      values = c("#FDB462", "#FB8072", "#B3DE69", "#FCCDE5", "#80B1D3")
     ) +
     labs(
       x = "# Reactions in Pathway",
-      y = "# Pathways",
-      tag = "B"
+      y = "# Pathways"
     ) +
     theme(
       text = element_text(color = "black", size = 8),
       axis.text = element_text(color = "black", size = 8),
       panel.grid = element_blank(),
       strip.background = element_blank(),
-      strip.clip = "off",
-      plot.margin = unit(c(0,0,0,0), "in"),
+      strip.clip = "off"
     )
   return(hist_fig)
 }
@@ -188,13 +183,12 @@ make_upset <- function(data) {
     ggplot(aes(x = flagged_by)) +
       geom_bar(fill = "black", width = 0.5) +
       scale_x_upset() +
-      labs(x = "", y = "# Reactions", tag = "C") +
+      labs(x = "", y = "# Reactions") +
       theme(
         panel.grid = element_blank(),
         axis.title.x = element_blank(),
         axis.title.y = element_text(size = 8),
         axis.text.y = element_text(color = "black"),
-        plot.margin = unit(c(0, 0, 0, 0.5), "in"),
         plot.background = element_rect(fill = "transparent")
       ) +
       theme_combmatrix(combmatrix.label.text = element_text(color = "black"))
@@ -202,67 +196,107 @@ make_upset <- function(data) {
 }
 
 # figure 3
+fig_3_width <- 6
+fig_3bc_height <- 2
 human_results <- read_csv(
   "figure_data/Human-GEMv1.15_test-results.csv", show_col_types = FALSE
 ) %>% select(-diphosphate_test)
-
-fig_3a <- load_image_as_panel("figures/fig_3a.png") +
-  theme(plot.tag.position = c(0.01,1))
+fig_3_stuff <- load_image_as_panel("figures/fig_3a.png")
+fig_3a_height <- (fig_3_width * (fig_3_stuff[[2]]))
+fig_3a <- fig_3_stuff[[1]] + theme(plot.tag.position = c(0.002,0.98))
 fig_3b <- make_hists(human_results, 500, 1500) +
-  theme(plot.tag.position = c(-0.24, 1.1))
+  theme(
+    plot.tag.position = c(-0.22, 1.1),
+    plot.margin = unit(c(0,0,0.125,0), "in")
+  )
 fig_3c <- make_upset(human_results) +
-  theme(plot.tag.position = c(-0.45, 0.95))
-
-(free(fig_3a) / (free(fig_3b) | free(fig_3c))) +
-  plot_layout(heights = c(2.6, 1)) &
   theme(
-    plot.tag.location = "panel",
-    plot.tag = element_text(size = 12)
+    plot.tag.position = c(-0.4, 0.96),
+    plot.margin = unit(c(0, 0, 0.125, 0.5), "in")
   )
-ggsave(
-  "figures/fig_3.png", height = 7.5, width = 5.5, units = "in", dpi = 600
-)
-
-# figure S2
-yeast_results <- read_csv(
-  "figure_data/yeast-GEMv9.0.0_test-results.csv", show_col_types = FALSE
-) %>% select(-diphosphate_test)
-
-fig_S2a <- load_image_as_panel("figures/fig_S2a.png") +
-  theme(plot.tag.position = c(0.004,0.96))
-fig_S2b <- make_hists(yeast_results, 1300, 300) +
-  theme(plot.tag.position = c(-0.11,1.05))
-fig_S2c <- make_upset(yeast_results) +
-  theme(plot.tag.position = c(-0.25,0.95))
-
-(fig_S2a / ((free(fig_S2b) | fig_S2c) + plot_layout(widths = c(1.3, 1)))) +
-  plot_layout(heights = c(2.1, 1)) &
-  theme(
-    plot.tag.location = "panel",
-    plot.tag = element_text(size = 12)
-  )
-ggsave(
-  "figures/fig_S2.png", height = 7.25, width = 7.5, units = "in", dpi = 600
-)
-
-# figure S3
-ecoli_results <- read_csv(
-  "figure_data/iML1515_test-results.csv", show_col_types = FALSE
-) %>% select(-diphosphate_test)
-
-fig_S3a <- load_image_as_panel("figures/fig_S3a.png") +
-  theme(plot.tag.position = c(-0.025,0.97))
-fig_S3b <- make_hists(ecoli_results, 1000, 125) +
-  theme(plot.tag.position = c(-0.11,1.05))
-fig_S3c <- make_upset(ecoli_results) +
-  theme(plot.tag.position = c(-0.27,0.95))
-(fig_S3a / ((free(fig_S3b) | fig_S3c) + plot_layout(widths = c(1.4, 1)))) +
-  plot_layout(heights = c(3.75, 1)) &
+fig_3 <- (free(fig_3a) / (free(fig_3b) | free(fig_3c))) +
+  plot_layout(heights = unit(c(fig_3a_height, fig_3bc_height), "in")) +
+  plot_annotation(tag_levels = "A") &
   theme(
     plot.tag = element_text(size = 12),
     plot.tag.location = "panel"
   )
-
 ggsave(
-  "figures/fig_S3.png", height = 9.5, width = 7.5, units = "in", dpi = 600
+  "figures/fig_3.png",
+  height = fig_3a_height + fig_3bc_height,
+  width = fig_3_width,
+  units = "in",
+  dpi = 600
+)
+
+# figure S2
+fig_S2_width <- 7.5
+fig_S2bc_height <- 2.5
+yeast_results <- read_csv(
+  "figure_data/yeast-GEMv9.0.0_test-results.csv", show_col_types = FALSE
+) %>% select(-diphosphate_test)
+fig_S2_stuff <- load_image_as_panel("figures/fig_S2a.png")
+fig_S2a_height <- (fig_S2_width * (fig_S2_stuff[[2]]))
+fig_S2a <- fig_S2_stuff[[1]] + theme(plot.tag.position = c(-0.001,0.98))
+fig_S2b <- make_hists(yeast_results, 1300, 300) +
+  theme(
+    plot.tag.position = c(-0.13, 1.06),
+    plot.margin = unit(c(0,0,0.1,0), "in")
+  )
+fig_S2c <- make_upset(yeast_results) +
+  theme(
+    plot.tag.position = c(-0.275, 0.95),
+    plot.margin = unit(c(0,0.05,0.1,0.52), "in")
+  )
+fig_S2 <- (fig_S2a / (free(fig_S2b) | free(fig_S2c))) +
+  plot_layout(heights = unit(c(fig_S2a_height, fig_S2bc_height), "in")) +
+  plot_annotation(tag_levels = "A") &
+  theme(
+    plot.tag.location = "panel",
+    plot.tag = element_text(size = 12)
+  )
+ggsave(
+  "figures/fig_S2.png",
+  height = fig_S2a_height + fig_S2bc_height,
+  width = fig_S2_width,
+  units = "in",
+  dpi = 600
+)
+
+# figure S3
+fig_S3_width <- 7.5
+fig_S3bc_height <- 2.25
+ecoli_results <- read_csv(
+  "figure_data/iML1515_test-results.csv", show_col_types = FALSE
+) %>% select(-diphosphate_test)
+fig_S3_stuff <- load_image_as_panel("figures/fig_S3a.png")
+fig_S3a_height <- (fig_S3_width * (fig_S3_stuff[[2]]))
+fig_S3a <- fig_S3_stuff[[1]] +
+  theme(
+    plot.tag.position = c(0.005,0.99),
+    plot.margin = unit(c(0,0,0,0), "in")
+  )
+fig_S3b <- make_hists(ecoli_results, 1000, 125) +
+  theme(
+    plot.tag.position = c(-0.13,1.09),
+    plot.margin = unit(c(0,0,0.1,0), "in")
+  )
+fig_S3c <- make_upset(ecoli_results) +
+  theme(
+    plot.tag.position = c(-0.27,0.95),
+    plot.margin = unit(c(0,0,0.1,0.52), "in")
+  )
+fig_S3 <- (fig_S3a / (free(fig_S3b) | free(fig_S3c))) +
+  plot_layout(heights = unit(c(fig_S3a_height, fig_S3bc_height), "in")) +
+  plot_annotation(tag_levels = "A") &
+  theme(
+    plot.tag = element_text(size = 12),
+    plot.tag.location = "panel"
+  )
+ggsave(
+  "figures/fig_S3.png",
+  height = fig_S3a_height + fig_S3bc_height,
+  width = fig_S3_width,
+  units = "in",
+  dpi = 600
 )

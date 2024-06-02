@@ -75,9 +75,9 @@ test_ann_bar <- structure(
 )
 
 # make two more named vectors to control colors in annotation bars
-org_colors <- structure(c("#BEBADA", "#FCCDE5", "#8DD3C7"), names = org_names)
+org_colors <- structure(c("#BEBADA", "#FFFFB3", "#8DD3C7"), names = org_names)
 test_colors <- structure(
-  c("#FDB462", "#FFFF33", "#B3DE69", "#FB8072", "#80B1D3"),
+  c("#FDB462", "#FD8072", "#B3DE69", "#FCCDE5", "#80B1D3"),
   names = c("Any", "Dead-end", "Dilution", "Duplicate", "Loop")
 )
 # make colormap for the main heatmap

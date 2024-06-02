@@ -140,14 +140,12 @@ model_paths = [
     f'{direc}/{f}' for f in os.listdir(direc)
     if os.path.isfile(f'{direc}/{f}')
 ]
-# see if there's already an output file with the appropriate name and skip any
-# models we already have results for in that file
-fname = f'figure_data/fig_{out_fname}.csv'
-if tot_batches > 1:
-    fname = fname.replace('.csv', f'_batch-{batch_idx}-of-{tot_batches}.csv')
-if os.path.exists(fname):
-    already_done = pd.read_csv(fname)['model'].to_list()
-    model_paths = [p for p in model_paths if p not in already_done]
+# skip any models we already have test results for
+already_done = set()
+for f in os.listdir(direc):
+    if f.startswith(f'fig_{out_fname}'):
+        already_done.update(pd.read_csv(f'{direc}/{f}')['model'].to_list())
+model_paths = [p for p in model_paths if p not in already_done]
 # if tot_batches > 1, split the list of paths into tot_batches (approximately)
 # equally large groups and only test the models in the specified batch (index)
 model_paths = np.array_split(

@@ -8,6 +8,7 @@ import os
 import time
 import cobra
 from macaw_main import dead_end_test, dilution_test, duplicate_test, loop_test
+from macaw_utils import time_str, simplify_test_results
 
 try:
     threads = int(sys.argv[1])
@@ -124,7 +125,7 @@ for model_path in model_paths:
         'redoxes' : [len(redox_pairs)]
     }).to_csv(
         # append so we get something even if it doesn't finish
-        out_fname, mode = 'a', header = not os.path.exists(fname), index = False
+        out_fname, mode = 'a', header = not os.path.exists(out_fname), index = False
     )
     msg = f'Took {time_str(start_time, time.time())} to test version {version}.'
     msg += f' Tested {redoxes} pairs of redox mets.'
