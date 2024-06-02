@@ -18,8 +18,8 @@ from optlang.interface import OPTIMAL, UNBOUNDED
 import math
 
 def loop_test(
-    given_model, zero_thresh = 10**-8, use_names = False, add_suffixes = False,
-    threads = 1, verbose = 1
+    given_model, zero_thresh = 10**-8, corr_thresh = 0.9, use_names = False,
+    add_suffixes = False, threads = 1, verbose = 1
 ):
     '''
     Do FVA on the given model after setting both bounds on all exchange
@@ -29,6 +29,11 @@ def loop_test(
     Remove any objective functions and any positive non-zero lower bounds on
     reactions before starting to ensure that the model is feasible with no
     exchange fluxes
+    Generate 1,000 possible solutions to the GSMM using OptGP, get pairwise
+    correlations between all reactions' distributions of possible fluxes, and
+    create an edge list connecting all pairs of reactions with correlations
+    higher than corr_thresh that also share at least one metabolite (in an
+    attempt to separate out reactions that participate in different loops)
     '''
     if verbose > 0:
         print('Starting loop test...')
@@ -81,7 +86,7 @@ def loop_test(
     edge_df = corr_pairs[
         # skip rows for the correlation of a reaction with itself
         (corr_pairs['level_0'] != corr_pairs['level_1']) &
-        (corr_pairs['correlation'].abs() > 0.9)
+        (corr_pairs['correlation'].abs() > corr_thresh)
     ]
     edge_list_bad = list(zip(
         edge_df['level_0'].to_list(), edge_df['level_1'].to_list()
