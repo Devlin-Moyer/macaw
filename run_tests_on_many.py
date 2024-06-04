@@ -88,21 +88,13 @@ def handle_one_model(model_path):
     proton_ids = [m for m in proton_ids if m in all_mets]
     # report how many of the redox IDs were actually in the model
     redoxes = len(redox_pairs)
-    # identify sets of reactions that are potentially duplicates of each other
-    (duplicates, dupe_edges) = duplicate_test(
-        model, redox_pairs, proton_ids, verbose = 0
-    )
-    # call tests separately cuz we're skipping the diphosphate test and don't
-    # need to bother creating pathways
-    (dead_ends, dead_end_edges) = dead_end_test(model, verbose = 0)
-    # identify reactions that are capable of sustaining non-zero fluxes when all
-    # exchange reactions are blocked
-    (loops, loop_edges) = loop_test(model, verbose = 0)
-    # identify reactions that become incapable of sustaining non-zero fluxes
-    # when dilution constraints are added to the model
-    (dilutions, dil_edges) = dilution_test(model, dead_ends, verbose = 0)
+    # now do the tests
+    (dupes, _) = duplicate_test(model, redox_pairs, proton_ids, verbose = 0)
+    (dead_ends, _) = dead_end_test(model, verbose = 0)
+    (loops, _) = loop_test(model, verbose = 0)
+    (dils, _) = dilution_test(model, dead_ends, verbose = 0)
     # dead-end and dilution test results were already merged, but get the rest
-    all_test_results = duplicates.merge(dilutions).merge(loops)
+    all_test_results = dupes.merge(dils).merge(loops)
     # get the number of all reactions in the model, the number flagged by any
     # test, and the number flagged by each individual test
     all_rxns = len(model.reactions)
@@ -141,31 +133,28 @@ model_paths = [
     if os.path.isfile(f'{direc}/{f}')
 ]
 # skip any models we already have test results for
+out_dir = 'figure_data'
 already_done = set()
-for f in os.listdir(direc):
-    if f.startswith(f'fig_{out_fname}'):
-        already_done.update(pd.read_csv(f'{direc}/{f}')['model'].to_list())
+for f in os.listdir(out_dir):
+    if f.startswith(out_fname):
+        already_done.update(pd.read_csv(f'{out_dir}/{f}')['model'].to_list())
+print(f'{len(already_done)} of {len(model_paths)} models were already tested')
 model_paths = [p for p in model_paths if p not in already_done]
 # if tot_batches > 1, split the list of paths into tot_batches (approximately)
 # equally large groups and only test the models in the specified batch (index)
 model_paths = np.array_split(
     model_paths, tot_batches
 )[batch_idx - 1].tolist() # SGE task IDs are 1-indexed, Python is 0-indexed
+# also update the output file name appropriately
+if tot_batches > 1:
+    out_fname += f'_batch-{batch_idx}-of-{tot_batches}.csv'
+else:
+    out_fname += '.csv'
+out_fname = f'{out_dir}/{out_fname}'
 
 # set up a Pebble ProcessPool to run tests on all models in parallel
 pool = ProcessPool(max_workers = threads)
 future = pool.map(handle_one_model, model_paths)
-# prepare a dict to track the number of reactions flagged by each test
-out_dict = {
-    'model' : list(),
-    'all_rxns' : list(),
-    'flagged' : list(),
-    'dead-ends' : list(),
-    'dilution-blocked' : list(),
-    'duplicates' : list(),
-    'loops' : list(),
-    'redoxes' : list()
-}
 # keep track of which model we're on
 i = 0
 iterator = future.result()
@@ -174,10 +163,6 @@ while True:
         # update dict with numbers from the current model
         (rxns, flagged, deads, dils, dupes, loops, rdx, msg) = next(iterator)
         model_name = model_paths[i].split('/')[-1]
-        # if we're doing all versions of Human-GEM, just use the version number
-        # as the model name
-        if 'Human-GEM' in model_name:
-            model_name = model_name.split('v')[-1].split('.xml')[0]
         msg = f'Took {msg} to test {model_name} (model {i+1} out of '
         msg += f'{len(model_paths)}). Tested {rdx} pairs of redox mets.'
         print(msg)
@@ -193,7 +178,10 @@ while True:
             'loops' : [loops],
             'redoxes' : [rdx]
         }).to_csv(
-            out_fname, mode = 'a', header = not os.path.exists(fname), index = False
+            out_fname,
+            mode = 'a',
+            header = not os.path.exists(out_fname),
+            index = False
         )
     except StopIteration:
         # should only happen if we've reached the end of the list

@@ -1,1 +1,0 @@
-Took 19.0 minutes and 24 seconds to test Lactobacillus_johnsonii_pf01.mat (model 1 out of 913). Tested 8 pairs of redox mets.

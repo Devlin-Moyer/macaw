@@ -1,1 +1,0 @@
-Took 28.0 minutes and 0 seconds to test Bacillus_wiedmannii_BAG2X1_2.mat (model 1 out of 913). Tested 6 pairs of redox mets.

@@ -33,7 +33,7 @@ def run_all_tests(
     # control whether or not the tests print progress updates (0 to silence)
     verbose = 1
 ):
-    # identify and all dead-end reactions and reactions that are nominally
+    # identify all dead-end reactions and reactions that are nominally
     # reversible but only actually capable of sustaining flux in a single
     # direction
     (dead_end_results, dead_end_edges) = dead_end_test(

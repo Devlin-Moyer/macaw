@@ -1,0 +1,9 @@
+model,all_rxns,flagged,dead-ends,dilution-blocked,duplicates,loops,redoxes
+Dialister_succinatiphilus_YIT_11850.mat,1193,779,434,285,29,61,6
+Escherichia_coli_180600.mat,3629,1234,728,291,105,192,8
+Bifidobacterium_bifidum_PRL2010.mat,1158,576,252,252,41,66,6
+Escherichia_coli_KTE37.mat,3585,1244,729,310,93,194,8
+Clostridium_perfringens_D_str_JGS1721.mat,2442,968,594,288,55,95,8
+Helicobacter_pylori_Hp_P_26.mat,1285,821,441,320,33,75,7
+Escherichia_coli_DEC13C.mat,3618,1247,734,297,111,208,8
+Clostridium_polynesiense_MS1.mat,1073,726,413,280,21,32,5

@@ -1,1 +1,0 @@
-Took 50.0 minutes and 11 seconds to test Staphylococcus_aureus_subsp_aureus_58_424.mat (model 1 out of 913). Tested 5 pairs of redox mets.

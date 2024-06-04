@@ -9,7 +9,7 @@ source bin/activate
 
 if [ $SGE_TASK_ID == 1 ] 
 then
-  python run_tests_on_human.py 1.15 8 > figure_data/Human-GEMv1.15_log.txt
+  python run_tests_on_human.py 1.15 8 > logs/Human-GEMv1.15_log.txt
 else
-  python run_tests_on_human.py 1.18 8 > figure_data/Human-GEMv1.18_log.txt
+  python run_tests_on_human.py 1.18 8 > logs/Human-GEMv1.18_log.txt
 fi

@@ -110,20 +110,20 @@ ecoli_to_gene <- read_csv(
 
 # get tables of gene IDs and KEGG ortholog IDs
 human_to_ortholog <- read.delim(
-  "input_data/Human-GEMv1.15_genes-to-KEGG.tsv", header = FALSE
+  "figure_data/Human-GEMv1.15_genes-to-KEGG.tsv", header = FALSE
 ) %>%
   # remove the prefixes KEGG added to all IDs just to inconvenience us
   separate(V1, c(NA, "ortholog_id"), sep = ":", extra = "drop") %>%
   separate(V2, c(NA, "gene_id"), sep = ":", extra = "drop")
 
 yeast_to_ortholog <- read.delim(
-  "input_data/yeast-GEMv9.0.0_genes-to-KEGG.tsv", header = FALSE
+  "figure_data/yeast-GEMv9.0.0_genes-to-KEGG.tsv", header = FALSE
 ) %>%
   separate(V1, c(NA, "ortholog_id"), sep = ":", extra = "drop") %>%
   separate(V2, c(NA, "gene_id"), sep = ":", extra = "drop")
 
 ecoli_to_ortholog <- read.delim(
-  "input_data/iML1515_genes-to-KEGG.tsv", header = FALSE
+  "figure_data/iML1515_genes-to-KEGG.tsv", header = FALSE
 ) %>%
   separate(V1, c(NA, "ortholog_id"), sep = ":", extra = "drop") %>%
   separate(V2, c(NA, "gene_id"), sep = ":", extra = "drop")
@@ -131,7 +131,7 @@ ecoli_to_ortholog <- read.delim(
 # turn JSON file with hierarchy of all KEGG functional orthologs into a two-
 # column dataframe we can use to map individual KEGG ortholog IDs to the top-
 # level groupings of KEGG orthologs deemed to be "metabolic"
-ortholog_to_group <- fromJSON("input_data/KEGG_ortholog_hierarchy.json") %>%
+ortholog_to_group <- fromJSON("figure_data/KEGG_ortholog_hierarchy.json") %>%
   # this hierarchy includes a bunch of genes that are not metabolic enzymes, so
   # start by filtering down to those
   pluck("children") %>%
@@ -275,8 +275,9 @@ ggsave(
 
 # get the summarized test results for all versions of Human-GEM
 all_human_results <- read_csv(
-  "figure_data/fig_S4_data.csv", show_col_types = FALSE, col_types = "fiiiii"
+  "figure_data/fig_S4a_data.csv", show_col_types = FALSE, col_types = "fiiiii"
 )
+
 fig_S4a_data <- all_human_results %>%
   # replace counts with proportions, then drop the counts
   mutate(any_prop = flagged/all_rxns) %>%
@@ -297,19 +298,24 @@ fig_S4a_data <- all_human_results %>%
     test == "dil_prop" ~ "Dilution Test",
     test == "dupe_prop" ~ "Duplicate Test",
     test == "loop_prop" ~ "Loop Test"
-  ))
+  )) %>%
+  mutate(model_version = factor(model_version, levels = c(
+    "1.0", "1.1", "1.2", "1.3", "1.4", "1.5", "1.6", "1.7", "1.8", "1.9",
+    "1.10", "1.11", "1.12", "1.13", "1.14", "1.15", "1.16", "1.17", "1.18"
+  ))) %>%
+  arrange(model_version)
 
 fig_S4a <- ggplot(
   fig_S4a_data, aes(x = model_version, y = prop, col = test, group = test)
 ) +
   geom_line() +
-  scale_x_discrete(
+  #scale_x_discrete(
     # tick mark every other version
-    labels = c(
-      "1.0", "", "1.2", "", "1.4", "", "1.6", "", "1.8", "", "1.10", "", "1.12",
-      "", "1.14", "", "1.16", "", "1.18"
-    )
-  ) +
+    #labels = c(
+    #  "1.0", "", "1.2", "", "1.4", "", "1.6", "", "1.8", "", "1.10", "", "1.12",
+    #  "", "1.14", "", "1.16", "", "1.18"
+    #)
+  #) +
   scale_color_manual(
     values = c("#FDB462", "#FB8072", "#B3DE69", "#FCCDE5", "#80B1D3")
   ) +
@@ -421,15 +427,16 @@ fig_S4b <- ggplot() +
     legend.box.spacing = unit(0, "in")
   )
 
-fig_S4 <- (free(fig_S4a) / fig_S4b) + plot_layout(heights = c(1,3)) +
+fig_S4 <- (free(fig_S4a) / free(fig_S4b)) +
+  plot_layout(heights = c(1,3.5)) +
   plot_annotation(tag_levels = "A") &
   theme(plot.tag = element_text(size = 12))
 
 ggsave(
   "figures/fig_S4.png",
   fig_S4,
-  height = 8,
-  width = 3.5,
+  height = 7.5,
+  width = 3.75,
   units = "in",
   dpi = 600
 )

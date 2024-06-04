@@ -17,7 +17,7 @@ Configuration()
 model = cobra.io.read_sbml_model(f'GSMMs/Human-GEMv{version}.xml')
 
 # get list of IDs of metabolites that are in DMEM or FBS
-media_concs = pd.read_csv('input_data/DMEM-FBS_ingredients.csv')
+media_concs = pd.read_csv('media/DMEM-FBS_ingredients.csv')
 in_media = media_concs[
     (media_concs['DMEM'] != '0') | (media_concs['FBS'] != '0')
 ]['metabolite_id'].to_list()

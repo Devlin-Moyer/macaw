@@ -5,10 +5,10 @@ suppressMessages(library(tidyverse))
 theme_set(theme_bw())
 
 # table of information about the different microbes there are AGORA2 models for
-agora_tax <- read_csv("input_data/AGORA2_taxonomy.csv", show_col_types = F)
+agora_tax <- read_csv("figure_data/fig_agora_info.csv", show_col_types = F)
 # summarized test results from the AGORA2 models
 agora_data <- bind_rows(lapply(
-  list.files("figure_data/", "fig_agora_batch-*", full.names = T),
+  list.files("figure_data/", "fig_agora_data*", full.names = T),
   function(f) read_csv(f, show_col_types = F)
 ))
 
@@ -68,6 +68,7 @@ plot_data <- agora_data %>%
 # requirement (obligate anaerobe/obligate aerobe/facultative)
 tax_panel <- ggplot(plot_data, aes(x = Phylum, y = prop, fill = test)) +
   geom_violin(show.legend = F) +
+  geom_boxplot(alpha = 0, show.legend = F) +
   facet_grid(rows = vars(test), scales = "free_y") +
   scale_fill_manual(
     values = c("#FDB462", "#FB8072", "#B3DE69", "#FCCDE5", "#80B1D3")
