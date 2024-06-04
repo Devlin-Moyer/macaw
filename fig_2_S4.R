@@ -1,7 +1,8 @@
-# fig_2_S5.R
+# fig_2_S4.R
 
 library(jsonlite)
 library(tools)
+library(patchwork)
 suppressMessages(library(tidyverse))
 theme_set(theme_bw())
 
@@ -38,8 +39,8 @@ add_kegg_groups <- function(
 ) {
   df %>%
     left_join(rxn_to_gene, by = "reaction_id") %>%
-    left_join(gene_to_orth, by = "gene_id") %>%
-    left_join(orth_to_grp, by = "ortholog_id") %>%
+    left_join(gene_to_orth, by = "gene_id", relationship = "many-to-many") %>%
+    left_join(orth_to_grp, by = "ortholog_id", relationship = "many-to-many") %>%
     # no longer need the gene or ortholog IDs
     select(-gene_id, -ortholog_id) %>%
     # one of the KEGG ortholog groups is called "not included in regular maps"
@@ -159,11 +160,6 @@ human18_kegg <- add_kegg_groups(human18_tests, human_to_gene, human_to_ortholog)
 yeast_kegg <- add_kegg_groups(yeast_tests, yeast_to_gene, yeast_to_ortholog)
 ecoli_kegg <- add_kegg_groups(ecoli_tests, ecoli_to_gene, ecoli_to_ortholog)
 
-# write these to CSV files in case they're useful for other things
-write_csv(human15_kegg, "figure_data/Human-GEMv1.15_results-with-KEGG.csv")
-write_csv(yeast_kegg, "figure_data/yeast-GEMv9.0.0_results-with-KEGG.csv")
-write_csv(ecoli_kegg, "figure_data/iML1515_results-with-KEGG.csv")
-
 ##### Make Figures #####
 
 # get proportions of reactions in each KEGG group flagged by each or any test
@@ -268,7 +264,7 @@ fig_2 <- ggplot() +
     strip.background = element_blank(),
     panel.grid = element_blank(),
     legend.key.size = unit(1/8, "in"),
-    legend.title.align = 0.5,
+    legend.title = element_text(hjust = 0.5),
     legend.box.spacing = unit(0, "in")
   )
 
@@ -277,7 +273,62 @@ ggsave(
   dpi = 600
 )
 
-fig_S5_data_1 <- bind_rows(
+# get the summarized test results for all versions of Human-GEM
+all_human_results <- read_csv(
+  "figure_data/fig_S4_data.csv", show_col_types = FALSE, col_types = "fiiiii"
+)
+fig_S4a_data <- all_human_results %>%
+  # replace counts with proportions, then drop the counts
+  mutate(any_prop = flagged/all_rxns) %>%
+  mutate(dead_prop = `dead-ends`/all_rxns) %>%
+  mutate(dil_prop = `dilution-blocked`/all_rxns) %>%
+  mutate(dupe_prop = duplicates/all_rxns) %>%
+  mutate(loop_prop = loops/all_rxns) %>%
+  select(
+    -all_rxns, -flagged, -`dead-ends`, -`dilution-blocked`, -duplicates, -loops,
+    -redoxes
+  ) %>%
+  # pivot cuz it'll be easier to plot this way
+  pivot_longer(-model_version, names_to = "test", values_to = "prop") %>%
+  # make more human-readable for figure
+  mutate(test = case_when(
+    test == "any_prop" ~ "Any Test",
+    test == "dead_prop" ~ "Dead-End Test",
+    test == "dil_prop" ~ "Dilution Test",
+    test == "dupe_prop" ~ "Duplicate Test",
+    test == "loop_prop" ~ "Loop Test"
+  ))
+
+fig_S4a <- ggplot(
+  fig_S4a_data, aes(x = model_version, y = prop, col = test, group = test)
+) +
+  geom_line() +
+  scale_x_discrete(
+    # tick mark every other version
+    labels = c(
+      "1.0", "", "1.2", "", "1.4", "", "1.6", "", "1.8", "", "1.10", "", "1.12",
+      "", "1.14", "", "1.16", "", "1.18"
+    )
+  ) +
+  scale_color_manual(
+    values = c("#FDB462", "#FB8072", "#B3DE69", "#FCCDE5", "#80B1D3")
+  ) +
+  labs(
+    x = "Version of Human-GEM",
+    y = "Proportion of\nAll Reactions",
+    col = "Flagged by"
+  ) +
+  theme(
+    axis.text = element_text(color = "black", size = 6),
+    axis.title = element_text(size = 8),
+    legend.text = element_text(size = 8),
+    legend.title = element_text(size = 8, hjust = 0.5),
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor.y = element_blank(),
+    legend.box.spacing = unit(0, "in")
+  )
+
+fig_S4b_data_1 <- bind_rows(
   human15_kegg %>% mutate(Version = "1.15"),
   human18_kegg %>% mutate(Version = "1.18")
 ) %>%
@@ -296,7 +347,7 @@ fig_S5_data_1 <- bind_rows(
     .groups = "drop"
   )
 
-fig_S5_data_2 <- bind_rows(
+fig_S4b_data_2 <- bind_rows(
   human15_kegg %>% mutate(Version = "1.15"),
   human18_kegg %>% mutate(Version = "1.18")
 ) %>%
@@ -316,7 +367,7 @@ fig_S5_data_2 <- bind_rows(
   ) %>%
   mutate(kegg_group = "All Reactions")
 
-fig_S5_data <- bind_rows(fig_S5_data_1, fig_S5_data_2) %>%
+fig_S4b_data <- bind_rows(fig_S4b_data_1, fig_S4b_data_2) %>%
   pivot_longer(
     c(
       any_pct,
@@ -336,7 +387,7 @@ fig_S5_data <- bind_rows(fig_S5_data_1, fig_S5_data_2) %>%
     "Any Test", "Dead-End Test", "Dilution Test", "Duplicate Test", "Loop Test"
   )))
 
-fig_S5 <- ggplot() +
+fig_S4b <- ggplot() +
   scale_x_discrete() +
   geom_rect(
     data = rect_df,
@@ -348,7 +399,7 @@ fig_S5 <- ggplot() +
     alpha = 0.5
   ) +
   geom_bar(
-    data = fig_S1_data,
+    data = fig_S4b_data,
     mapping = aes(x = kegg_group, y = pct_rxns, fill = Version),
     stat = "identity",
     position = "dodge",
@@ -366,11 +417,19 @@ fig_S5 <- ggplot() +
     strip.clip = "off",
     panel.grid = element_blank(),
     legend.key.size = unit(1/8, "in"),
-    legend.title.align = 0.5,
+    legend.title = element_text(hjust = 0.5),
     legend.box.spacing = unit(0, "in")
   )
 
+fig_S4 <- (free(fig_S4a) / fig_S4b) + plot_layout(heights = c(1,3)) +
+  plot_annotation(tag_levels = "A") &
+  theme(plot.tag = element_text(size = 12))
+
 ggsave(
-  "figures/fig_S5.png", height = 5, width = 3.25, units = "in", plot = fig_S1,
+  "figures/fig_S4.png",
+  fig_S4,
+  height = 8,
+  width = 3.5,
+  units = "in",
   dpi = 600
 )

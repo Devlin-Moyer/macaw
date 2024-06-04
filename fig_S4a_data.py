@@ -1,4 +1,4 @@
-# fig_S4_data.py
+# fig_S4a_data.py
 
 import sys
 from optlang.glpk_interface import Configuration
@@ -27,12 +27,15 @@ media_mets = media_concs[
 
 # get paths to all versions of Human-GEM
 d = 'GSMMs'
-model_paths = [f'{d}/{f}' for f in os.listdir(d) if os.path.isfile(f'{d}/{f}')]
+model_paths = [f'{d}/{f}' for f in os.listdir(d) if f.startswith('Human-GEM')]
 # skip any models we already have results for in the output file
-out_fname = 'figure_data/fig_S4_data.csv'
+out_fname = 'figure_data/fig_S4a_data.csv'
 if os.path.exists(out_fname):
-    already_done = pd.read_csv(out_fname)['model'].to_list()
-    model_paths = [p for p in model_paths if p not in already_done]
+    already_done = pd.read_csv(out_fname)['model_version'].to_list()
+    model_paths = [
+        p for p in model_paths
+        if not any(p.endswith(f'{x}.xml') for x in already_done)
+    ]
 
 for model_path in model_paths:
     start_time = time.time()
@@ -78,7 +81,7 @@ for model_path in model_paths:
         model.metabolites.get_by_id('MAM02552c')
     except KeyError:
         redox_pairs = [
-            (m1.replace('MAR', 'm'), m2.replace('MAR', 'm'))
+            (m1.replace('MAM', 'm'), m2.replace('MAM', 'm'))
             for (m1, m2) in redox_pairs
         ]
     # two of the compartment suffixes changed in version 1.11
@@ -128,5 +131,5 @@ for model_path in model_paths:
         out_fname, mode = 'a', header = not os.path.exists(out_fname), index = False
     )
     msg = f'Took {time_str(start_time, time.time())} to test version {version}.'
-    msg += f' Tested {redoxes} pairs of redox mets.'
+    msg += f' Tested {len(redox_pairs)} pairs of redox mets.'
     print(msg)

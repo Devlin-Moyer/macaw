@@ -170,7 +170,8 @@ def constrain_reversible_rxns(
         if verbose > 0:
             print(' - Doing FVA for all reversible non-exchange reactions.')
         fva_results = fva(
-            model, rev_rxns, threads = threads, verbose = verbose - 1
+            model, rev_rxns, zero_thresh = zero, threads = threads,
+            verbose = verbose - 1
         )
     else:
         # if we got FVA results for more than just the non-exchange reversible

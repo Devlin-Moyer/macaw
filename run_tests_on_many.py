@@ -8,7 +8,7 @@ import sys
 import logging
 import os
 import numpy as np
-from pebble import ProcessPool
+from pebble import ProcessPool, ProcessExpired
 import time
 import cobra
 from macaw_main import dead_end_test, dilution_test, duplicate_test, loop_test
@@ -193,7 +193,7 @@ while True:
             'loops' : [loops],
             'redoxes' : [rdx]
         }).to_csv(
-            fname, mode = 'a', header = not os.path.exists(fname), index = False
+            out_fname, mode = 'a', header = not os.path.exists(fname), index = False
         )
     except StopIteration:
         # should only happen if we've reached the end of the list
