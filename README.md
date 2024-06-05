@@ -27,7 +27,7 @@ All of the R scripts were only used to make figures for the paper and are not ne
 ## The Tests
 
 <details>
-  <summary> `dead_end_test` </summary>
+  <summary><code>dead_end_test</code></summary>
 
   Looks for metabolites in the given GSMM that can only be produced by all reactions they participate in or only consumed, then identifies all reactions that are prevented from sustaining steady-state fluxes because of each of these dead-end metabolites. The simplest case of a dead-end metabolite is one that only participates in a single reaction. Also flags all reversible reactions that can only carry fluxes in a single direction because one of their metabolites can either only be consumed or only be produced by all other reactions it participates in.
 
@@ -47,7 +47,7 @@ All of the R scripts were only used to make figures for the paper and are not ne
 </details>
 
 <details>
-  <summary> `dilution_test` </summary>
+  <summary><code>dilution_test</code></summary>
 
   Separately tests each metabolite in the given GSMM to see if adding a dilution reaction and dilution constraint for that metabolite renders all reactions that it participates in incapable of non-zero steady-state fluxes. A dilution reaction just consumes a single metabolite and produces nothing, and dilution constraint sets the flux through a particular metabolite's dilution reaction equal to some fraction of the sum of the absolute values of the fluxes through all other reactions that that metabolite participates in. Dilution constraints generally only block fluxes through metabolites that can only be recycled within a GSMM and lack a biosynthesis or uptake pathway.
 
@@ -73,7 +73,7 @@ All of the R scripts were only used to make figures for the paper and are not ne
 </details>
 
 <details>
-  <summary> `diphosphate_test` </summary>
+  <summary><code>diphosphate_test</code></summary>
 
   Identifes all reversible reactions that involve diphosphate that aren't transporting it between compartments. Requires the IDs of the metabolites in the GSMM that represent the diphosphate and inorganic (mono)phosphate ions. Most reactions involving the diphosphate ion should be irreversible in the direction that produces diphosphate, since most cells express a variety of highly active diphosphatases that quickly turn diphosphate ions into two separate inorganic phosphate ions. While most other reactions involving diphosphate, specifically those that involve separating a (d)NTP into a (d)NMP + a diphosphate, have Gibbs free energy changes of approximately zero and are thus readily reversible, the diphosphate reaction is quite exergonic, so the diphosphatases present in most cells generally drive all other diphosphate-producing reactions in the direction of diphosphate production. Leaving these reactions as reversible when predicting steady-state fluxes from a GSMM can result in unrealistic predictions about how ATP is synthesized and create loops involving chains of reversible diphosphate reactions. This test generally flags very very few reactions in most GSMMs.
 
@@ -97,7 +97,7 @@ All of the R scripts were only used to make figures for the paper and are not ne
 </details>
 
 <details>
-  <summary> `duplicate_test` </summary>
+  <summary><code>duplicate_test</code></summary>
 
   Identifies sets of reactions that may be duplicates of each other because they:
   - Involve exactly the same metabolites with exactly the same stoichiometric coefficients (but potentially different associated genes)
@@ -126,7 +126,7 @@ All of the R scripts were only used to make figures for the paper and are not ne
 </details>
 
 <details>
-  <summary> `loop_test` </summary>
+  <summary><code>loop_test</code></summary>
 
   Identifies all reactions that are capable of sustaining non-zero fluxes when all exchange reactions (i.e. reactions representing the uptake and/or secretion of individual metabolites) are blocked. Also attempts to determine which "loop" each such reaction is a member of by generating 1,000 possible solutions to the GSMM, getting pairwise correlations between the distributions of 1,000 possible fluxes for each reaction, and identifying groups of reactions whose fluxes were highly correlated. Removes any objective functions from the given GSMM and sets all non-zero lower bounds (e.g. lower bounds on ATP maintenance reactions) to zero before starting.
 
@@ -148,14 +148,14 @@ All of the R scripts were only used to make figures for the paper and are not ne
 
 ## Other Important Functions
 
-### `form_pathways`
+#### `form_pathways`
 
 The `form_pathways` function in `macaw_main.py` can combine the edge lists produced by multiple of the above tests into a single comprehensive network. This is non-trivial because the dead-end and dilution tests produce edge lists that describe bipartite networks in which some nodes represent reactions and others represent metabolites, while the duplicate and loop tests produce edge lists that describe monopartite networks in which all nodes represent reactions. The resulting network generally contains many connected components. `form_pathways` will assign a unique integer to each component and add a column to the Pandas Dataframe of results from all tests indicating which connected component each reaction is in. Reactions that were not flagged by any tests or not connected to any other reactions that were flagged by any tests (this only happens with reactions flagged by the dead-end or diphosphate tests, and is generally uncommon) are always assigned a "pathway" of 0.
 
-### `run_all_tests`
+#### `run_all_tests`
 
 Runs all four tests on the given model and calls `form_pathways` to combine the edge lists into one.
 
-### `simplify_test_results`
+#### `simplify_test_results`
 
 Makes each column in the Pandas DataFrame produced by any test just say "ok" or "bad" for each reaction. Also merges the 4 duplicate test columns into a single column
