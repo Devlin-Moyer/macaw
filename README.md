@@ -24,9 +24,11 @@ model = cobra.io.read_sbml_model('GSMMs/iML1515.xml')
 
 All of the R scripts were only used to make figures for the paper and are not necessary if you just want to run the tests.
 
-## Dead-End Test
+## The Tests
 
-Looks for metabolites in the given GSMM that can only be produced by all reactions they participate in or only consumed, then identifies all reactions that are prevented from sustaining steady-state fluxes because of each of these dead-end metabolites. The simplest case of a dead-end metabolite is one that only participates in a single reaction. Also flags all reversible reactions that can only carry fluxes in a single direction because one of their metabolites can either only be consumed or only be produced by all other reactions it participates in. As it identifies dead-end metabolites, generates an edge list describing a network connecting each dead-end metabolite to the reactions it blocks fluxes through.
+### Dead-End Test
+
+Looks for metabolites in the given GSMM that can only be produced by all reactions they participate in or only consumed, then identifies all reactions that are prevented from sustaining steady-state fluxes because of each of these dead-end metabolites. The simplest case of a dead-end metabolite is one that only participates in a single reaction. Also flags all reversible reactions that can only carry fluxes in a single direction because one of their metabolites can either only be consumed or only be produced by all other reactions it participates in.
 
 Arguments:
 
@@ -35,15 +37,15 @@ Arguments:
 - `add_suffixes`: (optional) whether or not to add suffixes indicating which compartment each metabolite is in to the names or IDs of metabolites in the reaction equation column in the output DataFrame. False by default. Setting `add_suffixes` to True and `use_names` to False is generally not recommended, as most GSMMs with multiple compartments already encode the compartment each metabolite is in in the metabolite's ID
 - `verbose`: (optional) controls how many messages are printed when the test runs. Set to 0 to print no messages. 1 by default.
 
-Returns the aforementioned edge list and a Pandas DataFrame with one row for each reaction in the given GSMM, columns for the IDs and equations of each reaction, and the result of the dead-end test:
+Returns an edge list defining a network that connects each dead-end metabolite to all the reactions it blocks fluxes through and a Pandas DataFrame with one row for each reaction in the given GSMM, columns for the IDs and equations of each reaction, and the result of the dead-end test:
 
 - "ok" if the reaction was not a dead-end
 - one or more metabolite IDs separated by semicolons indicating which dead-end metabolites participate in that reaction
 - "only when going forwards" or "only when going backwards" if it was a reversible reaction that was not a dead-end but had a reactant or product that could only be consumed by all other reactions it participates in or only be produced by all other reactions it participates in
 
-## Dilution Test
+### Dilution Test
 
-Separately tests each metabolite in the given GSMM to see if adding a dilution reaction and dilution constraint for that metabolite renders all reactions that it participates in incapable of non-zero steady-state fluxes. A dilution reaction just consumes a single metabolite and produces nothing, and dilution constraint sets the flux through a particular metabolite's dilution reaction equal to some fraction of the sum of the absolute values of the fluxes through all other reactions that that metabolite participates in. Dilution constraints generally only block fluxes through metabolites that can only be recycled within a GSMM and lack a biosynthesis or uptake pathway. As it finds metabolites whose dilution constraints block fluxes through all other reactions they participate in, generates an edge list describing a network connecting each dilution-blocked metabolite to the reactions that it blocks.
+Separately tests each metabolite in the given GSMM to see if adding a dilution reaction and dilution constraint for that metabolite renders all reactions that it participates in incapable of non-zero steady-state fluxes. A dilution reaction just consumes a single metabolite and produces nothing, and dilution constraint sets the flux through a particular metabolite's dilution reaction equal to some fraction of the sum of the absolute values of the fluxes through all other reactions that that metabolite participates in. Dilution constraints generally only block fluxes through metabolites that can only be recycled within a GSMM and lack a biosynthesis or uptake pathway.
 
 Arguments:
 
@@ -57,24 +59,33 @@ Arguments:
 - `add_suffixes`: (optional) whether or not to add suffixes indicating which compartment each metabolite is in to the names or IDs of metabolites in the reaction equation column in the output DataFrame. False by default. Setting `add_suffixes` to True and `use_names` to False is generally not recommended, as most GSMMs with multiple compartments already encode the compartment each metabolite is in in the metabolite's ID
 - `verbose`: (optional) controls how many messages are printed when the test runs. Set to 0 to print no messages. 1 by default.
 
-Returns the aforementioned edge list and a Pandas DataFrame with one row for each reaction in the given GSMM, columns for the IDs and equations of each reaction, and the result of the dilution test:
+Returns an edge list defining a network that connects each dilution-blocked metabolite to all the reactions its dilution constraint blocks and a Pandas DataFrame with one row for each reaction in the given GSMM, columns for the IDs and equations of each reaction, and the result of the dilution test:
 
 - "ok" if the reaction was always capable of non-zero fluxes when any individual metabolite's dilution constraint was imposed on the model
 - "always blocked" if the reaction was incapable of non-zero fluxes regardless of whether or not any dilution constraints were imposed on the model
 - "blocked by dilution" if the reaction was capable of non-zero fluxes when no dilution constraints were imposed on the model but became incapable of non-zero fluxes when one or more metabolites' dilution constraints were imposed
 - "unblocked by dilution" if the reaction was only capable of non-zero fluxes when at least one metabolite's dilution constraint was imposed on the model. This is rare, and ideally all such reactions would be flagged by the dead-end test and blocked in the pre-processing step of the dilution test where it sets both bounds of all reactions flagged by the dead-end test to 0.
 
-## Diphosphate Test
+### Diphosphate Test
 
-Identifes all reversible reactions that involve diphosphate that aren't transporting it between compartments. Requires the IDs of the metabolites in the GSMM that represent the diphosphate and inorganic (mono)phosphate ions. Most reactions involving the diphosphate ion should be irreversible in the direction that produces diphosphate, since most cells express a variety of highly active diphosphatases that quickly turn diphosphate ions into two separate inorganic phosphate ions. While most other reactions involving diphosphate, specifically those that involve separating a (d)NTP into a (d)NMP + a diphosphate, have Gibbs free energy changes of approximately zero and are thus readily reversible, the diphosphate reaction is quite exergonic, so the diphosphatases present in most cells generally drive all other diphosphate-producing reactions in the direction of diphosphate production. Leaving these reactions as reversible when predicting steady-state fluxes from a GSMM can result in unrealistic predictions about how ATP is synthesized and create loops involving chains of reversible diphosphate reactions. This test generally flags very very few reactions in most GSMMs. Returns a Pandas DataFrame with one row for each reaction in the given GSMM, columns for the IDs and equations of each reaction, and the result of the diphosphate test:
+Identifes all reversible reactions that involve diphosphate that aren't transporting it between compartments. Requires the IDs of the metabolites in the GSMM that represent the diphosphate and inorganic (mono)phosphate ions. Most reactions involving the diphosphate ion should be irreversible in the direction that produces diphosphate, since most cells express a variety of highly active diphosphatases that quickly turn diphosphate ions into two separate inorganic phosphate ions. While most other reactions involving diphosphate, specifically those that involve separating a (d)NTP into a (d)NMP + a diphosphate, have Gibbs free energy changes of approximately zero and are thus readily reversible, the diphosphate reaction is quite exergonic, so the diphosphatases present in most cells generally drive all other diphosphate-producing reactions in the direction of diphosphate production. Leaving these reactions as reversible when predicting steady-state fluxes from a GSMM can result in unrealistic predictions about how ATP is synthesized and create loops involving chains of reversible diphosphate reactions. This test generally flags very very few reactions in most GSMMs.
+
+Arguments:
+
+- `model`: the Cobrapy Model object containing the GSMM to be tested
+- `use_names`: (optional) whether or not to use the "name" attributes of the metabolites in `model` in the reaction equation column in the output DataFrame instead of the metabolite IDs. False by default.
+- `add_suffixes`: (optional) whether or not to add suffixes indicating which compartment each metabolite is in to the names or IDs of metabolites in the reaction equation column in the output DataFrame. False by default. Setting `add_suffixes` to True and `use_names` to False is generally not recommended, as most GSMMs with multiple compartments already encode the compartment each metabolite is in in the metabolite's ID
+- `verbose`: (optional) controls how many messages are printed when the test runs. Set to 0 to print no messages. 1 by default.
+
+Returns a Pandas DataFrame with one row for each reaction in the given GSMM, columns for the IDs and equations of each reaction, and the result of the diphosphate test:
 
 - "ok" if the reaction either does not involve diphosphate or is already irreversible
 - "should be irreversible" if the reaction is reversible and diphosphate is a product
 - "should be flipped and made irreversible" if the reaction is reversible and diphosphate is a reactant (the suggestion to flip such reactions is to ensure that no reactions in the GSMM are only capable of sustaining non-positive fluxes, which won't break any math one might want to do with a GSMM but might be confusing or aesthetically unappealing)
 
-Unlike the other tests, the diphosphate test does not return an edge list connecting the reactions it flags
+Unlike the other tests, the diphosphate test does not return an edge list connecting the reactions it flags.
 
-## Duplicate Test
+### Duplicate Test
 
 Identifies sets of reactions that may be duplicates of each other because they:
 - Involve exactly the same metabolites with exactly the same stoichiometric coefficients (but potentially different associated genes)
@@ -93,12 +104,41 @@ Arguments:
 - `add_suffixes`: (optional) whether or not to add suffixes indicating which compartment each metabolite is in to the names or IDs of metabolites in the reaction equation column in the output DataFrame. False by default. Setting `add_suffixes` to True and `use_names` to False is generally not recommended, as most GSMMs with multiple compartments already encode the compartment each metabolite is in in the metabolite's ID
 - `verbose`: (optional) controls how many messages are printed when the test runs. Set to 0 to print no messages. 1 by default.
 
-Returns an edge list describing a network with one node for each reaction flagged as a potential duplicate where reactions are connected to the other reactions that they are potentially duplciates of and a Pandas DataFrame
+Returns an edge list describing a network with one node for each reaction flagged as a potential duplicate where reactions are connected to the other reactions that they are potentially duplciates of, as well as a Pandas DataFrame with one row for each reaction in the given GSMM, columns for the IDs and equations of each reaction, and several columns indicating the results of the duplicate test:
 
-## Loop Test
+- `duplicate_test_exact`: "ok" if the reaction had no exact duplicates or a semicolon-delimited list of the IDs of other reactions that were exact duplicates
+- `duplicate_test_directions`: "ok" if there were no other reactions that involved the same metabolites but went in the opposite direction or had the opposite reversibility or a semicolon-delimited list of the IDs of those other reactions
+- `duplicate_test_coefficients`: "ok" if there were no other reactions that involved the same metabolites but with different stoichiometric coefficients or a semicolon-delimited list of the IDs of those other reactions
+- `duplicate_test_redox`: "ok" if there were no other reactions that involved the same metabolites aside from the ones provided in `redox_pairs` and `proton_ids` or a semicolon-delimited list of the IDs of those other reactions. N/A if `redox_pairs` or `proton_ids` were not provided
 
-Identifies all reactions that are capable of sustaining non-zero fluxes when all exchange reactions (i.e. reactions representing the uptake and/or secretion of individual metabolites) are blocked. Also attempts to determine which "loop" each such reaction is a member of by generating 1,000 possible solutions to the GSMM, getting pairwise correlations between the distributions of 1,000 possible fluxes for each reaction, and identifying groups of reactions whose fluxes were highly correlated. Removes any objective functions from the given GSMM and sets all non-zero lower bounds (e.g. lower bounds on ATP maintenance reactions) to zero before starting. Returns a Pandas DataFrame indicating whether each reaction was in a loop or not and an edge list describing a network in which all reactions flagged by the loop test are connected to other flagged reactions that both share at least one metabolite and had highly correlated fluxes in the set of 1,000 possible solutions.
+### Loop Test
 
-## Pathways
+Identifies all reactions that are capable of sustaining non-zero fluxes when all exchange reactions (i.e. reactions representing the uptake and/or secretion of individual metabolites) are blocked. Also attempts to determine which "loop" each such reaction is a member of by generating 1,000 possible solutions to the GSMM, getting pairwise correlations between the distributions of 1,000 possible fluxes for each reaction, and identifying groups of reactions whose fluxes were highly correlated. Removes any objective functions from the given GSMM and sets all non-zero lower bounds (e.g. lower bounds on ATP maintenance reactions) to zero before starting.
+
+Arguments:
+
+- `model`: the Cobrapy Model object containing the GSMM to be tested
+- `zero_thresh`: (optional) how close to zero is close enough to consider a reaction incapable of sustaining flux? 10^-8 by default.
+- `corr_thresh`: (optional) how correlated do the distributions of possible fluxes for two reactions have to be in order to consider them members of the same loop? Default is 0.9, which corresponds to correlations above 0.9 or below -0.9
+- `use_names`: (optional) whether or not to use the "name" attributes of the metabolites in `model` in the reaction equation column in the output DataFrame instead of the metabolite IDs. False by default.
+- `add_suffixes`: (optional) whether or not to add suffixes indicating which compartment each metabolite is in to the names or IDs of metabolites in the reaction equation column in the output DataFrame. False by default. Setting `add_suffixes` to True and `use_names` to False is generally not recommended, as most GSMMs with multiple compartments already encode the compartment each metabolite is in in the metabolite's ID
+- `verbose`: (optional) controls how many messages are printed when the test runs. Set to 0 to print no messages. 1 by default.
+
+Returns an edge list defining a network connecting reactions that have at least one metabolite in common and have highly-correlated, as well as a Pandas DataFrame with one row for each reaction in the given GSMM, columns for the IDs and equations of each reaction, and the result of the loop test:
+
+- "ok" for reactions that were not capable of non-zero fluxes when all exchange reactions were blocked
+- "in loop" for reactions that were capable of non-zero fluxes when all exchange reactions were blocked
+
+## Other Important Functions
+
+### `form_pathways`
 
 The `form_pathways` function in `macaw_main.py` can combine the edge lists produced by multiple of the above tests into a single comprehensive network. This is non-trivial because the dead-end and dilution tests produce edge lists that describe bipartite networks in which some nodes represent reactions and others represent metabolites, while the duplicate and loop tests produce edge lists that describe monopartite networks in which all nodes represent reactions. The resulting network generally contains many connected components. `form_pathways` will assign a unique integer to each component and add a column to the Pandas Dataframe of results from all tests indicating which connected component each reaction is in. Reactions that were not flagged by any tests or not connected to any other reactions that were flagged by any tests (this only happens with reactions flagged by the dead-end or diphosphate tests, and is generally uncommon) are always assigned a "pathway" of 0.
+
+### `run_all_tests`
+
+Runs all four tests on the given model and calls `form_pathways` to combine the edge lists into one.
+
+### `simplify_test_results`
+
+Makes each column in the Pandas DataFrame produced by any test just say "ok" or "bad" for each reaction. Also merges the 4 duplicate test columns into a single column

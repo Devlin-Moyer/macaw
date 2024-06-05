@@ -3,6 +3,7 @@ bin/
 include/
 lib/
 lib64
+logs/
 __pycache__/
 share/
 *.sh*

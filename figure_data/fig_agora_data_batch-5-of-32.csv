@@ -1,0 +1,10 @@
+model,all_rxns,flagged,dead-ends,dilution-blocked,duplicates,loops,redoxes
+Acinetobacter_baumannii_IS_251.mat,1561,849,453,285,72,89,7
+Clostridium_botulinum_C_str_Eklund.mat,1402,890,538,282,46,82,8
+Staphylococcus_aureus_M0200.mat,1409,733,348,279,51,84,6
+Bacillus_cereus_Rock1_15.mat,2000,1231,751,321,82,154,8
+Staphylococcus_aureus_subsp_aureus_CIGC93.mat,1406,735,351,282,49,82,6
+Bacillus_subtilis_subsp_spizizenii_DV1_B_1.mat,1606,865,450,277,123,112,5
+Cutibacterium_acnes_HL013PA2.mat,2348,960,547,274,59,143,7
+Dermacoccus_nishinomiyaensis_DSM_20448.mat,1290,743,456,223,48,57,8
+Streptococcus_nov_ERR2221358.mat,913,496,268,202,19,21,6

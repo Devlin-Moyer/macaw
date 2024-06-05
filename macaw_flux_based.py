@@ -168,7 +168,10 @@ def dilution_test(
                 r.lower_bound = 0
         if verbose > 0:
             msg = ' - Adjusted lower bounds on exchange reactions so that only '
-            msg += f'the {len(media_mets)} given metabolites could be consumed.'
+            msg += f'{i} metabolites could be consumed.'
+            if i < len(media_mets):
+                msg += f' {len(media_mets) - i} of the metabolite IDs provided '
+                msg += 'in the media_mets argument were not in the GSMM.'
             print(msg)
     # ensure the model has no objective function
     model.objective = Zero

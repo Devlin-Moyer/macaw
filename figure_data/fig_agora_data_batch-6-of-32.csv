@@ -1,0 +1,6 @@
+model,all_rxns,flagged,dead-ends,dilution-blocked,duplicates,loops,redoxes
+Klebsiella_oxytoca_ERR2221287.mat,1886,888,518,276,74,70,7
+Bacillus_cereus_BAG2X1_1.mat,1924,1148,676,302,78,163,7
+Rothia_dentocariosa_M567.mat,1322,893,538,256,57,106,8
+Clostridium_tertium_Gcol_A43_Gcol_A43_1.mat,1199,684,426,202,35,53,6
+Eggerthella_lenta_DSM_15644.mat,1151,811,493,270,37,67,7

@@ -99,6 +99,14 @@ for model_path in model_paths:
     ]
     # we can always find all proton IDs by looking at the numeric bit
     proton_ids = [m.id for m in model.metabolites if '02039' in m.id]
+    # make sure all the IDs in media_mets are for metabolites that have
+    # exchange reactions and the right numeric bit to be robust to all this ID
+    # format changing
+    id_bits = [m[3:-1] for m in media_mets]
+    media_mets = [
+        list(r.metabolites)[0].id for r in model.boundary
+        if any(list(r.metabolites)[0].id.contains(m) for m in id_bits)
+    ]
     # now run the tests (individually so we skip the network merging)
     (duplicates, _) = duplicate_test(model, redox_pairs, proton_ids)
     (dead_ends, _) = dead_end_test(model)

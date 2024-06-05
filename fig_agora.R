@@ -11,7 +11,7 @@ agora_data <- bind_rows(lapply(
   list.files("figure_data/", "fig_agora_data*", full.names = T),
   function(f) read_csv(f, show_col_types = F)
 ))
-
+cat("Have data for", nrow(agora_data), "models\n")
 plot_data <- agora_data %>%
   # strip the extensions off of the filenames to get AGORA2's "MicrobeIDs"
   mutate(organism = gsub(".mat", "", model)) %>%
