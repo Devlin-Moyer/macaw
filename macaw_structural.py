@@ -411,7 +411,9 @@ def diphosphate_test(
         # create a dataframe that has reaction IDs in one column and NAs in the
         # other (i.e. the same format as the one we'd return if we actually did
         # the test)
-        out_df = pd.DataFrame({'reaction_id' : [r.id for r in model.reactions]})
+        out_df = pd.DataFrame({
+            'reaction_id' : [r.id for r in given_model.reactions]
+        })
         out_df['diphosphate_test'] = 'N/A'
         return((out_df, given_model))
     if verbose > 0:
