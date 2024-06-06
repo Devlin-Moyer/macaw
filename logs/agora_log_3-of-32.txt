@@ -1,1 +1,230 @@
 1133 of 7302 models were already tested
+Took 2.0 hours, 15.0 minutes, and 21 seconds to test Escherichia_coli_H489.mat (model 1 out of 229). Tested 8 pairs of redox mets.
+Took 18.0 minutes and 31 seconds to test Staphylococcus_hominis_subsp_hominis_C80.mat (model 2 out of 229). Tested 7 pairs of redox mets.
+Took 18.0 minutes and 19 seconds to test Exiguobacterium_aurantiacum_DSM_6208.mat (model 3 out of 229). Tested 7 pairs of redox mets.
+Took 40.0 minutes and 35 seconds to test Bifidobacterium_adolescentis_DSM_20087.mat (model 4 out of 229). Tested 5 pairs of redox mets.
+Took 11.0 minutes and 37 seconds to test Enterococcus_faecium_UAA951.mat (model 5 out of 229). Tested 6 pairs of redox mets.
+Took 1.0 hours, 5.0 minutes, and 28 seconds to test Salmonella_enterica_subsp_enterica_serovar_Typhimurium_str_STm2.mat (model 6 out of 229). Tested 7 pairs of redox mets.
+Took 1.0 hours, 40.0 minutes, and 22 seconds to test Escherichia_coli_P0298942_6.mat (model 7 out of 229). Tested 7 pairs of redox mets.
+Took 17.0 minutes and 11 seconds to test Curtobacterium_flaccumfaciens_UCD_AKU.mat (model 8 out of 229). Tested 8 pairs of redox mets.
+Took 43.0 minutes and 10 seconds to test Bacteroides_sp_3_1_19.mat (model 9 out of 229). Tested 6 pairs of redox mets.
+Took 14.0 minutes and 37 seconds to test Prevotella_melaninogenica_ATCC_25845.mat (model 10 out of 229). Tested 8 pairs of redox mets.
+Took 11.0 minutes and 21 seconds to test Coprococcus_eutactus_ERR2221154.mat (model 11 out of 229). Tested 5 pairs of redox mets.
+Took 11.0 minutes and 23 seconds to test Helicobacter_pylori_26695_1MET.mat (model 12 out of 229). Tested 5 pairs of redox mets.
+Took 22.0 minutes and 27 seconds to test Aeromonas_caviae_FDAARGOS_72.mat (model 13 out of 229). Tested 6 pairs of redox mets.
+Took 3.0 hours, 15.0 minutes, and 24 seconds to test Streptococcus_agalactiae_STIR_CD_28.mat (model 14 out of 229). Tested 8 pairs of redox mets.
+Took 1.0 hours, 2.0 minutes, and 33 seconds to test Salmonella_enterica_subsp_enterica_serovar_Enteritidis_str_LA5.mat (model 15 out of 229). Tested 8 pairs of redox mets.
+Took 1.0 hours, 3.0 minutes, and 10 seconds to test Salmonella_enterica_subsp_enterica_serovar_Newport_str_CVM_19567.mat (model 16 out of 229). Tested 7 pairs of redox mets.
+Took 2.0 hours, 13.0 minutes, and 11 seconds to test Escherichia_coli_KTE150.mat (model 17 out of 229). Tested 8 pairs of redox mets.
+Took 28.0 minutes and 30 seconds to test Enterococcus_faecalis_ERV65.mat (model 18 out of 229). Tested 8 pairs of redox mets.
+Took 22.0 minutes and 43 seconds to test Proteus_vulgaris_CSUR_P1867.mat (model 19 out of 229). Tested 6 pairs of redox mets.
+Took 12.0 minutes and 27 seconds to test Paeniclostridium_sordellii_SSCC35109.mat (model 20 out of 229). Tested 5 pairs of redox mets.
+Took 23.0 minutes and 45 seconds to test Campylobacter_coli_1148.mat (model 21 out of 229). Tested 7 pairs of redox mets.
+Took 46.0 minutes and 15 seconds to test Vibrio_parahaemolyticus_AQ3810.mat (model 22 out of 229). Tested 8 pairs of redox mets.
+Took 20.0 minutes and 36 seconds to test Helicobacter_pylori_Hp_H_24.mat (model 23 out of 229). Tested 7 pairs of redox mets.
+Took 18.0 minutes and 41 seconds to test Staphylococcus_aureus_subsp_aureus_55_2053.mat (model 24 out of 229). Tested 5 pairs of redox mets.
+Took 34.0 minutes and 49 seconds to test Escherichia_coli_BW25113.mat (model 25 out of 229). Tested 7 pairs of redox mets.
+Took 53.0 minutes and 16 seconds to test Bacillus_amyloliquefaciens_XH7.mat (model 26 out of 229). Tested 6 pairs of redox mets.
+Took 18.0 minutes and 43 seconds to test Staphylococcus_pasteuri_SP1.mat (model 27 out of 229). Tested 7 pairs of redox mets.
+Took 18.0 minutes and 42 seconds to test Staphylococcus_aureus_LVP5.mat (model 28 out of 229). Tested 6 pairs of redox mets.
+Took 35.0 minutes and 14 seconds to test Salmonella_enterica_subsp_enterica_serovar_Heidelberg_str_CFSAN00326.mat (model 29 out of 229). Tested 6 pairs of redox mets.
+Took 10.0 minutes and 28 seconds to test Bifidobacterium_longum_longum_ATCC_55813.mat (model 30 out of 229). Tested 6 pairs of redox mets.
+Took 9.0 minutes and 2 seconds to test Collinsella_sp_MS5.mat (model 31 out of 229). Tested 4 pairs of redox mets.
+Took 48.0 minutes and 59 seconds to test Staphylococcus_aureus_M0066.mat (model 32 out of 229). Tested 6 pairs of redox mets.
+Took 1.0 hours, 5.0 minutes, and 34 seconds to test Bacteroides_xylanisolvens_SD_CC_1b.mat (model 33 out of 229). Tested 6 pairs of redox mets.
+Took 2.0 hours, 16.0 minutes, and 55 seconds to test Escherichia_coli_NE037.mat (model 34 out of 229). Tested 8 pairs of redox mets.
+Took 10.0 minutes and 60 seconds to test Enterococcus_mundtii_crl1656.mat (model 35 out of 229). Tested 6 pairs of redox mets.
+Took 10.0 minutes and 37 seconds to test Lachnospiraceae_nov_ERR1022351.mat (model 36 out of 229). Tested 5 pairs of redox mets.
+Took 2.0 hours, 18.0 minutes, and 50 seconds to test Escherichia_coli_2719100.mat (model 37 out of 229). Tested 8 pairs of redox mets.
+Took 21.0 minutes and 20 seconds to test Lactococcus_garvieae_8831.mat (model 38 out of 229). Tested 8 pairs of redox mets.
+Took 24.0 minutes and 3 seconds to test Gordonia_rubripertincta_NBRC_101908.mat (model 39 out of 229). Tested 8 pairs of redox mets.
+Took 25.0 minutes and 41 seconds to test Acinetobacter_baumannii_AB_2007_16_27_01.mat (model 40 out of 229). Tested 7 pairs of redox mets.
+Took 19.0 minutes and 58 seconds to test Haemophilus_sputorum_CCUG_13788.mat (model 41 out of 229). Tested 7 pairs of redox mets.
+Took 11.0 minutes and 18 seconds to test Streptococcus_pneumoniae_GA17371.mat (model 42 out of 229). Tested 5 pairs of redox mets.
+Took 9.0 minutes and 39 seconds to test Ruminococcus_bicirculans_ERR2230101.mat (model 43 out of 229). Tested 5 pairs of redox mets.
+Took 3.0 minutes and 40 seconds to test Ureaplasma_urealyticum_serovar_10_str_ATCC_33699.mat (model 44 out of 229). Tested 6 pairs of redox mets.
+Took 1.0 hours, 4.0 minutes, and 19 seconds to test Salmonella_enterica_subsp_enterica_serovar_Newport_str_CVM_19443.mat (model 45 out of 229). Tested 7 pairs of redox mets.
+Took 15.0 minutes and 28 seconds to test Enterococcus_faecalis_UAA902.mat (model 46 out of 229). Tested 6 pairs of redox mets.
+Took 11.0 minutes and 31 seconds to test Actinomyces_georgiae_DSM_6843.mat (model 47 out of 229). Tested 7 pairs of redox mets.
+Took 58.0 minutes and 19 seconds to test Cutibacterium_acnes_HL059PA1.mat (model 48 out of 229). Tested 7 pairs of redox mets.
+Took 16.0 minutes and 46 seconds to test Clostridium_acetobutylicum_DSM_1731.mat (model 49 out of 229). Tested 5 pairs of redox mets.
+Took 9.0 minutes and 20 seconds to test Lachnospiraceae_bacterium_1_1_57FAA.mat (model 50 out of 229). Tested 4 pairs of redox mets.
+Took 11.0 minutes and 49 seconds to test Streptococcus_pneumoniae_SPN034156.mat (model 51 out of 229). Tested 5 pairs of redox mets.
+Took 18.0 minutes and 52 seconds to test Staphylococcus_aureus_subsp_aureus_H29.mat (model 52 out of 229). Tested 6 pairs of redox mets.
+Took 22.0 minutes and 50 seconds to test Enterococcus_faecium_EnGen0323.mat (model 53 out of 229). Tested 7 pairs of redox mets.
+Took 1.0 hours, 35.0 minutes, and 11 seconds to test Escherichia_coli_O25b_H4_ST131_str_EC958.mat (model 54 out of 229). Tested 7 pairs of redox mets.
+Took 48.0 minutes and 27 seconds to test Parabacteroides_distasonis_ERR2221168.mat (model 55 out of 229). Tested 6 pairs of redox mets.
+Took 10.0 minutes and 21 seconds to test Streptococcus_salivarius_ERR2221359.mat (model 56 out of 229). Tested 5 pairs of redox mets.
+Took 12.0 minutes and 6 seconds to test Streptococcus_pneumoniae_SP195.mat (model 57 out of 229). Tested 5 pairs of redox mets.
+Took 34.0 minutes and 21 seconds to test Citrobacter_sp_KTE30.mat (model 58 out of 229). Tested 7 pairs of redox mets.
+Took 18.0 minutes and 54 seconds to test Haemophilus_haemolyticus_M19501.mat (model 59 out of 229). Tested 7 pairs of redox mets.
+Took 13.0 minutes and 27 seconds to test Prevotella_veroralis_DSM_19559.mat (model 60 out of 229). Tested 7 pairs of redox mets.
+Took 50.0 minutes and 44 seconds to test Vibrio_parahaemolyticus_AN_5034.mat (model 61 out of 229). Tested 8 pairs of redox mets.
+Took 19.0 minutes and 22 seconds to test Staphylococcus_aureus_subsp_aureus_VRS9.mat (model 62 out of 229). Tested 6 pairs of redox mets.
+Took 1.0 hours, 36.0 minutes, and 22 seconds to test Escherichia_coli_str_K_12_substr_DH10B.mat (model 63 out of 229). Tested 7 pairs of redox mets.
+Took 34.0 minutes and 39 seconds to test Salmonella_enterica_subsp_enterica_serovar_Enteritidis_str_607308_16.mat (model 64 out of 229). Tested 6 pairs of redox mets.
+Took 6.0 minutes and 58 seconds to test Mageeibacillus_indolicus_UPII9_5.mat (model 65 out of 229). Tested 5 pairs of redox mets.
+Took 15.0 minutes and 20 seconds to test Enterococcus_faecalis_T5.mat (model 66 out of 229). Tested 6 pairs of redox mets.
+Took 11.0 minutes and 37 seconds to test Butyricimonas_sp_Marseille_P2440.mat (model 67 out of 229). Tested 6 pairs of redox mets.
+Took 11.0 minutes and 50 seconds to test Clostridium_polysaccharolyticum_DSM_1801.mat (model 68 out of 229). Tested 4 pairs of redox mets.
+Took 2.0 hours, 14.0 minutes, and 36 seconds to test Escherichia_coli_EPECa12.mat (model 69 out of 229). Tested 8 pairs of redox mets.
+Took 1.0 hours, 30.0 minutes, and 9 seconds to test Escherichia_coli_KTE96.mat (model 70 out of 229). Tested 7 pairs of redox mets.
+Took 22.0 minutes and 20 seconds to test Pseudomonas_stutzeri_KOS6.mat (model 71 out of 229). Tested 6 pairs of redox mets.
+Took 19.0 minutes and 36 seconds to test Staphylococcus_aureus_M1119.mat (model 72 out of 229). Tested 6 pairs of redox mets.
+Took 12.0 minutes and 38 seconds to test Streptococcus_pneumoniae_SPN7465.mat (model 73 out of 229). Tested 5 pairs of redox mets.
+Took 31.0 minutes and 15 seconds to test Staphylococcus_lugdunensis_N920143.mat (model 74 out of 229). Tested 7 pairs of redox mets.
+Took 2.0 hours, 18.0 minutes, and 26 seconds to test Escherichia_coli_97_0010.mat (model 75 out of 229). Tested 8 pairs of redox mets.
+Took 33.0 minutes and 27 seconds to test Streptococcus_thoraltensis_DSM_12221.mat (model 76 out of 229). Tested 7 pairs of redox mets.
+Took 11.0 minutes and 56 seconds to test Bifidobacterium_longum_ERR2230120.mat (model 77 out of 229). Tested 5 pairs of redox mets.
+Took 19.0 minutes and 3 seconds to test Staphylococcus_aureus_M1198.mat (model 78 out of 229). Tested 6 pairs of redox mets.
+Took 19.0 minutes and 8 seconds to test Bacteroides_fragilis_ERR2221298.mat (model 79 out of 229). Tested 6 pairs of redox mets.
+Took 52.0 minutes and 24 seconds to test Streptococcus_agalactiae_CCUG_19094.mat (model 80 out of 229). Tested 7 pairs of redox mets.
+Took 46.0 minutes and 14 seconds to test Blautia_obeum_ATCC_29174.mat (model 81 out of 229). Tested 7 pairs of redox mets.
+Took 25.0 minutes and 16 seconds to test Lactobacillus_casei_12A.mat (model 82 out of 229). Tested 8 pairs of redox mets.
+Took 2.0 hours, 20.0 minutes, and 58 seconds to test Escherichia_coli_99_0741.mat (model 83 out of 229). Tested 8 pairs of redox mets.
+Took 13.0 minutes and 20 seconds to test Clostridium_sp_SY8519.mat (model 84 out of 229). Tested 6 pairs of redox mets.
+Took 8.0 minutes and 29 seconds to test Streptococcus_oralis_subsp_tigurinus_2425.mat (model 85 out of 229). Tested 6 pairs of redox mets.
+Took 2.0 hours, 23.0 minutes, and 37 seconds to test Escherichia_coli_EC302_04.mat (model 86 out of 229). Tested 8 pairs of redox mets.
+Took 1.0 hours, 0.0 minutes, and 16 seconds to test Listeria_monocytogenes_SLCC2479.mat (model 87 out of 229). Tested 8 pairs of redox mets.
+Took 47.0 minutes and 38 seconds to test Clostridium_tyrobutyricum_DSM_2637.mat (model 88 out of 229). Tested 8 pairs of redox mets.
+Took 28.0 minutes and 42 seconds to test Pseudomonas_fluorescens_UK4.mat (model 89 out of 229). Tested 7 pairs of redox mets.
+Took 1.0 hours, 33.0 minutes, and 54 seconds to test Bacteroides_sp_D1.mat (model 90 out of 229). Tested 6 pairs of redox mets.
+Took 1.0 hours, 59.0 minutes, and 46 seconds to test Cutibacterium_acnes_HL037PA1.mat (model 91 out of 229). Tested 7 pairs of redox mets.
+Took 10.0 minutes and 13 seconds to test Anaerovorax_odorimutans_DSM_5092.mat (model 92 out of 229). Tested 4 pairs of redox mets.
+Took 13.0 minutes and 51 seconds to test Fusobacterium_nucleatum_subsp_vincentii_3_1_27.mat (model 93 out of 229). Tested 6 pairs of redox mets.
+Took 2.0 hours, 18.0 minutes, and 50 seconds to test Escherichia_coli_179550.mat (model 94 out of 229). Tested 8 pairs of redox mets.
+Took 1.0 hours, 39.0 minutes, and 23 seconds to test Escherichia_coli_PA38.mat (model 95 out of 229). Tested 7 pairs of redox mets.
+Took 33.0 minutes and 46 seconds to test Salmonella_enterica_subsp_enterica_serovar_Enteritidis_str_CDC_2010K_1565.mat (model 96 out of 229). Tested 6 pairs of redox mets.
+Took 23.0 minutes and 7 seconds to test Campylobacter_coli_BIGS0003.mat (model 97 out of 229). Tested 7 pairs of redox mets.
+Took 25.0 minutes and 44 seconds to test Streptococcus_sanguinis_SK150.mat (model 98 out of 229). Tested 7 pairs of redox mets.
+Took 13.0 minutes and 12 seconds to test Erysipelatoclostridium_ramosum_ERR2221239.mat (model 99 out of 229). Tested 6 pairs of redox mets.
+Took 10.0 minutes and 41 seconds to test Lachnospiraceae_nov_ERR1022343.mat (model 100 out of 229). Tested 5 pairs of redox mets.
+Took 9.0 minutes and 48 seconds to test Streptococcus_thermophilus_LMG_18311.mat (model 101 out of 229). Tested 6 pairs of redox mets.
+Took 20.0 minutes and 48 seconds to test Bacteroides_vulgatus_ERR2230150.mat (model 102 out of 229). Tested 5 pairs of redox mets.
+Took 20.0 minutes and 29 seconds to test Helicobacter_pylori_2018.mat (model 103 out of 229). Tested 7 pairs of redox mets.
+Took 2.0 hours, 19.0 minutes, and 21 seconds to test Escherichia_coli_MS_21_1.mat (model 104 out of 229). Tested 8 pairs of redox mets.
+Took 12.0 minutes and 47 seconds to test Porphyromonas_uenonis_DSM_23387.mat (model 105 out of 229). Tested 7 pairs of redox mets.
+Took 7.0 minutes and 26 seconds to test Lactobacillus_kunkeei_MP2.mat (model 106 out of 229). Tested 5 pairs of redox mets.
+Took 51.0 minutes and 37 seconds to test Bacillus_cereus_MSX_D12.mat (model 107 out of 229). Tested 8 pairs of redox mets.
+Took 49.0 minutes and 18 seconds to test Staphylococcus_aureus_M0660.mat (model 108 out of 229). Tested 6 pairs of redox mets.
+Took 33.0 minutes and 42 seconds to test Salmonella_enterica_subsp_enterica_serovar_Enteritidis_str_CDC_2010K_1566.mat (model 109 out of 229). Tested 6 pairs of redox mets.
+Took 22.0 minutes and 2 seconds to test Proteus_mirabilis_AOUC_001.mat (model 110 out of 229). Tested 6 pairs of redox mets.
+Took 1.0 hours, 16.0 minutes, and 53 seconds to test Streptococcus_agalactiae_CCUG_28551.mat (model 111 out of 229). Tested 7 pairs of redox mets.
+Took 42.0 minutes and 24 seconds to test Stenotrophomonas_maltophilia_ATCC_19867.mat (model 112 out of 229). Tested 8 pairs of redox mets.
+Took 23.0 minutes and 41 seconds to test Bacillus_amyloliquefaciens_TA208.mat (model 113 out of 229). Tested 6 pairs of redox mets.
+Took 10.0 minutes and 13 seconds to test Lactobacillus_murinus_ERR2221126.mat (model 114 out of 229). Tested 5 pairs of redox mets.
+Took 16.0 minutes and 12 seconds to test Staphylococcus_pasteuri_BAB3.mat (model 115 out of 229). Tested 5 pairs of redox mets.
+Took 47.0 minutes and 7 seconds to test Streptococcus_agalactiae_GB00922.mat (model 116 out of 229). Tested 7 pairs of redox mets.
+Took 2.0 hours, 14.0 minutes, and 41 seconds to test Escherichia_coli_MS_187_1.mat (model 117 out of 229). Tested 8 pairs of redox mets.
+Took 23.0 minutes and 5 seconds to test Proteus_vulgaris_NCTC10376.mat (model 118 out of 229). Tested 6 pairs of redox mets.
+Took 22.0 minutes and 2 seconds to test Streptococcus_mutans_NN2025.mat (model 119 out of 229). Tested 7 pairs of redox mets.
+Took 1.0 hours, 48.0 minutes, and 44 seconds to test Bacillus_cereus_ATCC_10987.mat (model 120 out of 229). Tested 8 pairs of redox mets.
+Took 14.0 minutes and 52 seconds to test Clostridium_jeddahtimonense_CL_2.mat (model 121 out of 229). Tested 5 pairs of redox mets.
+Took 8.0 minutes and 20 seconds to test Collinsella_sp_4_8_47FAA.mat (model 122 out of 229). Tested 4 pairs of redox mets.
+Took 14.0 minutes and 28 seconds to test Clostridium_baratii_str_Sullivan.mat (model 123 out of 229). Tested 5 pairs of redox mets.
+Took 25.0 minutes and 39 seconds to test Acinetobacter_baumannii_OIFC110.mat (model 124 out of 229). Tested 7 pairs of redox mets.
+Took 1.0 hours, 47.0 minutes, and 0 seconds to test Streptococcus_agalactiae_GB00984.mat (model 125 out of 229). Tested 7 pairs of redox mets.
+Took 42.0 minutes and 12 seconds to test Enterococcus_faecium_UAA1025.mat (model 126 out of 229). Tested 6 pairs of redox mets.
+Took 20.0 minutes and 36 seconds to test Bacteroides_fluxus_YIT_12057.mat (model 127 out of 229). Tested 7 pairs of redox mets.
+Took 36.0 minutes and 17 seconds to test Klebsiella_oxytoca_MGH88.mat (model 128 out of 229). Tested 7 pairs of redox mets.
+Took 12.0 minutes and 52 seconds to test Fusobacterium_necrogenes_NCTC10723.mat (model 129 out of 229). Tested 4 pairs of redox mets.
+Took 1.0 hours, 37.0 minutes, and 12 seconds to test Escherichia_coli_W26.mat (model 130 out of 229). Tested 7 pairs of redox mets.
+Took 21.0 minutes and 53 seconds to test Campylobacter_coli_2698.mat (model 131 out of 229). Tested 6 pairs of redox mets.
+Took 13.0 minutes and 0 seconds to test Clostridium_innocuum_I46.mat (model 132 out of 229). Tested 5 pairs of redox mets.
+Took 1.0 hours, 3.0 minutes, and 26 seconds to test Salmonella_enterica_subsp_enterica_serovar_Bareilly_str_06_0784.mat (model 133 out of 229). Tested 7 pairs of redox mets.
+Took 19.0 minutes and 5 seconds to test Staphylococcus_aureus_subsp_aureus_06BA18369.mat (model 134 out of 229). Tested 6 pairs of redox mets.
+Took 27.0 minutes and 38 seconds to test Obesumbacterium_proteus_ATCC_12841.mat (model 135 out of 229). Tested 7 pairs of redox mets.
+Took 2.0 hours, 18.0 minutes, and 27 seconds to test Escherichia_coli_MS_124_1.mat (model 136 out of 229). Tested 8 pairs of redox mets.
+Took 27.0 minutes and 9 seconds to test Fusobacterium_nucleatum_subsp_nucleatum_ATCC_23726.mat (model 137 out of 229). Tested 7 pairs of redox mets.
+Took 24.0 minutes and 59 seconds to test Bacillus_cereus_SJ1.mat (model 138 out of 229). Tested 6 pairs of redox mets.
+Took 13.0 minutes and 53 seconds to test Blautia_nov_ERR1022275.mat (model 139 out of 229). Tested 5 pairs of redox mets.
+Took 22.0 minutes and 43 seconds to test Bacillus_velezensis_L_H15.mat (model 140 out of 229). Tested 6 pairs of redox mets.
+Took 23.0 minutes and 50 seconds to test Bacteroides_cellulosilyticus_ERR2221262.mat (model 141 out of 229). Tested 5 pairs of redox mets.
+Took 1.0 hours, 39.0 minutes, and 27 seconds to test Escherichia_coli_O26_H11_str_11368.mat (model 142 out of 229). Tested 7 pairs of redox mets.
+Took 10.0 minutes and 4 seconds to test Lactobacillus_vaginalis_ERR2221166.mat (model 143 out of 229). Tested 5 pairs of redox mets.
+Took 26.0 minutes and 11 seconds to test Gordonia_terrae_NBRC_100016.mat (model 144 out of 229). Tested 8 pairs of redox mets.
+Took 12.0 minutes and 21 seconds to test Sarcina_nov_ERR1204026.mat (model 145 out of 229). Tested 4 pairs of redox mets.
+Took 1.0 hours, 38.0 minutes, and 52 seconds to test Escherichia_coli_KTE41.mat (model 146 out of 229). Tested 7 pairs of redox mets.
+Took 16.0 minutes and 48 seconds to test Clostridium_acetobutylicum_EA_2018.mat (model 147 out of 229). Tested 5 pairs of redox mets.
+Took 3.0 hours, 17.0 minutes, and 5 seconds to test Streptococcus_agalactiae_CCUG_17336.mat (model 148 out of 229). Tested 8 pairs of redox mets.
+Took 4.0 minutes and 38 seconds to test Ureaplasma_urealyticum_serovar_13_str_ATCC_33698.mat (model 149 out of 229). Tested 6 pairs of redox mets.
+Took 1.0 hours, 1.0 minutes, and 32 seconds to test Clostridium_perfringens_WAL_14572.mat (model 150 out of 229). Tested 8 pairs of redox mets.
+Took 35.0 minutes and 58 seconds to test Bacteroides_salyersiae_CL02T12C01.mat (model 151 out of 229). Tested 8 pairs of redox mets.
+Took 24.0 minutes and 46 seconds to test Lactobacillus_paracasei_LPC_37.mat (model 152 out of 229). Tested 7 pairs of redox mets.
+Took 49.0 minutes and 31 seconds to test Staphylococcus_aureus_subsp_aureus_21232.mat (model 153 out of 229). Tested 6 pairs of redox mets.
+Took 18.0 minutes and 19 seconds to test Eggerthella_lenta_19C.mat (model 154 out of 229). Tested 7 pairs of redox mets.
+Took 1.0 hours, 35.0 minutes, and 31 seconds to test Escherichia_coli_P0299438_10.mat (model 155 out of 229). Tested 7 pairs of redox mets.
+Took 18.0 minutes and 53 seconds to test Staphylococcus_aureus_subsp_aureus_M013.mat (model 156 out of 229). Tested 6 pairs of redox mets.
+Took 15.0 minutes and 12 seconds to test Lachnoclostridium_nov_ERR1022392.mat (model 157 out of 229). Tested 6 pairs of redox mets.
+Took 10.0 minutes and 29 seconds to test Lactobacillus_ruminis_DSM_20403_NBRC_102161.mat (model 158 out of 229). Tested 5 pairs of redox mets.
+Took 1.0 hours, 19.0 minutes, and 33 seconds to test Bacillus_cereus_K_5975c.mat (model 159 out of 229). Tested 8 pairs of redox mets.
+Took 2.0 hours, 12.0 minutes, and 54 seconds to test Salmonella_enterica_subsp_enterica_serovar_Montevideo_str_4441_H.mat (model 160 out of 229). Tested 7 pairs of redox mets.
+Took 2.0 hours, 10.0 minutes, and 49 seconds to test Escherichia_coli_O157_str_NCCP15738.mat (model 161 out of 229). Tested 7 pairs of redox mets.
+Took 1.0 hours, 16.0 minutes, and 38 seconds to test Edwardsiella_tarda_ATCC_23685.mat (model 162 out of 229). Tested 7 pairs of redox mets.
+Took 22.0 minutes and 26 seconds to test Streptococcus_mutans_TCI_239.mat (model 163 out of 229). Tested 7 pairs of redox mets.
+Took 19.0 minutes and 2 seconds to test Laribacter_hongkongensis_HLHK9.mat (model 164 out of 229). Tested 7 pairs of redox mets.
+Took 58.0 minutes and 13 seconds to test Pseudomonas_aeruginosa_MPAO1_P1.mat (model 165 out of 229). Tested 8 pairs of redox mets.
+Took 27.0 minutes and 43 seconds to test Obesumbacterium_proteus_DSM_2777.mat (model 166 out of 229). Tested 7 pairs of redox mets.
+Took 14.0 minutes and 20 seconds to test Cellulomonas_massiliensis_JC225.mat (model 167 out of 229). Tested 6 pairs of redox mets.
+Took 7.0 minutes and 28 seconds to test Alloscardovia_omnicolens_DSM_21503.mat (model 168 out of 229). Tested 4 pairs of redox mets.
+Took 9.0 minutes and 3 seconds to test Candidatus_Pelagibacter_sp_IMCC9063.mat (model 169 out of 229). Tested 6 pairs of redox mets.
+Took 1.0 hours, 12.0 minutes, and 55 seconds to test Bacteroides_fragilis_CL03T12C07.mat (model 170 out of 229). Tested 8 pairs of redox mets.
+Took 18.0 minutes and 57 seconds to test Staphylococcus_aureus_ST228_10388.mat (model 171 out of 229). Tested 6 pairs of redox mets.
+Took 13.0 minutes and 21 seconds to test Bacteroides_coprosuis_DSM_18011.mat (model 172 out of 229). Tested 6 pairs of redox mets.
+Took 16.0 minutes and 17 seconds to test Lactococcus_lactis_subsp_lactis_Il1403.mat (model 173 out of 229). Tested 7 pairs of redox mets.
+Took 37.0 minutes and 19 seconds to test Aeromicrobium_massiliense_JC14.mat (model 174 out of 229). Tested 6 pairs of redox mets.
+Took 9.0 minutes and 28 seconds to test Lactobacillus_gasseri_ERR1204024.mat (model 175 out of 229). Tested 5 pairs of redox mets.
+Took 32.0 minutes and 50 seconds to test Serratia_liquefaciens_FDAARGOS_125.mat (model 176 out of 229). Tested 7 pairs of redox mets.
+Took 1.0 hours, 16.0 minutes, and 53 seconds to test Streptococcus_agalactiae_BSU447.mat (model 177 out of 229). Tested 7 pairs of redox mets.
+Took 49.0 minutes and 11 seconds to test Staphylococcus_aureus_M0489.mat (model 178 out of 229). Tested 6 pairs of redox mets.
+Took 11.0 minutes and 33 seconds to test Coprococcus_eutactus_ERR1022301.mat (model 179 out of 229). Tested 5 pairs of redox mets.
+Took 21.0 minutes and 59 seconds to test Campylobacter_jejuni_RM1221.mat (model 180 out of 229). Tested 7 pairs of redox mets.
+Took 2.0 hours, 15.0 minutes, and 47 seconds to test Escherichia_coli_DEC1E.mat (model 181 out of 229). Tested 8 pairs of redox mets.
+Took 20.0 minutes and 43 seconds to test Helicobacter_pylori_Hp_P_4c.mat (model 182 out of 229). Tested 7 pairs of redox mets.
+Took 45.0 minutes and 33 seconds to test Enterococcus_faecalis_TR161.mat (model 183 out of 229). Tested 6 pairs of redox mets.
+Took 28.0 minutes and 29 seconds to test Enterococcus_faecalis_ERV116.mat (model 184 out of 229). Tested 8 pairs of redox mets.
+Took 51.0 minutes and 31 seconds to test Aeromonas_dhakensis_277.mat (model 185 out of 229). Tested 7 pairs of redox mets.
+Took 2.0 hours, 17.0 minutes, and 58 seconds to test Escherichia_coli_O104_H4_str_Ec11_5604.mat (model 186 out of 229). Tested 8 pairs of redox mets.
+Took 21.0 minutes and 37 seconds to test Streptococcus_mutans_N34.mat (model 187 out of 229). Tested 7 pairs of redox mets.
+Took 1.0 hours, 38.0 minutes, and 38 seconds to test Escherichia_coli_O157_H7_str_H093800014.mat (model 188 out of 229). Tested 7 pairs of redox mets.
+Took 1.0 hours, 12.0 minutes, and 32 seconds to test Enterococcus_faecium_UAA825.mat (model 189 out of 229). Tested 6 pairs of redox mets.
+Took 12.0 minutes and 15 seconds to test Muribaculum_intestinale_YL27.mat (model 190 out of 229). Tested 6 pairs of redox mets.
+Took 1.0 hours, 39.0 minutes, and 19 seconds to test Escherichia_coli_O157_H7_str_LSU_61.mat (model 191 out of 229). Tested 7 pairs of redox mets.
+Took 18.0 minutes and 17 seconds to test Lachnospiraceae_nov_ERR2221212.mat (model 192 out of 229). Tested 5 pairs of redox mets.
+Took 2.0 hours, 54.0 minutes, and 26 seconds to test Escherichia_coli_KTE20.mat (model 193 out of 229). Tested 8 pairs of redox mets.
+Took 2.0 hours, 59.0 minutes, and 6 seconds to test Escherichia_coli_KTE68.mat (model 194 out of 229). Tested 8 pairs of redox mets.
+Took 1.0 hours, 5.0 minutes, and 37 seconds to test Salmonella_enterica_subsp_enterica_serovar_Agona_str_12_A_06.mat (model 195 out of 229). Tested 7 pairs of redox mets.
+Took 13.0 minutes and 58 seconds to test Lactobacillus_vaccinostercus_DSM_20634.mat (model 196 out of 229). Tested 5 pairs of redox mets.
+Took 1.0 hours, 51.0 minutes, and 35 seconds to test Klebsiella_pneumoniae_UHKPC05.mat (model 197 out of 229). Tested 8 pairs of redox mets.
+Took 9.0 minutes and 9 seconds to test Eubacterium_infirmum_F0142.mat (model 198 out of 229). Tested 5 pairs of redox mets.
+Took 1.0 hours, 4.0 minutes, and 54 seconds to test Citrobacter_portucalensis_P10159.mat (model 199 out of 229). Tested 7 pairs of redox mets.
+Took 32.0 minutes and 53 seconds to test Staphylococcus_pseudintermedius_ED99.mat (model 200 out of 229). Tested 7 pairs of redox mets.
+Took 1.0 hours, 51.0 minutes, and 8 seconds to test Streptococcus_agalactiae_STIR_CD_26.mat (model 201 out of 229). Tested 8 pairs of redox mets.
+Took 2.0 hours, 17.0 minutes, and 1 seconds to test Escherichia_coli_MS_115_1.mat (model 202 out of 229). Tested 8 pairs of redox mets.
+Took 49.0 minutes and 26 seconds to test Aeromonas_hydrophila_259.mat (model 203 out of 229). Tested 7 pairs of redox mets.
+Took 37.0 minutes and 58 seconds to test Acinetobacter_radioresistens_TG02010.mat (model 204 out of 229). Tested 8 pairs of redox mets.
+Took 1.0 hours, 18.0 minutes, and 30 seconds to test Staphylococcus_aureus_M1321.mat (model 205 out of 229). Tested 6 pairs of redox mets.
+Took 12.0 minutes and 10 seconds to test Streptococcus_pneumoniae_P1031.mat (model 206 out of 229). Tested 5 pairs of redox mets.
+Took 31.0 minutes and 47 seconds to test Citrobacter_amalonaticus_YG6.mat (model 207 out of 229). Tested 7 pairs of redox mets.
+Took 1.0 hours, 49.0 minutes, and 11 seconds to test Staphylococcus_aureus_M1466.mat (model 208 out of 229). Tested 6 pairs of redox mets.
+Took 10.0 minutes and 11 seconds to test Lachnospiraceae_nov_ERR2221161.mat (model 209 out of 229). Tested 4 pairs of redox mets.
+Took 12.0 minutes and 16 seconds to test Streptococcus_oralis_Uo5.mat (model 210 out of 229). Tested 6 pairs of redox mets.
+Took 37.0 minutes and 33 seconds to test Pseudomonas_fluorescens_PfO_1.mat (model 211 out of 229). Tested 8 pairs of redox mets.
+Took 10.0 minutes and 51 seconds to test Bifidobacterium_longum_infantis_157F_NC.mat (model 212 out of 229). Tested 6 pairs of redox mets.
+Took 16.0 minutes and 1 seconds to test Clostridium_perfringens_SM101.mat (model 213 out of 229). Tested 5 pairs of redox mets.
+Took 35.0 minutes and 37 seconds to test Enterobacter_cancerogenus_ATCC_35316.mat (model 214 out of 229). Tested 7 pairs of redox mets.
+Took 13.0 minutes and 35 seconds to test Sutterella_parvirubra_YIT_11816.mat (model 215 out of 229). Tested 6 pairs of redox mets.
+Took 2.0 hours, 16.0 minutes, and 9 seconds to test Escherichia_coli_DEC9A.mat (model 216 out of 229). Tested 8 pairs of redox mets.
+Took 11.0 minutes and 14 seconds to test Fusobacterium_massiliense_DSM_103085.mat (model 217 out of 229). Tested 5 pairs of redox mets.
+Took 20.0 minutes and 17 seconds to test Bacteroides_uniformis_str_3978_T3_i.mat (model 218 out of 229). Tested 6 pairs of redox mets.
+Took 24.0 minutes and 55 seconds to test Acinetobacter_baumannii_AB210.mat (model 219 out of 229). Tested 7 pairs of redox mets.
+Took 1.0 hours, 3.0 minutes, and 22 seconds to test Salmonella_enterica_subsp_enterica_serovar_Heidelberg_str_41565.mat (model 220 out of 229). Tested 7 pairs of redox mets.
+Took 9.0 minutes and 43 seconds to test Lachnospira_pectinoschiza_ERR1022352.mat (model 221 out of 229). Tested 4 pairs of redox mets.
+Took 1.0 hours, 26.0 minutes, and 2 seconds to test Cutibacterium_acnes_HL074PA1.mat (model 222 out of 229). Tested 7 pairs of redox mets.
+Took 35.0 minutes and 34 seconds to test Clostridioides_difficile_70_100_2010.mat (model 223 out of 229). Tested 8 pairs of redox mets.
+Took 1.0 hours, 12.0 minutes, and 25 seconds to test Enterococcus_faecium_UAA911.mat (model 224 out of 229). Tested 6 pairs of redox mets.
+Took 11.0 minutes and 53 seconds to test Enterococcus_faecium_HM1073.mat (model 225 out of 229). Tested 6 pairs of redox mets.
+Took 2.0 hours, 15.0 minutes, and 54 seconds to test Escherichia_coli_2866450.mat (model 226 out of 229). Tested 8 pairs of redox mets.
+Took 9.0 minutes and 38 seconds to test Ruminococcus_bicirculans_ERR1022485.mat (model 227 out of 229). Tested 5 pairs of redox mets.
+Took 12.0 minutes and 50 seconds to test Paeniclostridium_sordellii_UMC4404.mat (model 228 out of 229). Tested 5 pairs of redox mets.
+Took 17.0 minutes and 50 seconds to test Streptococcus_intermedius_F0395.mat (model 229 out of 229). Tested 8 pairs of redox mets.

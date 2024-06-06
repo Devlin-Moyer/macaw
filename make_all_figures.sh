@@ -49,6 +49,7 @@ python -m figure_scripts.fig_S5_data
 # neighborhood of a few terabytes) available
 
 # make figures (note that all Escher maps were manually created)
+# this was all done with R version 4.3.1
 Rscript figure_scripts/fig_2_S4.R
 Rscript figure_scripts/fig_3_S2_S3.R
 Rscript figure_scripts/fig_4_S6.R

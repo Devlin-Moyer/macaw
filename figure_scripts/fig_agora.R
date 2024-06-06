@@ -1,6 +1,8 @@
 # fig_agora.R
 
+library(ggplot2)
 library(patchwork)
+library(ggbeeswarm)
 suppressMessages(library(tidyverse))
 theme_set(theme_bw())
 
@@ -11,7 +13,8 @@ agora_data <- bind_rows(lapply(
   list.files("figure_data/", "fig_agora_data*", full.names = T),
   function(f) read_csv(f, show_col_types = F)
 ))
-cat("Have data for", nrow(agora_data), "models\n")
+cat("Have data for ", nrow(agora_data), " models (", round(100*nrow(agora_data)/7302), "%)\n", sep = "")
+
 plot_data <- agora_data %>%
   # strip the extensions off of the filenames to get AGORA2's "MicrobeIDs"
   mutate(organism = gsub(".mat", "", model)) %>%
@@ -60,17 +63,31 @@ plot_data <- agora_data %>%
   ))) %>%
   # lump together the phyla with very few models
   group_by(Phylum) %>%
-  mutate(Phylum = ifelse(n() < 10, "Other", Phylum)) %>%
+  mutate(Phylum = ifelse(n() <= 10, "Other", Phylum)) %>%
   ungroup() %>%
   mutate(Phylum = fct_relevel(as.factor(Phylum), "Other", after = Inf))
 
 # do one violin plot with the phylum on the x-axis and another with the oxygen
 # requirement (obligate anaerobe/obligate aerobe/facultative)
-tax_panel <- ggplot(plot_data, aes(x = Phylum, y = prop, fill = test)) +
-  geom_violin(show.legend = F) +
-  geom_boxplot(alpha = 0, show.legend = F) +
+tax_panel <- ggplot(plot_data, aes(x = Phylum, y = prop)) +
+  geom_quasirandom(aes(col = test), alpha = 0.4, show.legend = F) +
+  stat_summary(fun = median, geom = "crossbar", linewidth = 0.25) +
+  stat_summary(
+    fun = quantile,
+    fun.args = list(probs = 0.25),
+    geom = "crossbar",
+    linetype = "dashed",
+    linewidth = 0.1
+  ) +
+  stat_summary(
+    fun = quantile,
+    fun.args = list(probs = 0.75),
+    geom = "crossbar",
+    linetype = "dashed",
+    linewidth = 0.1
+  ) +
   facet_grid(rows = vars(test), scales = "free_y") +
-  scale_fill_manual(
+  scale_color_manual(
     values = c("#FDB462", "#FB8072", "#B3DE69", "#FCCDE5", "#80B1D3")
   ) +
   theme(
@@ -80,10 +97,25 @@ tax_panel <- ggplot(plot_data, aes(x = Phylum, y = prop, fill = test)) +
   ) +
   labs(x = "", y = "Proportion of Reactions Flagged by Test")
 
-o2_panel <- ggplot(plot_data, aes(x = o2_req, y = prop, fill = test)) +
-  geom_violin(show.legend = F) +
+o2_panel <- ggplot(plot_data, aes(x = o2_req, y = prop)) +
+  geom_quasirandom(aes(col = test), alpha = 0.4, show.legend = F) +
+  stat_summary(fun = median, geom = "crossbar", linewidth = 0.25) +
+  stat_summary(
+    fun = quantile,
+    fun.args = list(probs = 0.25),
+    geom = "crossbar",
+    linetype = "dashed",
+    linewidth = 0.1
+  ) +
+  stat_summary(
+    fun = quantile,
+    fun.args = list(probs = 0.75),
+    geom = "crossbar",
+    linetype = "dashed",
+    linewidth = 0.1
+  ) +
   facet_grid(rows = vars(test), scales = "free_y") +
-  scale_fill_manual(
+  scale_color_manual(
     values = c("#FDB462", "#FB8072", "#B3DE69", "#FCCDE5", "#80B1D3")
   ) +
   theme(
@@ -136,10 +168,22 @@ p_vals <- bind_rows(
     ungroup() %>%
     mutate(grouped_by = "aerobicity")
 ) %>%
-  rename(anova_p_val = `Pr(>F)`) %>%
-  filter(!is.na(anova_p_val)) %>%
-  select(grouped_by, test, anova_p_val)
+  mutate(anova_q_val = signif(p.adjust(`Pr(>F)`), 2)) %>%
+  filter(!is.na(anova_q_val)) %>%
+  select(grouped_by, test, anova_q_val)
 
 merge(mean_diffs, p_vals) %>%
-  select(grouped_by, test, groups, max_diff, anova_p_val) %>%
+  select(grouped_by, test, groups, max_diff, anova_q_val) %>%
   arrange(grouped_by, test)
+
+# correlations
+agora_data %>%
+  mutate(dead_prop = `dead-ends`/all_rxns) %>%
+  mutate(dil_prop = `dilution-blocked`/all_rxns) %>%
+  mutate(dupe_prop = duplicates/all_rxns) %>%
+  mutate(loop_prop = loops/all_rxns) %>%
+  select(
+    -model, -all_rxns, -flagged, -`dead-ends`, -`dilution-blocked`, -duplicates,
+    -loops, -redoxes
+  ) %>%
+  cor()

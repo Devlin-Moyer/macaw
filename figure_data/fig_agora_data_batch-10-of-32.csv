@@ -1,0 +1,16 @@
+model,all_rxns,flagged,dead-ends,dilution-blocked,duplicates,loops,redoxes
+Staphylococcus_aureus_subsp_aureus_CM05.mat,1391,732,350,278,49,84,6
+Escherichia_coli_EC4436.mat,3582,1258,752,299,102,199,8
+Bacillus_velezensis_AS433.mat,1521,835,478,256,112,79,6
+Pseudomonas_fluorescens_SS101.mat,1738,899,471,288,82,110,7
+Clostridiales_incertae_sedis_nov_ERR1022419.mat,978,893,395,465,24,37,5
+Escherichia_coli_KTE29.mat,3622,1248,726,299,111,213,8
+Mycoplasma_hyopneumoniae_168.mat,733,438,270,155,8,9,6
+Blautia_nov_ERR2221143.mat,1048,660,379,229,31,56,5
+Campylobacter_ureolyticus_UMB0112.mat,910,557,255,270,23,25,5
+Bacteroides_cellulosilyticus_CL02T12C19.mat,3247,1028,633,286,55,120,8
+Alistipes_indistinctus_ERR2221377.mat,1183,822,358,422,25,38,5
+Lachnospiraceae_nov_ERR1022289.mat,1031,680,387,260,22,28,4
+Mycoplasma_pneumoniae_19294.mat,642,375,183,170,7,21,7
+Enterococcus_faecium_UAA909.mat,1080,591,316,216,23,50,6
+Acinetobacter_baumannii_ZWS1219.mat,1556,859,457,292,70,88,7
