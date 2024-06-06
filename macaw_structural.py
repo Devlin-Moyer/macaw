@@ -415,7 +415,7 @@ def diphosphate_test(
             'reaction_id' : [r.id for r in given_model.reactions]
         })
         out_df['diphosphate_test'] = 'N/A'
-        return((out_df, given_model))
+        return(out_df)
     if verbose > 0:
         print('Starting diphosphate test...')
     # copy the given model so the original object remains as it was
