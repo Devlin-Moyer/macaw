@@ -1,2 +1,12 @@
 model,all_rxns,flagged,dead-ends,dilution-blocked,duplicates,loops,redoxes
 Bifidobacterium_breve_MCC_1128.mat,1049,530,262,223,27,37,5
+Pseudomonas_fluorescens_NCIMB_11764.mat,1785,944,498,296,87,117,7
+Escherichia_coli_KTE116.mat,3615,1230,729,300,105,190,8
+Escherichia_coli_O26_H11_str_CFSAN001629.mat,3185,879,450,284,75,117,7
+Pseudomonas_nitroreducens_HBP1.mat,1763,973,508,342,75,101,8
+Bacteroides_uniformis_ERR2221138.mat,1401,665,372,249,27,37,5
+Streptococcus_pneumoniae_2070531.mat,1115,589,266,265,17,56,5
+Paenibacillus_ihumii_DSM_100664.mat,1246,695,476,169,41,41,7
+Enterococcus_faecium_UAA944.mat,1080,596,324,216,20,50,6
+Dorea_formicigenerans_ERR2230157.mat,1151,670,345,281,31,51,5
+Staphylococcus_aureus_M1407.mat,1400,725,347,280,47,78,6

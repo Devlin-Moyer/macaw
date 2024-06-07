@@ -1,0 +1,5 @@
+model,all_rxns,flagged,dead-ends,dilution-blocked,duplicates,loops,redoxes
+Escherichia_coli_99_0814.mat,3583,1262,750,299,102,205,8
+Helicobacter_pylori_Aklavik86.mat,1256,835,448,331,31,79,7
+Bacillus_cereus_BAG3X2_1.mat,2089,1241,761,306,91,168,8
+Escherichia_coli_O104_H4_str_11_4632_C5.mat,3625,1266,738,297,113,221,8

@@ -128,7 +128,7 @@ o2_panel <- ggplot(plot_data, aes(x = o2_req, y = prop)) +
 fig <- tax_panel | o2_panel
 ggsave(
   "figures/fig_agora.tif", fig, width = 7.5, height = 7.5, units = "in",
-  dpi = 300
+  dpi = 300, compression = "lzw"
 )
 
 # quantify how different these distributions are

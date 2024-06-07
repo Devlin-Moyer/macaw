@@ -225,5 +225,6 @@ ggsave(
   height = fig_3a_height + fig_3bc_height,
   width = fig_3_width,
   units = "in",
-  dpi = 300
+  dpi = 300,
+  compression = "lzw"
 )

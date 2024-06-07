@@ -23,5 +23,6 @@ fig_4 <- (fig_4a | fig_4b | fig_4c) +
   plot_annotation(tag_levels = "A") &
   theme(plot.tag = element_text(size = 12, vjust = -5))
 ggsave(
-  "figures/fig_4.tif", fig_4, height = 3, width = 7, units = "in", dpi = 300
+  "figures/fig_4.tif", fig_4, height = 3, width = 7, units = "in", dpi = 300,
+  compression = "lzw"
 )

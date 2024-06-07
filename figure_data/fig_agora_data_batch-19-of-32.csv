@@ -1,0 +1,7 @@
+model,all_rxns,flagged,dead-ends,dilution-blocked,duplicates,loops,redoxes
+Neisseria_bacilliformis_ATCC_BAA_1200.mat,1099,707,333,329,38,39,5
+Streptococcus_pneumoniae_5652_06.mat,1108,582,255,269,17,56,5
+Streptococcus_sanguinis_SK49.mat,1450,902,540,297,39,81,8
+Lachnospira_nov_ERR1203977.mat,956,625,364,229,24,31,5
+Staphylococcus_aureus_M0780.mat,1407,730,348,278,49,84,6
+Campylobacter_coli_1948.mat,1402,907,493,325,55,84,7

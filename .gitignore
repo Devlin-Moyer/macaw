@@ -9,6 +9,7 @@ share/
 *.sh*
 !make_all_figures.sh
 pyvenv.cfg
+Rplots.pdf
 .R*
 *.Rproj
 .Rproj.user

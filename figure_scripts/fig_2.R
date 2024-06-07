@@ -253,5 +253,5 @@ fig_2 <- ggplot() +
 
 ggsave(
   "figures/fig_2.tif", fig_2, height = 5, width = 3.5, units = "in",
-  dpi = 300
+  dpi = 300, compression = "lzw"
 )

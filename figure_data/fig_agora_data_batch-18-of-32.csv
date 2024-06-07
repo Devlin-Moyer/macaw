@@ -1,0 +1,9 @@
+model,all_rxns,flagged,dead-ends,dilution-blocked,duplicates,loops,redoxes
+Sarcina_nov_ERR1203929.mat,1062,602,369,200,26,26,4
+Proteus_mirabilis_ATCC_29906.mat,1752,854,445,275,68,117,7
+Coprococcus_comes_ERR1204042.mat,1124,638,357,245,28,35,5
+Bifidobacterium_ruminantium_DSM_6489.mat,1081,587,295,243,27,41,7
+Streptococcus_agalactiae_GB00279.mat,2196,858,492,290,39,93,7
+Bacteroides_vulgatus_ERR1204045.mat,1316,670,321,290,30,55,6
+Klebsiella_pneumoniae_subsp_pneumoniae_KPNIH16.mat,2595,1315,826,279,111,188,8
+Streptococcus_pneumoniae_4027_06.mat,1097,582,258,266,17,56,5
