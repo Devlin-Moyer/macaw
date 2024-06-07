@@ -126,10 +126,12 @@ o2_panel <- ggplot(plot_data, aes(x = o2_req, y = prop)) +
   labs(x = "", y = "Proportion of Reactions Flagged by Test")
 
 fig <- tax_panel | o2_panel
-ggsave("figures/fig_agora.png", fig, width = 7.5, height = 7.5, units = "in")
+ggsave(
+  "figures/fig_agora.tif", fig, width = 7.5, height = 7.5, units = "in",
+  dpi = 300
+)
 
-# do some ANOVA F-tests to see if these distributions are statistically
-# significantly different between taxa or oxygen requirement categories
+# quantify how different these distributions are
 stats_data <- plot_data %>%
   filter((Phylum != "Other") & (o2_req != "Other"))
 
@@ -172,9 +174,10 @@ p_vals <- bind_rows(
   filter(!is.na(anova_q_val)) %>%
   select(grouped_by, test, anova_q_val)
 
-merge(mean_diffs, p_vals) %>%
-  select(grouped_by, test, groups, max_diff, anova_q_val) %>%
-  arrange(grouped_by, test)
+mean_diffs
+#merge(mean_diffs, p_vals) %>%
+#  select(grouped_by, test, groups, max_diff, anova_q_val) %>%
+#  arrange(grouped_by, test)
 
 # correlations
 agora_data %>%

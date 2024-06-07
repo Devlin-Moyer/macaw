@@ -83,5 +83,5 @@ fig_5b <- load_image_as_panel("figures/fig_5b.png")
   theme(plot.tag = element_text(size = 12, hjust = 1, vjust = -5))
 
 ggsave(
-  "figures/fig_5.png", height = 6.6, width = 5, units = "in", dpi = 600
+  "figures/fig_5.tif", height = 6.6, width = 5, units = "in", dpi = 300
 )

@@ -1,0 +1,2 @@
+model,all_rxns,flagged,dead-ends,dilution-blocked,duplicates,loops,redoxes
+Bifidobacterium_breve_MCC_1128.mat,1049,530,262,223,27,37,5

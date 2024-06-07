@@ -6,7 +6,7 @@ suppressMessages(library(tidyverse))
 theme_set(theme_bw())
 
 # read in summarized test results from the models
-mendoza_data <- read_csv("figure_data/fig_mendoza.csv", show_col_types = F)
+mendoza_data <- read_csv("figure_data/fig_mendoza_data.csv", show_col_types = F)
 
 # reformat data to prepare for making a heatmap
 heatmap_data <- mendoza_data %>%
@@ -84,8 +84,9 @@ test_colors <- structure(
 col_fun = colorRamp2(c(0, max(heatmap_data)), c("white", "red"))
 
 # finally make the heatmap
-png(
-  "figures/fig_mendoza.png", height = 6.5, width = 4.25, unit = "in", res = 600
+tiff(
+  "figures/fig_mendoza.tif", height = 6.5, width = 4.25, unit = "in",
+  res = 300, compression = "lzw"
 )
 Heatmap(
   heatmap_data, name = "Mean Proportion\nof Reactions\nFlagged by Test",
