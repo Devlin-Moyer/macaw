@@ -1,0 +1,5 @@
+model,all_rxns,flagged,dead-ends,dilution-blocked,duplicates,loops,redoxes
+Paenibacillus_sp_HGF7.mat,1375,833,480,287,49,51,6
+Phascolarctobacterium_succinatutens_YIT_12067.mat,1100,791,449,270,25,65,4
+Salmonella_enterica_subsp_enterica_serovar_Newport_str_CVM_21554.mat,1648,727,371,256,56,84,6
+Mycoplasma_hyopneumoniae_J.mat,614,360,174,173,8,7,6

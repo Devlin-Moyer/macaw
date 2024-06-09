@@ -1,6 +1,6 @@
 # Metabolic Accuracy Checks And Workflow (MACAW)
 
-![MACAW logo](MACAW logo.png)
+![MACAW logo](logo.png)
 
 MACAW is a collection of tests for automatically highlighting reactions in an arbitrary Genome-Scale Metabolic Model (GSMM) that are likely to contain or be near an error of some kind. It also provides some information that suggests what changes would be necessary to correct the error. MACAW should work with any GSMM that can be parsed by [Cobrapy](https://opencobra.github.io/cobrapy/) (which currently is currently capable of reading GSMMs saved as SBML, Matlab, JSON, or YAML files).
 
