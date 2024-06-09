@@ -22,6 +22,7 @@ def run_all_tests(
     diphosphate_met_ids = list(), phosphate_met_ids = list(),
     # optional parameters for dilution_test and/or loop_test
     media_mets = None, timeout = 1800, max_retries = 3, zero_thresh = 10**-8,
+    corr_thresh = 0.9,
     # arguments affecting how the reaction equation column in the table of test
     # results are created: with metabolite IDs (default) or names (use_names =
     # True), and whether or not to add suffixes to those IDs or names indicating
@@ -54,7 +55,8 @@ def run_all_tests(
     # identify reactions that are capable of sustaining non-zero fluxes when all
     # exchange reactions are blocked
     (loops, loop_edges) = loop_test(
-        model, zero_thresh, use_names, add_suffixes, threads, verbose
+        model, zero_thresh, corr_thresh, use_names, add_suffixes, threads,
+        verbose
     )
     # identify reactions that become incapable of sustaining non-zero fluxes
     # when dilution constraints are added to the model

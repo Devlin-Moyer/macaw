@@ -389,6 +389,10 @@ def dilution_test(
     ].map(results_dict)
     # merge with the dead-end test results before returning
     out_df = dilution_test_results.merge(dead_end_results)
+    # reorder columns for consistency with other tests
+    out_df = out_df[[
+        'reaction_id', 'reaction_equation', 'dead_end_test', 'dilution_test'
+    ]]
     # print a summary of the findings
     if verbose > 0:
         msg = f' - Found {direct_mets} metabolites for which adding a '

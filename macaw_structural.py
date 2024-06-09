@@ -227,14 +227,8 @@ def duplicate_test(
         msg += 'Cobra.Model object, not {bad_types}s.'
         raise TypeError(msg)
     elif ((len(redox_pairs) < 2) or (proton_ids == list())) and (verbose > 0):
-        msg = 'Can\'t look for pairs of redox reactions that use different '
-        msg += 'redox carriers (e.g. NAD(P), FAD, ubiquinone) but are otherwise'
-        msg += ' identical unless the redox_pairs argument contains at least '
-        msg += 'two pairs of metabolite IDs corresponding to the oxidized and '
-        msg += 'reduced forms of a redox carrier (e.g. [(NAD+, NADH), (FAD, '
-        msg += 'FADH2)]) and the proton_ids argument contains the ID of at '
-        msg += 'least one metabolite ID that represents a proton. Will still '
-        msg += 'look for other kinds of potentially duplicate reactions.'
+        msg = ' - Skipping redox duplicates because no redox_pairs and/or '
+        msg += 'proton_ids were provided.'
         print(msg)
         redox_mets = list()
     else:
@@ -361,10 +355,11 @@ def duplicate_test(
         msg += 'but go in the opposite direction or have the opposite '
         msg += f'reversibility as at least one other reaction.\n   - {stoichs} '
         msg += f'involve the same metabolites but with different coefficients '
-        msg += f'as at least one other reaction.\n   - {redoxes} redox '
-        msg += 'reactions oxidize and/or reduce the same metabolites as another'
-        msg += ' redox reaction but use a different pair of the given redox '
-        msg += 'carriers.'
+        msg += 'as at least one other reaction.'
+        if redox_pairs and proton_pairs:
+            msg += f'\n   - {redoxes} redox reactions oxidize and/or redox the '
+            msg += 'same metabolites as another redox reaction but use a '
+            msg += 'different pair of the given redox carriers.'
         print(msg)
     # add a column for the reaction equations, e.g.
     # glucose + ATP + H2O -> glucose-6-phosphate + ADP
@@ -403,10 +398,8 @@ def diphosphate_test(
     '''
     # first see if we got empty lists for the metabolite IDs
     if (not ppi_ids or not pi_ids) and (verbose > 0):
-        msg = 'Can\'t look for reversible reactions that involve diphosphate '
-        msg += 'without a list of the IDs of the metabolite objects in the '
-        msg += 'given GSMM that represent diphosphate ions and a list of the '
-        msg += 'IDs of the metabolites that represent phosphate ions.'
+        msg = 'Skipping diphosphate test because IDs for mono- and diphosphate '
+        msg += 'ions were not provided.'
         print(msg)
         # create a dataframe that has reaction IDs in one column and NAs in the
         # other (i.e. the same format as the one we'd return if we actually did
@@ -415,6 +408,11 @@ def diphosphate_test(
             'reaction_id' : [r.id for r in given_model.reactions]
         })
         out_df['diphosphate_test'] = 'N/A'
+        # still add the reaction equation column just for consistency
+        out_df = add_reaction_equations(
+            out_df, given_model, use_names = use_names,
+            add_suffixes = add_suffixes
+        )
         return(out_df)
     if verbose > 0:
         print('Starting diphosphate test...')

@@ -1,0 +1,17 @@
+model,all_rxns,flagged,dead-ends,dilution-blocked,duplicates,loops,redoxes
+Streptococcus_pneumoniae_SP6_BS73.mat,1090,581,260,268,17,51,4
+Blautia_massiliensis_GD9.mat,1139,659,353,259,25,42,5
+Streptococcus_mutans_S1B.mat,1375,857,499,297,30,73,7
+Escherichia_coli_p0305293_14.mat,3202,905,452,303,75,122,7
+Atopobium_vaginae_DSM_15829.mat,708,469,205,245,18,18,4
+Veillonella_sp_3_1_44.mat,1139,743,430,230,33,81,6
+Clostridium_botulinum_F_str_Langeland.mat,1659,1092,713,282,48,101,8
+Streptococcus_anginosus_ERR2221320.mat,889,476,250,194,19,31,6
+Enterococcus_faecium_9830565_4.mat,1060,574,302,216,23,47,6
+Salmonella_enterica_subsp_enterica_serovar_Agona_str_13_E_05.mat,2348,1243,770,289,94,172,7
+Salmonella_enterica_subsp_enterica_serovar_Enteritidis_str_8b_1.mat,2329,1239,771,297,96,157,7
+Bifidobacterium_animalis_subsp_lactis_B420.mat,1134,654,453,142,33,59,7
+Bacillus_cereus_H3081_97.mat,1952,1171,725,313,77,134,8
+Geobacillus_vulcani_PSS1.mat,1500,891,502,292,113,81,8
+Anaerococcus_lactolyticus_ATCC_51172.mat,887,530,287,213,25,26,4
+Helicobacter_pylori_NQ4053.mat,1245,819,442,317,35,75,7
