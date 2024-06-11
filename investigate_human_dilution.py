@@ -45,10 +45,6 @@ for version in ['11', '12']:
     results.to_csv(
         f'figure_data/Human-GEMv{version}_dil-results.csv', index = False
     )
-    # might as well just save edge lists to two separate files now
-    edge_list.to_csv(
-        f'figure_data/Human-GEMv{version}_dil-edges.csv', index = False
-    )
 
 # keep all reactions that were removed or added between versions
 both_results = results_dfs[0].merge(results_dfs[1], how = 'outer')

@@ -20,10 +20,8 @@ Configuration()
 logging.getLogger('cobra').setLevel(logging.ERROR)
 
 # get list of IDs of metabolites that are in DMEM or FBS
-media_concs = pd.read_csv('media/DMEM-FBS_ingredients.csv')
-media_mets = media_concs[
-    (media_concs['DMEM'] != '0') | (media_concs['FBS'] != '0')
-]['metabolite_id'].to_list()
+media_df = pd.read_csv('figure_data/Table S1.csv')
+media_mets = media_df['metabolite_id'].to_list()
 
 # get paths to all versions of Human-GEM
 d = 'GSMMs'

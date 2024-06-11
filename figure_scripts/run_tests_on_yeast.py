@@ -18,7 +18,8 @@ Configuration()
 model = cobra.io.read_sbml_model(f'GSMMs/yeast-GEMv{version}.xml')
 
 # get list of IDs of metabolites in the Verduyn minimal mineral medium
-in_media = pd.read_csv('media/Verduyn_ingredients.csv')['metabolite_id']
+media_df = pd.read_csv('figure_data/Table S2.csv')
+media_mets = media_df['metabolite_id'].to_list()
 
 # set lower bound on ATP maintenance reaction to 0 for consistency with
 # Human-GEM, which doesn't have a comparable reaction/bound
@@ -60,7 +61,7 @@ pi_ids = [
     's_2977', 's_2995', 's_3228', 's_3536'
 ]
 (test_results, edge_list) = run_all_tests(
-    model, redox_pairs, proton_ids, ppi_ids, pi_ids, in_media, timeout = 360,
+    model, redox_pairs, proton_ids, ppi_ids, pi_ids, media_mets, timeout = 360,
     use_names = True, add_suffixes = True, threads = threads, verbose = 2
 )
 

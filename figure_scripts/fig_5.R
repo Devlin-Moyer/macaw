@@ -1,11 +1,12 @@
 # fig_5.R
 
 # load packages
-library(png)
-library(ggplot2)
-library(ggpubr)
-library(patchwork)
-suppressMessages(library(tidyverse))
+lib <- "/usr3/graduate/dcmoyer/R/x86_64-pc-linux-gnu-library/4.2"
+library(png, lib.loc = lib)
+library(ggplot2, lib.loc = lib)
+library(ggpubr, lib.loc = lib)
+library(patchwork, lib.loc = lib)
+suppressMessages(library(tidyverse, lib.loc = lib))
 
 # read in a PNG file and turn it into a ggplot object so it can be patchworked
 # together with actual ggplot plots into a single figure
@@ -77,12 +78,18 @@ fig_5c <- fig_5c_data %>%
 fig_5a <- load_image_as_panel("figures/fig_5a.png")
 fig_5b <- load_image_as_panel("figures/fig_5b.png")
 
-(fig_5a / fig_5b / free(fig_5c)) +
+fig_5 <- (fig_5a / fig_5b / free(fig_5c)) +
   plot_layout(heights = unit(c(1.8, 2.75, 1.5), "in")) +
   plot_annotation(tag_levels = "A") &
-  theme(plot.tag = element_text(size = 12, hjust = 1, vjust = -5))
+  theme(plot.tag = element_text(size = 8, face = "bold", hjust = 1, vjust = -5))
 
 ggsave(
-  "figures/fig_5.tif", height = 6.6, width = 5, units = "in", dpi = 300,
+  "figures/fig_5.tif",
+  fig_5,
+  height = 6.6,
+  width = 5,
+  units = "in",
+  dpi = 300,
+  device = "tiff",
   compression = "lzw"
 )

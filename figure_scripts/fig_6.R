@@ -8,10 +8,7 @@ library(ggbeeswarm)
 suppressMessages(library(tidyverse))
 theme_set(theme_bw())
 
-# read in summarized test results from the models
 fig_6a_data_raw <- read_csv("figure_data/fig_6a_data.csv", show_col_types = F)
-
-# reformat data to prepare for making a heatmap
 fig_6a_data <- fig_6a_data_raw %>%
   # unpack information in model filenames into separate columns
   separate(model, c("organism", "method", NA)) %>%
@@ -76,7 +73,6 @@ fig_6a_test_ann_bar <- structure(
     rep("Loop", 3)
   ), names = fig_6a_row_names
 )
-
 # make two more named vectors to control colors in annotation bars
 fig_6a_org_colors <- structure(
   c("#BEBADA", "#FFFFB3", "#8DD3C7"), names = fig_6a_orgs
@@ -120,16 +116,14 @@ fig_6a <- Heatmap(
   ),
   height = unit(2.9, "in"),
   width = unit(1.4, "in")
-)
+) 
 
-##### Figure 6b #####
-# table of information about the different microbes there are AGORA2 models for
-agora_info <- read_csv("figure_data/fig_6b_agora_info.csv", show_col_types = F)
 # summarized test results from the AGORA2 models
 fig_6b_data_raw <- bind_rows(lapply(
-  list.files("figure_data/", "fig_agora_data*", full.names = T),
+  list.files("figure_data/", "fig_6b_data*", full.names = T),
   function(f) read_csv(f, show_col_types = F)
-))
+)) %>%
+  distinct()
 cat("Have data for ", nrow(fig_6b_data_raw), " models (", round(100*nrow(fig_6b_data_raw)/7302), "%)\n", sep = "")
 
 fig_6b_data <- fig_6b_data_raw %>%
@@ -145,8 +139,6 @@ fig_6b_data <- fig_6b_data_raw %>%
     -model, -all_rxns, -flagged, -`dead-ends`, -`dilution-blocked`, -duplicates,
     -loops, -redoxes
   ) %>%
-  # add in the other info about each organism
-  merge(agora_info, by.x = "organism", by.y = "MicrobeID") %>%
   pivot_longer(
     c(any_prop, dead_prop, dil_prop, dupe_prop, loop_prop),
     names_to = "test", values_to = "prop"
@@ -157,37 +149,13 @@ fig_6b_data <- fig_6b_data_raw %>%
     test == "dil_prop" ~ "Dilution Test",
     test == "dupe_prop" ~ "Duplicate Test",
     test == "loop_prop" ~ "Loop Test"
-  )) %>%
-  # lump together "unclassified Bacteria" with all bacteria in phyla with
-  # 10 or fewer other models
-  mutate(
-    Phylum = ifelse(Phylum == "unclassified Bacteria", "Other", Phylum)
-  ) %>%
-  group_by(Phylum) %>%
-  mutate(Phylum = ifelse(n() <= 10, "Other", Phylum)) %>%
-  ungroup() %>%
-  mutate(Phylum = fct_relevel(as.factor(Phylum), "Other", after = Inf))
+  ))
 
-fig_6b <- ggplot(fig_6b_data, aes(x = Phylum, y = prop)) +
-  geom_quasirandom(aes(col = test), alpha = 0.4, show.legend = F) +
-  stat_summary(fun = median, geom = "crossbar", linewidth = 0.25) +
-  stat_summary(
-    fun = quantile,
-    fun.args = list(probs = 0.25),
-    geom = "crossbar",
-    linetype = "dashed",
-    linewidth = 0.1
-  ) +
-  stat_summary(
-    fun = quantile,
-    fun.args = list(probs = 0.75),
-    geom = "crossbar",
-    linetype = "dashed",
-    linewidth = 0.1
-  ) +
-  facet_grid(rows = vars(test), scales = "free_y") +
-  scale_color_manual(
-    values = c("#FDB462", "#FB8072", "#B3DE69", "#FCCDE5", "#80B1D3")
+fig_6b <- ggplot(fig_6b_data, aes(x = prop, fill = test)) +
+  geom_histogram(bins = 50, show.legend = F) +
+  facet_wrap(. ~ test, scales = "free", ncol = 1) +
+  scale_fill_manual(
+    values = c("#8DD3C7", "#FB8072", "#B3DE69", "#FCCDE5", "#80B1D3")
   ) +
   theme(
     strip.background = element_blank(),
@@ -195,17 +163,28 @@ fig_6b <- ggplot(fig_6b_data, aes(x = Phylum, y = prop)) +
     panel.grid = element_blank(),
     text = element_text(size = 8, color = "black"),
     axis.text = element_text(size = 6, color = "black"),
-    axis.text.x = element_text(angle = 45, hjust = 1),
-    plot.margin = unit(c(0,0,0,0), "in")
+    plot.margin = unit(c(0,0,0,0), "in"),
+    panel.spacing = unit(0, "in"),
+    plot.tag.position = c(-0.15, 1.03),
+    plot.tag.location = "panel"
   ) +
-  labs(x = "", y = "Proportion of Reactions Flagged by Test")
+  labs(x = "Prop. of Reactions Flagged by Test", y = "Number of GSMMs")
 
-#### Assemble figure #####
 # turn ComplexHeatmap object into a grob so wrap_plots recognizes it
-fig_6 <- (wrap_plots(grid.grabExpr(draw(fig_6a))) | fig_6b) +
-  plot_layout(widths = c(1.4, 1)) +
+fig_6a <- fig_6a %>%
+  draw(padding = unit(c(0,0,0,0), "in")) %>%
+  grid.grabExpr() %>%
+  wrap_plots() +
+  theme(
+    plot.tag.position = c(0.057, 0.98),
+    plot.tag.location = "panel",
+    plot.margin = unit(c(0,0,0,0), "in")
+  )
+
+fig_6 <- (fig_6a | fig_6b) +
+  plot_layout(widths = c(1.3, 1)) +
   plot_annotation(tag_levels = "A") &
-  theme(plot.tag = element_text(size = 12, hjust = 0))
+  theme(plot.tag = element_text(size = 8, face = "bold"))
 
 ggsave(
   "figures/fig_6.tif",
@@ -214,5 +193,6 @@ ggsave(
   height = 4.75,
   units = "in",
   dpi = 300,
+  device = "tiff",
   compression = "lzw"
 )

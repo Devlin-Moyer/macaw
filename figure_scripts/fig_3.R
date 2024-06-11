@@ -133,7 +133,7 @@ make_hists <- function(results, x_coord, y_coord) {
       data = c50s,
       mapping = aes(x = x, y = y, label = label),
       hjust = 1,
-      size = 6 * 0.36 # approximate a font size of 6
+      size = 8 * 0.36 # approximate a font size of 8
     ) +
     facet_wrap(. ~ flagged_by) +
     scale_x_log10() +
@@ -142,7 +142,7 @@ make_hists <- function(results, x_coord, y_coord) {
       breaks = c(1, 10, 100, 1000)
     ) +
     scale_fill_manual(
-      values = c("#FDB462", "#FB8072", "#B3DE69", "#FCCDE5", "#80B1D3")
+      values = c("#8DD3C7", "#FB8072", "#B3DE69", "#FCCDE5", "#80B1D3")
     ) +
     labs(
       x = "# Reactions in Pathway",
@@ -151,6 +151,7 @@ make_hists <- function(results, x_coord, y_coord) {
     theme(
       text = element_text(color = "black", size = 8),
       axis.text = element_text(color = "black", size = 8),
+      strip.text = element_text(size = 8),
       panel.grid = element_blank(),
       strip.background = element_blank(),
       strip.clip = "off"
@@ -188,10 +189,12 @@ make_upset <- function(data) {
         panel.grid = element_blank(),
         axis.title.x = element_blank(),
         axis.title.y = element_text(size = 8),
-        axis.text.y = element_text(color = "black"),
+        axis.text.y = element_text(color = "black", size = 8),
         plot.background = element_rect(fill = "transparent")
       ) +
-      theme_combmatrix(combmatrix.label.text = element_text(color = "black"))
+      theme_combmatrix(
+        combmatrix.label.text = element_text(color = "black", size = 8)
+      )
   return(fig)
 }
 
@@ -205,19 +208,21 @@ fig_3a_height <- (fig_3_width * (fig_3_stuff[[2]]))
 fig_3a <- fig_3_stuff[[1]] + theme(plot.tag.position = c(0.002,0.98))
 fig_3b <- make_hists(human_results, 500, 1500) +
   theme(
-    plot.tag.position = c(-0.22, 1.1),
+    plot.tag.position = c(-0.21, 1.1),
     plot.margin = unit(c(0,0,0.125,0), "in")
   )
 fig_3c <- make_upset(human_results) +
   theme(
-    plot.tag.position = c(-0.4, 0.96),
+    plot.tag.position = c(-0.36, 0.96),
     plot.margin = unit(c(0, 0, 0.125, 0.5), "in")
   )
-fig_3 <- (free(fig_3a) / (free(fig_3b) | free(fig_3c))) +
+fig_3 <- (free(fig_3a) / (
+  (free(fig_3b) | free(fig_3c)) + plot_layout(widths = c(1.1, 1))
+)) +
   plot_layout(heights = unit(c(fig_3a_height, fig_3bc_height), "in")) +
   plot_annotation(tag_levels = "A") &
   theme(
-    plot.tag = element_text(size = 12),
+    plot.tag = element_text(size = 8, face = "bold"),
     plot.tag.location = "panel"
   )
 ggsave(

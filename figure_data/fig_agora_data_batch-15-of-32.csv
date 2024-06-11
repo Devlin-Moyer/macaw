@@ -1,7 +1,0 @@
-model,all_rxns,flagged,dead-ends,dilution-blocked,duplicates,loops,redoxes
-Escherichia_coli_KTE98.mat,3621,1256,732,307,95,206,8
-Helicobacter_pylori_GAM246Ai.mat,1302,909,452,401,33,78,7
-Escherichia_coli_KTE174.mat,3561,1214,719,290,99,190,8
-Enterococcus_faecalis_12107.mat,1241,673,331,277,25,57,6
-Cetobacterium_somerae_ATCC_BAA_47401.mat,1441,778,477,240,37,56,7
-Streptococcus_mutans_TCI_256.mat,1386,848,486,300,30,73,8

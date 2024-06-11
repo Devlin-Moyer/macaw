@@ -17,10 +17,8 @@ Configuration()
 model = cobra.io.read_sbml_model(f'GSMMs/Human-GEMv{version}.xml')
 
 # get list of IDs of metabolites that are in DMEM or FBS
-media_concs = pd.read_csv('media/DMEM-FBS_ingredients.csv')
-in_media = media_concs[
-    (media_concs['DMEM'] != '0') | (media_concs['FBS'] != '0')
-]['metabolite_id'].to_list()
+media_df = pd.read_csv('figure_data/Table S1.csv')
+media_mets = media_df['metabolite_id'].to_list()
 
 redox_pairs = [
     # NAD+ and NADH in every compartment they both exist in
@@ -65,7 +63,7 @@ ppi_ids = [m.id for m in model.metabolites if m.id.startswith('MAM02759')]
 pi_ids = [m.id for m in model.metabolites if m.id.startswith('MAM02751')]
 
 (test_results, edge_list) = run_all_tests(
-    model, redox_pairs, proton_ids, ppi_ids, pi_ids, in_media, timeout = 1800,
+    model, redox_pairs, proton_ids, ppi_ids, pi_ids, media_mets, timeout = 1800,
     use_names = True, add_suffixes = True, threads = threads
 )
 

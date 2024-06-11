@@ -16,7 +16,8 @@ Configuration()
 model = cobra.io.read_sbml_model(f'GSMMs/iML1515.xml')
 
 # get list of IDs of metabolites that are in M9 media
-in_media = pd.read_csv('media/M9_ingredients.csv')['metabolite_id']
+media_df = pd.read_csv('media/Table S3.csv')
+media_mets = media_df['metabolite_id'].to_list()
 
 # set lower bound on ATP maintenance reaction to 0
 model.reactions.get_by_id('ATPM').lower_bound = 0
@@ -46,7 +47,7 @@ redox_pairs = [
 proton_ids = ['h_c', 'h_e', 'h_p']
 
 (test_results, edge_list) = run_all_tests(
-    model, redox_pairs, proton_ids, media_mets = in_media, timeout = 360,
+    model, redox_pairs, proton_ids, media_mets = media_mets, timeout = 360,
     use_names = True, add_suffixes = True, threads = threads
 )
 

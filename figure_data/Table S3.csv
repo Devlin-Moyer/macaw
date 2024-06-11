@@ -1,0 +1,12 @@
+metabolite_name,metabolite_id
+Ammonium,nh4_e
+Chloride,cl_e
+Glucose,glc__D_e
+Iron (II),fe2_e
+Magnesium,mg2_e
+Oxygen,o2_e
+Phosphate,pi_e
+Potassium,k_e
+Sodium,na1_e
+Sulfate,so4_e
+Water,h2o_e

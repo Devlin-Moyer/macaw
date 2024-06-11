@@ -1,0 +1,12 @@
+model,all_rxns,flagged,dead-ends,dilution-blocked,duplicates,loops,redoxes
+Eggerthella_lenta_CC75D52.mat,1135,808,479,280,33,67,7
+Enterococcus_faecalis_B3286.mat,1233,661,328,276,23,49,6
+Escherichia_coli_O157_H7_str_EC4009.mat,3139,856,443,282,70,101,7
+Bacillus_cereus_TIAC219.mat,2014,1232,730,320,90,177,8
+Mycoplasma_hyopneumoniae_232.mat,731,435,266,156,8,9,6
+Klebsiella_pneumoniae_subsp_pneumoniae_KPNIH18.mat,2599,1317,826,284,111,183,8
+Staphylococcus_aureus_M0571.mat,1405,728,346,278,47,84,6
+Escherichia_coli_DEC10B.mat,3578,1222,710,294,111,201,8
+Enterococcus_faecium_UAA1022.mat,1050,575,306,215,21,47,6
+Helicobacter_pylori_Shi417.mat,1298,833,463,311,35,75,7
+Staphylococcus_aureus_M1188.mat,1402,729,347,278,47,84,6

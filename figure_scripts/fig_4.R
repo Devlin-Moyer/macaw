@@ -21,8 +21,14 @@ fig_4c <- load_image_as_panel("figures/fig_4c.png")
 fig_4 <- (fig_4a | fig_4b | fig_4c) +
   plot_layout(widths = c(1.3, 2, 1.1)) +
   plot_annotation(tag_levels = "A") &
-  theme(plot.tag = element_text(size = 12, vjust = -5))
+  theme(plot.tag = element_text(size = 8, face = "bold", vjust = -5))
 ggsave(
-  "figures/fig_4.tif", fig_4, height = 3, width = 7, units = "in", dpi = 300,
+  "figures/fig_4.tif",
+  fig_4,
+  height = 3,
+  width = 7,
+  units = "in",
+  dpi = 300,
+  device = "tiff",
   compression = "lzw"
 )
