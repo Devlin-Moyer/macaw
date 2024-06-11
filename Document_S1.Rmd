@@ -6,13 +6,14 @@ output: pdf_document
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-```{r}
+```{r warning=FALSE}
 library(png)
 library(ggplot2)
 library(ggpubr)
 library(ggupset)
 library(scales)
 library(patchwork)
+library(tools)
 suppressMessages(library(tidyverse))
 theme_set(theme_bw())
 
@@ -149,17 +150,15 @@ fig_S4a_data <- fig_S4a_data_raw %>%
   ))) %>%
   arrange(model_version)
 
+# label every other version
+fig_S4a_labs <- unique(as.character(fig_S4a_data$model_version))
+fig_S4a_labs[c(FALSE, TRUE)] <- ""
+
 fig_S4a <- ggplot(
   fig_S4a_data, aes(x = model_version, y = prop, col = test, group = test)
 ) +
   geom_line() +
-  #scale_x_discrete(
-    # tick mark every other version
-    #labels = c(
-    #  "1.0", "", "1.2", "", "1.4", "", "1.6", "", "1.8", "", "1.10", "", "1.12",
-    #  "", "1.14", "", "1.16", "", "1.18"
-    #)
-  #) +
+  scale_x_discrete(labels = c(fig_S4a_labs)) +
   scale_color_manual(
     values = c("#FDB462", "#FB8072", "#B3DE69", "#FCCDE5", "#80B1D3")
   ) +

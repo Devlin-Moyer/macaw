@@ -36,23 +36,19 @@ python -m figure_scripts.run_tests_on_ecoli.py $threads > logs/iML1515_log.txt
 python -m figure_scripts.fig_2_S4b_data
 python -m figure_scripts.fig_3a_S2a_S3a_data
 python -m figure_scripts.fig_5_data $threads
-python -m figure_scripts.run_tests_on_many.py GSMMs/mendoza_2019 fig_mendoza_data $threads 1 1 > logs/mendoza_log.txt
-python -m figure_scripts.run_tests_on_many.py GSMMs/AGORA2 fig_agora_data $threads 1 1 >> logs/agora_log.txt
+python -m figure_scripts.fig_6_data GSMMs/mendoza_2019 fig_6a_data $threads 1 1 > logs/fig_6a_log.txt
+python -m figure_scripts.fig_6_data GSMMs/AGORA2 fig_6b_data $threads 1 1 >> logs/fig_6b_log.txt
 python -m figure_scripts.fig_S4a_data $threads >> logs/fig_S4a_log.txt
 python -m figure_scripts.fig_S5_data
 
-# note that run_tests_on_many.py will take weeks to run on all the AGORA2 models
-# without pretty involved parallelization; I have not included the actual setup
-# I used because it was hard-coded to the specific computing cluster I ran it
-# on. fig_S4a_data.py will also take several days to run unless you have both a
-# large number of processors (>=16) and a large amount of memory (in the
-# neighborhood of a few terabytes) available
+# fig_6_data.py and fig_S4_data.py need lots of threads (>=16) and considerable
+# memory (>500GB) to finish in anything under a week
 
 # make figures (note that all Escher maps were manually created)
-# this was all done with R version 4.3.1
+# this was all done with R version 4.3.2
 Rscript figure_scripts/fig_2_S4.R
 Rscript figure_scripts/fig_3_S2_S3.R
 Rscript figure_scripts/fig_4_S6.R
 Rscript figure_scripts/fig_5.R
-Rscript figure_scripts/fig_mendoza.R
-Rscript figure_scripts/fig_agora.R
+Rscript figure_scripts/fig_6.R
+Rscript -e "rmarkdown::render('Document_S1.Rmd')"
