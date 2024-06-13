@@ -1,196 +1,93 @@
 # fig_6.R
 
-suppressMessages(library(circlize))
-suppressMessages(library(ComplexHeatmap))
-library(ggplot2)
-library(patchwork)
-library(ggbeeswarm)
-suppressMessages(library(tidyverse))
-theme_set(theme_bw())
+# load packages
+lib <- "/usr3/graduate/dcmoyer/R/x86_64-pc-linux-gnu-library/4.2"
+library(png, lib.loc = lib)
+library(ggplot2, lib.loc = lib)
+library(ggpubr, lib.loc = lib)
+library(patchwork, lib.loc = lib)
+suppressMessages(library(tidyverse, lib.loc = lib))
 
-fig_6a_data_raw <- read_csv("figure_data/fig_6a_data.csv", show_col_types = F)
-fig_6a_data <- fig_6a_data_raw %>%
-  # unpack information in model filenames into separate columns
-  separate(model, c("organism", "method", NA)) %>%
-  mutate(method = case_when(
-    grepl("AU", method) ~ "AuReMe",
-    grepl("CA", method) ~ "CarveMe",
-    grepl("ME", method) ~ "Merlin",
-    grepl("MD", method) ~ "MetaDraft",
-    grepl("MS", method) ~ "ModelSEED",
-    grepl("PT", method) ~ "Pathway Tools",
-    grepl("RA", method) ~ "RAVEN"
+# read in a PNG file and turn it into a ggplot object so it can be patchworked
+# together with actual ggplot plots into a single figure
+load_image_as_panel <- function(path) {
+  img <- readPNG(path)
+  panel <- ggplot() + background_image(img) + theme_void() +
+    coord_fixed(ratio = dim(img)[1] / dim(img)[2]) +
+    theme(plot.margin = unit(c(0,0,0,0), "in"))
+  return(panel)
+}
+
+# read in data
+fig_6c_data <- read_csv("figure_data/fig_6c_data.csv", show_col_types = FALSE)
+
+fig_6c <- fig_6c_data %>%
+  # add a newline to "PDH blocked, no impact on GCS"
+  mutate(impact = gsub(", no", ",\nno", impact)) %>%
+  # make sure impact and condition have factor levels in a helpful order
+  mutate(impact = factor(
+    impact,
+    c("No impact on either", "PDH blocked,\nno impact on GCS", "Both blocked")
   )) %>%
-  # turn numbers of reactions into proportions of all reactions
-  mutate(any_prop = flagged/all_rxns) %>%
-  mutate(dead_prop = `dead-ends`/all_rxns) %>%
-  mutate(dil_prop = `dilution-blocked`/all_rxns) %>%
-  mutate(dupe_prop = duplicates/all_rxns) %>%
-  mutate(loop_prop = loops/all_rxns) %>%
-  # drop count columns now that we have proportions
-  select(
-    -flagged, -`dead-ends`, -`dilution-blocked`, -duplicates, -loops, -all_rxns
-  ) %>%
-  # pivot twice to get into appropriate format for heatmap
-  pivot_longer(
-    c(any_prop, dead_prop, dil_prop, dupe_prop, loop_prop),
-    names_to = "test",
-    values_to = "prop"
-  ) %>%
-  pivot_wider(
-    id_cols = c(organism, test),
-    names_from = "method",
-    values_from = "prop",
-    # average together proportions from the different parameter combinations for
-    # each reconstruction method
-    values_fn = mean
-  ) %>%
-  # get rows in a helpful order and give them unique rownames
-  arrange(test, organism) %>%
-  unite(org_test, c(organism, test)) %>%
-  column_to_rownames("org_test") %>%
-  # put columns in alphabetical order
-  select(AuReMe, CarveMe, MetaDraft, Merlin, ModelSEED, `Pathway Tools`, RAVEN)
-
-# make two named vectors to make annotation bars
-fig_6a_row_names <- c(
-  "BPE_any_prop", "LPL_any_prop", "PPU_any_prop",
-  "BPE_dead_prop", "LPL_dead_prop", "PPU_dead_prop",
-  "BPE_dil_prop", "LPL_dil_prop", "PPU_dil_prop",
-  "BPE_dupe_prop", "LPL_dupe_prop", "PPU_dupe_prop",
-  "BPE_loop_prop", "LPL_loop_prop", "PPU_loop_prop"
-)
-fig_6a_orgs <- c("B. pertussis", "L. plantarum", "P. putida")
-fig_6a_org_ann_bar <- structure(
-  rep(fig_6a_orgs, 5), names = fig_6a_row_names
-)
-fig_6a_test_ann_bar <- structure(
-  c(
-    rep("Any", 3),
-    rep("Dead-end", 3),
-    rep("Dilution", 3),
-    rep("Duplicate", 3),
-    rep("Loop", 3)
-  ), names = fig_6a_row_names
-)
-# make two more named vectors to control colors in annotation bars
-fig_6a_org_colors <- structure(
-  c("#BEBADA", "#FFFFB3", "#8DD3C7"), names = fig_6a_orgs
-)
-fig_6a_test_colors <- structure(
-  c("#FDB462", "#FD8072", "#B3DE69", "#FCCDE5", "#80B1D3"),
-  names = c("Any", "Dead-end", "Dilution", "Duplicate", "Loop")
-)
-# make colormap for the main heatmap
-fig_6a_col_fun = colorRamp2(c(0, max(fig_6a_data)), c("white", "red"))
-
-# finally make the heatmap
-fig_6a <- Heatmap(
-  fig_6a_data,
-  col = fig_6a_col_fun,
-  rect_gp = gpar(col = "black", lwd = 1.5),
-  cluster_rows = F,
-  cluster_columns = F,
-  left_annotation = rowAnnotation(
-    Test = fig_6a_test_ann_bar,
-    Organism = fig_6a_org_ann_bar,
-    col = list(Organism = fig_6a_org_colors, Test = fig_6a_test_colors),
-    annotation_name_gp = gpar(fontsize = 8),
-    annotation_legend_param = list(
-      Organism = list(
-        title_gp = gpar(fontsize = 8), labels_gp = gpar(fontsize = 6)
-      ),
-      Test = list(
-        title_gp = gpar(fontsize = 8), labels_gp = gpar(fontsize = 6)
-      )
+  mutate(condition = factor(
+    condition,
+    c(
+      "Human-GEM 1.18+ with Dilution",
+      "Human-GEM 1.18+ without Dilution",
+      "Human-GEM 1.15 with Dilution",
+      "Human-GEM 1.15 without Dilution",
+      "Patients"
     )
-  ),
-  show_row_names = F,
-  column_names_gp = gpar(fontsize = 8),
-  column_title = "Reconstruction Method",
-  column_title_side = "bottom",
-  column_title_gp = gpar(fontsize = 8),
-  name = "Avg. Prop. of\nReactions\nFlagged by\nTest",
-  heatmap_legend_param = list(
-    title_gp = gpar(fontsize = 8), labels_gp = gpar(fontsize = 8)
-  ),
-  height = unit(2.9, "in"),
-  width = unit(1.4, "in")
-) 
+  )) %>%
+  # make a heatmap
+  ggplot(aes(x = gene, y = condition, fill = impact)) +
+    geom_tile(col = "black", linewidth = 0.5) +
+    # Juan said to use a pastel color palette
+    scale_fill_brewer(palette = "Set3") +
+    labs(x = "", y = "", fill = "Measured or Predicted\nImpact of Knockout") +
+    theme(
+      # drop the background and axes
+      panel.background = element_blank(),
+      # remove extra space on the left and bottom of the plot from where the
+      # axis titles would be
+      plot.margin = unit(c(1,1,-3,-3), "mm"),
+      # remove axis ticks and the extra space between the labels and the plot
+      # area left behind without them
+      axis.ticks = element_blank(),
+      axis.ticks.length = unit(0, "mm"),
+      # make all text font size 8 and make sure there aren't any awkward gaps
+      # between things
+      axis.text = element_text(color = "black", size = 8),
+      axis.text.y = element_text(margin = margin(r = -0.1)),
+      axis.text.x = element_text(angle = 45, hjust = 1, margin = margin(t = 0)),
+      legend.title = element_text(size = 8),
+      legend.text = element_text(size = 8),
+      legend.box.spacing = unit(0, "mm"),
+      axis.title.x = element_blank(),
+      # add a bit more space between each item in the legend cuz we have two
+      # lines of text for one of the things
+      legend.spacing.y = unit(2, "mm")
+    ) +
+    # without this, legend.spacing.y only affects the space between the title
+    # of the legend and the contents of the legend and not the space between
+    # each row of the legend
+    guides(fill = guide_legend(byrow = TRUE))
 
-# summarized test results from the AGORA2 models
-fig_6b_data_raw <- bind_rows(lapply(
-  list.files("figure_data/", "fig_6b_data*", full.names = T),
-  function(f) read_csv(f, show_col_types = F)
-)) %>%
-  distinct()
-cat("Have data for ", nrow(fig_6b_data_raw), " models (", round(100*nrow(fig_6b_data_raw)/7302), "%)\n", sep = "")
+# now that we've made the plot, read in the Escher maps to use as the other two
+# panels and patchwork them all together
+fig_6a <- load_image_as_panel("figures/fig_6a.png")
+fig_6b <- load_image_as_panel("figures/fig_6b.png")
 
-fig_6b_data <- fig_6b_data_raw %>%
-  # strip the extensions off of the filenames to get AGORA2's "MicrobeIDs"
-  mutate(organism = gsub(".mat", "", model)) %>%
-  # replace counts with proportions, then drop the counts
-  mutate(any_prop = flagged/all_rxns) %>%
-  mutate(dead_prop = `dead-ends`/all_rxns) %>%
-  mutate(dil_prop = `dilution-blocked`/all_rxns) %>%
-  mutate(dupe_prop = duplicates/all_rxns) %>%
-  mutate(loop_prop = loops/all_rxns) %>%
-  select(
-    -model, -all_rxns, -flagged, -`dead-ends`, -`dilution-blocked`, -duplicates,
-    -loops, -redoxes
-  ) %>%
-  pivot_longer(
-    c(any_prop, dead_prop, dil_prop, dupe_prop, loop_prop),
-    names_to = "test", values_to = "prop"
-  ) %>%
-  mutate(test = case_when(
-    test == "any_prop" ~ "Any Test",
-    test == "dead_prop" ~ "Dead-End Test",
-    test == "dil_prop" ~ "Dilution Test",
-    test == "dupe_prop" ~ "Duplicate Test",
-    test == "loop_prop" ~ "Loop Test"
-  ))
-
-fig_6b <- ggplot(fig_6b_data, aes(x = prop, fill = test)) +
-  geom_histogram(bins = 50, show.legend = F) +
-  facet_wrap(. ~ test, scales = "free", ncol = 1) +
-  scale_fill_manual(
-    values = c("#8DD3C7", "#FB8072", "#B3DE69", "#FCCDE5", "#80B1D3")
-  ) +
-  theme(
-    strip.background = element_blank(),
-    strip.clip = "off",
-    panel.grid = element_blank(),
-    text = element_text(size = 8, color = "black"),
-    axis.text = element_text(size = 6, color = "black"),
-    plot.margin = unit(c(0,0,0,0), "in"),
-    panel.spacing = unit(0, "in"),
-    plot.tag.position = c(-0.15, 1.03),
-    plot.tag.location = "panel"
-  ) +
-  labs(x = "Prop. of Reactions Flagged by Test", y = "Number of GSMMs")
-
-# turn ComplexHeatmap object into a grob so wrap_plots recognizes it
-fig_6a <- fig_6a %>%
-  draw(padding = unit(c(0,0,0,0), "in")) %>%
-  grid.grabExpr() %>%
-  wrap_plots() +
-  theme(
-    plot.tag.position = c(0.057, 0.98),
-    plot.tag.location = "panel",
-    plot.margin = unit(c(0,0,0,0), "in")
-  )
-
-fig_6 <- (fig_6a | fig_6b) +
-  plot_layout(widths = c(1.3, 1)) +
+fig_6 <- (fig_6a / fig_6b / free(fig_6c)) +
+  plot_layout(heights = unit(c(1.8, 2.75, 1.5), "in")) +
   plot_annotation(tag_levels = "A") &
-  theme(plot.tag = element_text(size = 8, face = "bold"))
+  theme(plot.tag = element_text(size = 8, face = "bold", hjust = 1, vjust = -5))
 
 ggsave(
   "figures/fig_6.tif",
   fig_6,
-  width = 5.5,
-  height = 4.75,
+  height = 6.6,
+  width = 5,
   units = "in",
   dpi = 300,
   device = "tiff",

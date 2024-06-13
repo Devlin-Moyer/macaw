@@ -1,0 +1,28 @@
+reaction_id,reaction_equation,dil_test_in_v11,dil_test_in_v12
+MAR06613,dADP [n] + dTDP [n] <=> dATP [n] + dTMP [n],always blocked,ok
+MAR07160,0.3 dATP [c] + 0.2 dCTP [c] + 0.2 dGTP [c] + 0.3 dTTP [c] --> DNA [c] + PPi [c],ok,
+MAR07161,0.18 ATP [c] + 0.3 CTP [c] + 0.34 GTP [c] + 0.18 UTP [c] --> PPi [c] + RNA [c],ok,
+MAR07162,0.18 ADP [c] + 0.3 CDP [c] + 0.34 GDP [c] + 0.18 UDP [c] --> Pi [c] + RNA [c],ok,
+MAR07163,DNA [c] + H2O [c] --> 0.3 dAMP [c] + 0.2 dCMP [c] + 0.2 dGMP [c] + 0.3 dTMP [c] + H+ [c],ok,
+MAR08641,DNA [n] + SAM [n] --> DNA-5-methylcytosine [n] + H+ [n] + SAH [n],MAM01721n;MAM01722n,MAM01722n
+MAR07861,dATP [c] <=> dATP [n],always blocked,ok
+MAR07862,dGTP [c] <=> dGTP [n],always blocked,ok
+MAR08639,DNA [c] <=> DNA [n],MAM01721n,
+MAR09815,decanoic acid [e] <=> ,,ok
+MAR09123,"hyaluronan biosynthesis, precursor 1 [e] <=> ",,ok
+MAR00021,alanine [c] + arginine [c] + asparagine [c] + aspartate [c] + cholesterol [c] + cholesterol-ester pool [r] + CL pool [c] + cofactors and vitamins [c] + cysteine [c] + DNA [n] + DNA-5-methylcytosine [n] + glutamate [c] + glutamine [c] + glycine [c] + histidine [c] + isoleucine [c] + leucine [c] + lipid droplet [c] + lysine [c] + methionine [c] + phenylalanine [c] + phosphatidate-LD-TAG pool [c] + PI pool [c] + proline [c] + RNA [c] + serine [c] + SM pool [c] + threonine [c] + tryptophan [c] + tyrosine [c] + valine [c] + glycogen [c] --> biomass [c],MAM01721n;MAM01722n;MAM01602c,MAM01722n;MAM01602c
+MAR08948,Leucyl-Glycine [e] <=> ,,ok
+MAR08973,3.0 6-phospho-D-gluconate [c] + 3.0 NADP+ [c] --> 3.0 CO2 [c] + 3.0 NADPH [c] + 3.0 ribulose-5-phosphate [c],ok,
+MAR10529,Asparaginyl-Tyrosyl-Glycine [e] <=> ,,ok
+MAR10571,Glycyl-Histidyl-Asparagine [e] <=> ,ok,
+MAR11945,malonic-dialdehyde [e] <=> ,,ok
+MAR12140,"0.0031466 1,2-diacylglycerol-LD-TAG pool [c] + 0.0012642 2-lysolecithin pool [c] + 0.11871 alanine [c] + 0.0009274 arginine [c] + 0.012056 asparagine [c] + 0.69277 aspartate [c] + 0.0082708 cholesterol [c] + 0.0065713 cholesterol-ester pool [r] + 0.00057356 CL pool [c] + 0.001 cofactors and vitamins [c] + 0.0012056 cysteine [c] + 0.007581 DNA [n] + 0.16786 glutamate [c] + 0.19104 glutamine [c] + 0.13911 glycine [c] + 0.028749 histidine [c] + 0.0037096 isoleucine [c] + 0.011129 leucine [c] + 0.009274 lysine [c] + 0.0018548 methionine [c] + 0.017171 PC-LD pool [c] + 0.020051 PE-LD pool [c] + 0.0037096 phenylalanine [c] + 0.016414 phosphatidate-LD-TAG pool [c] + 0.0030972 PI pool [c] + 0.017992 proline [c] + 0.005891 PS-LD pool [c] + 0.0308145 RNA [c] + 0.037096 serine [c] + 0.0024143 SM pool [c] + 0.027482 TAG-LD pool [c] + 0.020403 threonine [c] + 0.0009274 tryptophan [c] + 0.0055644 tyrosine [c] + 0.012056 valine [c] + 0.26551 glycogen [c] + 0.0038601 1-acylglycerol-3P pool [c] --> biomass [c]",MAM01721n;MAM01602c,MAM01602c
+MAR13072,Mg2+ [e] <=> ,,unblocked by dilution
+MAR13082,45.0 ATP [c] + 0.0267 DNA [n] + 45.0 H2O [c] + 0.1124 RNA [c] + 0.4062 glycogen [c] + 0.0012 cofactor_pool_biomass [c] + 5.3375 protein_pool_biomass [c] + 0.2212 lipid_pool_biomass [c] + 0.4835 metabolite_pool_biomass [c] --> 45.0 ADP [c] + 45.0 H+ [c] + 45.0 Pi [c] + biomass [c],MAM01721n;MAM10012c;MAM10013c;MAM10014c;MAM10015c,MAM10012c;MAM10013c;MAM10014c;MAM10015c
+MAR07160,0.3 dATP [n] + 0.2 dCTP [n] + 0.2 dGTP [n] + 0.3 dTTP [n] --> DNA [n] + PPi [n],,ok
+MAR07161,0.18 ATP [n] + 0.3 CTP [n] + 0.34 GTP [n] + 0.18 UTP [n] --> PPi [n] + RNA [n],,ok
+MAR07162,Pi [c] + RNA [c] --> 0.18 ADP [c] + 0.3 CDP [c] + 0.34 GDP [c] + 0.18 UDP [c],,ok
+MAR07163,DNA [n] + H2O [n] --> 0.3 dAMP [n] + 0.2 dCMP [n] + 0.2 dGMP [n] + 0.3 dTMP [n] + H+ [n],,ok
+MAR13084,dAMP [c] <=> dAMP [n],,ok
+MAR13085,dGMP [c] <=> dGMP [n],,ok
+MAR13086,RNA [n] --> RNA [c],,ok

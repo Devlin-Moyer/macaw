@@ -356,7 +356,7 @@ def duplicate_test(
         msg += f'reversibility as at least one other reaction.\n   - {stoichs} '
         msg += f'involve the same metabolites but with different coefficients '
         msg += 'as at least one other reaction.'
-        if redox_pairs and proton_pairs:
+        if redox_pairs and proton_ids:
             msg += f'\n   - {redoxes} redox reactions oxidize and/or redox the '
             msg += 'same metabolites as another redox reaction but use a '
             msg += 'different pair of the given redox carriers.'

@@ -35,20 +35,19 @@ python -m figure_scripts.run_tests_on_yeast.py 9.0.0 $threads > logs/yeast-GEMv9
 python -m figure_scripts.run_tests_on_ecoli.py $threads > logs/iML1515_log.txt
 python -m figure_scripts.fig_2_S4b_data
 python -m figure_scripts.fig_3a_S2a_S3a_data
-python -m figure_scripts.fig_5_data $threads
-python -m figure_scripts.fig_6_data GSMMs/mendoza_2019 fig_6a_data $threads 1 1 > logs/fig_6a_log.txt
-python -m figure_scripts.fig_6_data GSMMs/AGORA2 fig_6b_data $threads 1 1 >> logs/fig_6b_log.txt
+python -m figure_scripts.fig_4_data GSMMs/mendoza_2019 fig_6a_data $threads 1 1 > logs/fig_6a_log.txt
+python -m figure_scripts.fig_4_data GSMMs/AGORA2 fig_6b_data $threads 1 1 >> logs/fig_6b_log.txt
+python -m figure_scripts.fig_6_data $threads
 python -m figure_scripts.fig_S4a_data $threads >> logs/fig_S4a_log.txt
 python -m figure_scripts.fig_S5_data
 
-# fig_6_data.py and fig_S4_data.py need lots of threads (>=16) and considerable
+# fig_4_data.py and fig_S4_data.py need lots of threads (>=16) and considerable
 # memory (>500GB) to finish in anything under a week
 
 # make figures (note that all Escher maps were manually created)
 # this was all done with R version 4.3.2
 Rscript figure_scripts/fig_2_S4.R
 Rscript figure_scripts/fig_3_S2_S3.R
-Rscript figure_scripts/fig_4_S6.R
-Rscript figure_scripts/fig_5.R
+Rscript figure_scripts/fig_4.R
 Rscript figure_scripts/fig_6.R
-Rscript -e "rmarkdown::render('Document_S1.Rmd')"
+Rscript -e "rmarkdown::render('additional_file_1.Rmd')"
