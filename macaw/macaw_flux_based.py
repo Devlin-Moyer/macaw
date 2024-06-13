@@ -5,14 +5,14 @@ looking at the structure of the network
 '''
 
 from optlang.symbolics import Zero
-from macaw_fva import fva
-from macaw_utils import add_reaction_equations, edit_dead_end_bounds
+from macaw.macaw_fva import fva
+from macaw.macaw_utils import add_reaction_equations, edit_dead_end_bounds
 import cobra
-from macaw_structural import dead_end_test, _dead_end_test_inner
-from macaw_dilution import constrain_reversible_rxns, add_leakage_reactions
+from macaw.macaw_structural import dead_end_test, _dead_end_test_inner
+from macaw.macaw_dilution import constrain_reversible_rxns, add_leakage_reactions
 from pebble import ProcessPool, ProcessExpired
 from concurrent.futures import TimeoutError
-from macaw_dilution import add_dilution_constraints
+from macaw.macaw_dilution import add_dilution_constraints
 import pandas as pd
 from optlang.interface import OPTIMAL, UNBOUNDED
 import math

@@ -20,7 +20,7 @@ https://doi.org/10.1371/journal.pcbi.1003126
 '''
 
 import cobra
-from macaw_fva import fva
+from macaw.macaw_fva import fva
 import re
 import pandas as pd
 import itertools as it
