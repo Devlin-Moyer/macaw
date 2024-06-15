@@ -120,8 +120,7 @@ fig_4a <- Heatmap(
 
 # summarized test results from the AGORA2 models
 fig_4b_data_raw <- bind_rows(lapply(
-  # TODO: change to fig_4b_data once you've renamed files accordingly
-  list.files("figure_data/", "fig_6b_data*", full.names = T),
+  list.files("figure_data/", "fig_4b_data*", full.names = T),
   function(f) read_csv(f, show_col_types = F)
 ))
 cat("Have data for ", nrow(fig_4b_data_raw), " models (", round(100*nrow(fig_4b_data_raw)/7302), "%)\n", sep = "")

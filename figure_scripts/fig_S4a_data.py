@@ -34,9 +34,12 @@ if os.path.exists(out_fname):
         p for p in model_paths
         if not any(p.endswith(f'{x}.xml') for x in already_done)
     ]
+    print(f'Skipping {len(already_done)} versions that were already tested')
 
 for model_path in model_paths:
     start_time = time.time()
+    version = int(model_path.split('.')[1])
+    print(f'Working on version 1.{version}')
     model = cobra.io.read_sbml_model(model_path)
     # start by figuring out which of the redox metabolites are actually in this
     # version
@@ -83,7 +86,6 @@ for model_path in model_paths:
             for (m1, m2) in redox_pairs
         ]
     # two of the compartment suffixes changed in version 1.11
-    version = int(model_path.split('.')[1])
     if version < 11:
         redox_pairs = [(
             m1.replace('e', 's').replace('x', 'p'),
@@ -91,12 +93,16 @@ for model_path in model_paths:
         ) for (m1, m2) in redox_pairs]
     # now drop all pairs with IDs that aren't in this particular version
     all_mets = [m.id for m in model.metabolites]
+    all_pairs = len(redox_pairs)
     redox_pairs = [
         pair for pair in redox_pairs
         if (pair[0] in all_mets) and (pair[1] in all_mets)
     ]
     # we can always find all proton IDs by looking at the numeric bit
     proton_ids = [m.id for m in model.metabolites if '02039' in m.id]
+    msg = f'Found {len(redox_pairs)} of {all_pairs} of the redox pairs and '
+    msg += f'{len(proton_ids)} proton metabolites in this version'
+    print(msg)
     # make sure all the IDs in media_mets are for metabolites that have
     # exchange reactions and the right numeric bit to be robust to all this ID
     # format changing

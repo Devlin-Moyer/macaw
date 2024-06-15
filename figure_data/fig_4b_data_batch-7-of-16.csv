@@ -1,0 +1,6 @@
+model,all_rxns,flagged,dead-ends,dilution-blocked,duplicates,loops,redoxes
+Kocuria_rhizophila_DC2201.mat,1223,715,386,246,48,76,8
+Cutibacterium_acnes_HL030PA1.mat,2362,957,554,275,59,135,7
+Lactobacillus_gasseri_202_4.mat,1233,738,434,250,28,49,8
+Enterococcus_faecalis_TX0470.mat,1544,941,555,290,41,107,8
+Clostridium_botulinum_Bf.mat,1444,819,440,304,37,67,8
