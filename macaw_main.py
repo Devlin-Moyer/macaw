@@ -71,9 +71,11 @@ def run_all_tests(
     # if verbose isn't 0, print the number of reactions flagged by at least one
     # test
     simple_results = simplify_test_results(all_test_results)
-    flagged_rxns = simple_results[simple_results.loc[
-        :, simple_results.columns.str.contains('test')
-    ].apply(lambda col: col != 'ok', axis = 1).any(axis = 1)]['reaction_id']
+    flagged_rxns = simple_results[
+        simple_results.loc[
+            :, simple_results.columns.str.contains('test')
+        ].apply(lambda col: col != 'ok', axis = 1).any(axis = 1)
+    ]['reaction_id']
     if verbose > 0:
         msg = f'{len(flagged_rxns)} of the {len(model.reactions)} reactions in '
         msg += 'the given GSMM were flagged by at least one of the tests.'

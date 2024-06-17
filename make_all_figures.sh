@@ -35,8 +35,8 @@ python -m figure_scripts.run_tests_on_yeast.py 9.0.0 $threads > logs/yeast-GEMv9
 python -m figure_scripts.run_tests_on_ecoli.py $threads > logs/iML1515_log.txt
 python -m figure_scripts.fig_2_S4b_data
 python -m figure_scripts.fig_3a_S2a_S3a_data
-python -m figure_scripts.fig_4_data GSMMs/mendoza_2019 fig_6a_data $threads 1 1 > logs/fig_6a_log.txt
-python -m figure_scripts.fig_4_data GSMMs/AGORA2 fig_6b_data $threads 1 1 >> logs/fig_6b_log.txt
+python -m figure_scripts.fig_4_data GSMMs/mendoza_2019 fig_4a_data $threads 1 1 > logs/fig_4a_log.txt
+python -m figure_scripts.fig_4_data GSMMs/AGORA2 fig_4b_data $threads 1 1 >> logs/fig_4b_log.txt
 python -m figure_scripts.fig_6_data $threads
 python -m figure_scripts.fig_S4a_data $threads >> logs/fig_S4a_log.txt
 python -m figure_scripts.fig_S5_data

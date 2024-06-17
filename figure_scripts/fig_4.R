@@ -118,13 +118,7 @@ fig_4a <- Heatmap(
   width = unit(1.4, "in")
 ) 
 
-# summarized test results from the AGORA2 models
-fig_4b_data_raw <- bind_rows(lapply(
-  list.files("figure_data/", "fig_4b_data*", full.names = T),
-  function(f) read_csv(f, show_col_types = F)
-))
-cat("Have data for ", nrow(fig_4b_data_raw), " models (", round(100*nrow(fig_4b_data_raw)/7302), "%)\n", sep = "")
-
+fig_4b_data_raw <- read_csv("figure_data/fig_4b_data.csv", show_col_types = F)
 fig_4b_data <- fig_4b_data_raw %>%
   # strip the extensions off of the filenames to get AGORA2's "MicrobeIDs"
   mutate(organism = gsub(".mat", "", model)) %>%
@@ -167,11 +161,14 @@ fig_4b <- ggplot(fig_4b_data, aes(x = prop, fill = test)) +
   labs(x = "Prop. of Reactions Flagged by Test", y = "Number of GSMMs")
 
 # turn ComplexHeatmap object into a grob so wrap_plots recognizes it
+# (the pdf() call is to prevent this from making an empty Rplots.pdf file)
+pdf(file = NULL)
 fig_4a <- fig_4a %>%
   draw(padding = unit(c(0,0,0,0), "in")) %>%
   grid.grabExpr() %>%
   wrap_plots()
-
+x <- dev.off()
+  
 fig_4 <- (fig_4a | fig_4b) +
   plot_layout(widths = c(1.3, 1)) +
   plot_annotation(tag_levels = "A") &

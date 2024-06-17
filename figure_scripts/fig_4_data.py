@@ -159,10 +159,10 @@ future = pool.map(handle_one_model, model_paths)
 i = 0
 iterator = future.result()
 while True:
+    model_name = model_paths[i].split('/')[-1]
     try:
         # update dict with numbers from the current model
         (rxns, flagged, deads, dils, dupes, loops, rdx, msg) = next(iterator)
-        model_name = model_paths[i].split('/')[-1]
         msg = f'Took {msg} to test {model_name} (model {i+1} out of '
         msg += f'{len(model_paths)}). Tested {rdx} pairs of redox mets.'
         print(msg)

@@ -4,6 +4,7 @@ Miscellaneous minor utility functions
 '''
 
 import math
+import pandas as pd
 
 def time_str(start, end):
     '''
@@ -141,34 +142,46 @@ def simplify_test_results(given_df):
     Simplify the columns of test results to just say "bad" or "ok"
     '''
     df = given_df.copy()
-    # the loop and diphosphate test results are easy to simplify
-    if 'loop_test' in df.columns:
-        df['loop_test'] = df['loop_test'].apply(
-            lambda x: 'bad' if x != 'ok' else x
-        )
-    if 'diphosphate_test' in df.columns:
-        df['diphosphate_test'] = df['diphosphate_test'].apply(
-            lambda x: 'bad' if x.startswith('should') else 'ok'
-        )
-    if 'dilution_test' in df.columns:
-        df['dilution_test'] = df['dilution_test'].apply(lambda x:
-            'bad' if (x != 'ok') and not x.startswith('always') else 'ok'
-        )
     if 'dead_end_test' in df.columns:
         # don't count reversible reactions the dead-end test found to only be
         # capable of carrying flux in one direction as "bad"
         df['dead_end_test'] = df['dead_end_test'].apply(lambda x:
             'bad' if (x != 'ok') and not x.startswith('only') else 'ok'
         )
+    if 'dilution_test' in df.columns:
+        # if we read the test results from a file, there could be NAs that won't
+        # have startswith methods, so get those out of the way first
+        df['dilution_test'] = df['dilution_test'].apply(
+            lambda x: 'bad' if pd.isna(x) else x
+        )
+        df['dilution_test'] = df['dilution_test'].apply(lambda x:
+            'bad' if (x != 'ok') and not x.startswith('always') else 'ok'
+        )
+    if 'diphosphate_test' in df.columns:
+        # leave it alone if it's all NAs
+        if not df['diphosphate_test'].isna().all():
+            df['diphosphate_test'] = df['diphosphate_test'].apply(
+                lambda x: 'bad' if x.startswith('should') else 'ok'
+            )
+    if 'loop_test' in df.columns:
+        df['loop_test'] = df['loop_test'].apply(
+            lambda x: 'bad' if x != 'ok' else x
+        )
     # simplifying the duplicate test results is more involved cuz they're split
     # across multiple columns
     if any(c.startswith('duplicate_test') for c in df.columns):
+        ok = ['ok', float('nan')]
         df['duplicate_test'] = df.apply(
             lambda row: 'bad' if (
-                (row['duplicate_test_exact'] not in ['ok', 'N/A']) or
-                (row['duplicate_test_directions'] not in ['ok', 'N/A']) or
-                (row['duplicate_test_coefficients'] not in ['ok', 'N/A']) or
-                (row['duplicate_test_redox'] not in ['ok', 'N/A'])
+                (
+                    row['duplicate_test_exact'] not in ok
+                ) or (
+                    row['duplicate_test_directions'] not in ok
+                ) or (
+                    row['duplicate_test_coefficients'] not in ok
+                ) or (
+                    row['duplicate_test_redox'] not in ok
+                )
             ) else 'ok',
             axis = 1
         )

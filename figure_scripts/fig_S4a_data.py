@@ -21,7 +21,7 @@ logging.getLogger('cobra').setLevel(logging.ERROR)
 
 # get list of IDs of metabolites that are in DMEM or FBS
 media_df = pd.read_csv('figure_data/Table S1.csv')
-media_mets = media_df['metabolite_id'].to_list()
+media_mets_all = media_df['metabolite_id'].to_list()
 
 # get paths to all versions of Human-GEM
 d = 'GSMMs'
@@ -32,9 +32,9 @@ if os.path.exists(out_fname):
     already_done = pd.read_csv(out_fname)['model_version'].to_list()
     model_paths = [
         p for p in model_paths
-        if not any(p.endswith(f'{x}.xml') for x in already_done)
+        if not any(p.endswith(f'v{x}.xml') for x in already_done)
     ]
-    print(f'Skipping {len(already_done)} versions that were already tested')
+    print(model_paths)
 
 for model_path in model_paths:
     start_time = time.time()
@@ -106,7 +106,7 @@ for model_path in model_paths:
     # make sure all the IDs in media_mets are for metabolites that have
     # exchange reactions and the right numeric bit to be robust to all this ID
     # format changing
-    id_bits = [m[3:-1] for m in media_mets]
+    id_bits = [m[3:-1] for m in media_mets_all]
     media_mets = [
         list(r.metabolites)[0].id for r in model.boundary
         if any(m in list(r.metabolites)[0].id for m in id_bits)
