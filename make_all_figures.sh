@@ -29,17 +29,17 @@ cd ../..
 
 # create all the data needed to make figures
 mkdir -p logs
-python -m figure_scripts.run_tests_on_human.py 1.15 $threads > logs/Human-GEMv1.15_log.txt
-python -m figure_scripts.run_tests_on_human.py 1.18 $threads > logs/Human-GEMv1.18_log.txt
-python -m figure_scripts.run_tests_on_yeast.py 9.0.0 $threads > logs/yeast-GEMv9.0.0_log.txt
-python -m figure_scripts.run_tests_on_ecoli.py $threads > logs/iML1515_log.txt
-python -m figure_scripts.fig_2_S4b_data
-python -m figure_scripts.fig_3a_S2a_S3a_data
-python -m figure_scripts.fig_4_data GSMMs/mendoza_2019 fig_4a_data $threads 1 1 > logs/fig_4a_log.txt
-python -m figure_scripts.fig_4_data GSMMs/AGORA2 fig_4b_data $threads 1 1 >> logs/fig_4b_log.txt
-python -m figure_scripts.fig_6_data $threads
-python -m figure_scripts.fig_S4a_data $threads >> logs/fig_S4a_log.txt
-python -m figure_scripts.fig_S5_data
+python figure_scripts/run_tests_on_human.py 1.15 $threads > logs/Human-GEMv1.15_log.txt
+python figure_scripts/run_tests_on_human.py 1.18 $threads > logs/Human-GEMv1.18_log.txt
+python figure_scripts/run_tests_on_yeast.py 9.0.0 $threads > logs/yeast-GEMv9.0.0_log.txt
+python figure_scripts/run_tests_on_ecoli.py $threads > logs/iML1515_log.txt
+python figure_scripts/fig_2_S4b_data.py
+python figure_scripts/fig_3a_S2a_S3a_data.py
+python figure_scripts/fig_4_data.py GSMMs/mendoza_2019 fig_4a_data $threads 1 1 > logs/fig_4a_log.txt
+python figure_scripts/fig_4_data.py GSMMs/AGORA2 fig_4b_data $threads 1 1 >> logs/fig_4b_log.txt
+python figure_scripts/fig_6_data.py $threads
+python figure_scripts/fig_S4a_data.py $threads >> logs/fig_S4a_log.txt
+python figure_scripts/fig_S5_data.py
 
 # fig_4_data.py and fig_S4_data.py need lots of threads (>=16) and considerable
 # memory (>500GB) to finish in anything under a week

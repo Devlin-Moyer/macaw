@@ -5,7 +5,7 @@ yeast-GEM, and iML1515 to use to color the networks
 '''
 
 import pandas as pd
-from macaw_utils import simplify_test_results
+from macaw.utils import simplify_test_results
 
 def categorize_rxn(row):
     dupe = row['duplicate_test'] != 'ok'

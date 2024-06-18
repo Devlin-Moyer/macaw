@@ -1,0 +1,13 @@
+README.md
+setup.py
+macaw/__init__.py
+macaw/dilution.py
+macaw/flux_based.py
+macaw/fva.py
+macaw/main.py
+macaw/structural.py
+macaw/utils.py
+macaw.egg-info/PKG-INFO
+macaw.egg-info/SOURCES.txt
+macaw.egg-info/dependency_links.txt
+macaw.egg-info/top_level.txt

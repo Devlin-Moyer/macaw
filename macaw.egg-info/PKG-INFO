@@ -1,0 +1,6 @@
+Metadata-Version: 2.1
+Name: macaw
+Version: 0.1.0
+Summary: Metabolic Accuracy Checks And Workflow (MACAW) is a collection of tests for automatically highlighting reactions in an arbitrary Genome-Scale Metabolic Model (GSMM) that are likely to contain or be near an error of some kind
+Home-page: https://github.com/Devlin-Moyer/macaw
+License: MIT

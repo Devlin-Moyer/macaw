@@ -4,7 +4,7 @@ import sys
 from optlang.glpk_interface import Configuration
 import cobra
 import pandas as pd
-from macaw_main import run_all_tests
+from macaw.main import run_all_tests
 
 try:
     (version, threads) = sys.argv[1:]

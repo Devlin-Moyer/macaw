@@ -7,8 +7,8 @@ import pandas as pd
 import os
 import time
 import cobra
-from macaw_main import dead_end_test, dilution_test, duplicate_test, loop_test
-from macaw_utils import time_str, simplify_test_results
+from macaw.main import dead_end_test, dilution_test, duplicate_test, loop_test
+from macaw.utils import time_str, simplify_test_results
 
 try:
     threads = int(sys.argv[1])

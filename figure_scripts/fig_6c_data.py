@@ -12,8 +12,8 @@ possible fluxes through PDH and GCS reactions in this version of Human-GEM.
 import sys
 import optlang
 import cobra
-from macaw_fva import fva
-from macaw_dilution import add_dilution_constraints
+from macaw.fva import fva
+from macaw.dilution import add_dilution_constraints
 import pandas as pd
 
 def fix_lipoate_biosynth(old_model):

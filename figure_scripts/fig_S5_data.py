@@ -8,7 +8,7 @@ reactions but adding "leakage" reactions prevents this
 
 import optlang
 import cobra
-from dillweed_dilution import add_dilution_constraints
+from macaw.dilution import add_dilution_constraints
 
 # silence annoying optlang message that prints the first time you initialize a
 # Cobrapy Model in a given Python session
