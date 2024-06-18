@@ -8,9 +8,7 @@ MACAW is a collection of tests for automatically highlighting reactions in an ar
 
 0. Requires Python 3.8 or newer
 
-1. Install with pip:
-
-`pip install git+https://github.com/Devlin-Moyer/macaw.git@main`
+1. Install with pip: `pip install git+https://github.com/Devlin-Moyer/macaw.git@main`
 
 2. Read in a GSMM and run the tests:
 
@@ -151,14 +149,23 @@ All of the code in `figure_scripts` is only necessary to reproduce the figures u
 
 ## Other Useful Functions
 
-##### `form_pathways`
+<details>
+  <summary><code>form_pathways</code></summary>
 
-The `form_pathways` function in `macaw_main.py` can combine the edge lists produced by multiple of the above tests into a single comprehensive network. This is non-trivial because the dead-end and dilution tests produce edge lists that describe bipartite networks in which some nodes represent reactions and others represent metabolites, while the duplicate and loop tests produce edge lists that describe monopartite networks in which all nodes represent reactions. The resulting network generally contains many connected components. `form_pathways` will assign a unique integer to each component and add a column to the Pandas Dataframe of results from all tests indicating which connected component each reaction is in. Reactions that were not flagged by any tests or not connected to any other reactions that were flagged by any tests (this only happens with reactions flagged by the dead-end or diphosphate tests, and is generally uncommon) are always assigned a "pathway" of 0.
+  Combines the edge lists produced by multiple of the above tests into a single comprehensive network. This is non-trivial because the dead-end and dilution tests produce edge lists that describe bipartite networks in which some nodes represent reactions and others represent metabolites, while the duplicate and loop tests produce edge lists that describe monopartite networks in which all nodes represent reactions. The resulting network generally contains many connected components. `form_pathways` will assign a unique integer to each component and add a column to the Pandas Dataframe of results from all tests indicating which connected component each reaction is in. Reactions that were not flagged by any tests or not connected to any other reactions that were flagged by any tests (this only happens with reactions flagged by the dead-end or diphosphate tests, and is generally uncommon) are always assigned a "pathway" of 0.
 
-##### `run_all_tests`
+</details>
 
-Runs all four tests on the given model and calls `form_pathways` to combine the edge lists into one.
+<details>
+  <summary><code>run_all_tests</code></summary>
 
-##### `simplify_test_results`
+  Runs all four tests on the given model and calls `form_pathways` to combine the edge lists into one.
 
-Makes each column in the `Pandas.DataFrame` produced by any test just say "ok" or "bad" for each reaction. Also merges the 4 duplicate test columns into a single column.
+</details>
+
+<details>
+  <summary><code>simplify_test_results</code></summary>
+
+  Makes each column in the `Pandas.DataFrame` produced by any test just say "ok" or "bad" for each reaction (most tests have more complicated/specific/variable information for each reaction in their column). Also merges the 4 duplicate test columns into a single column.
+
+</details>
