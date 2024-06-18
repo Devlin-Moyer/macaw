@@ -6,9 +6,9 @@ other reactions, incorrect reversibility, part of dead-ends) and suggest ways to
 fix at least some of these (potential) errors
 '''
 
-from macaw_structural import dead_end_test, duplicate_test, diphosphate_test
-from macaw_flux_based import loop_test, dilution_test
-from macaw_utils import simplify_test_results, add_reaction_equations
+from macaw.macaw_structural import dead_end_test, duplicate_test, diphosphate_test
+from macaw.macaw_flux_based import loop_test, dilution_test
+from macaw.macaw_utils import simplify_test_results, add_reaction_equations
 import networkx as nx
 import pandas as pd
 
