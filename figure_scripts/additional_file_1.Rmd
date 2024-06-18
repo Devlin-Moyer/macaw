@@ -17,13 +17,11 @@ library(tools)
 suppressMessages(library(tidyverse))
 theme_set(theme_bw())
 
-source("figure_scripts/shared_funcs.R")
-# need many of the same functions we used to make figure 3
-source("figure_scripts/fig_3.R")
+source("shared_funcs.R")
 ```
 
 ```{r}
-fig_S1 <- load_image_as_panel("figures/fig_S1.png")
+fig_S1 <- load_image_as_panel("../figures/fig_S1.png")
 fig_S1_width <- 7.5
 fig_S1_height <- unit(fig_S1_width * fig_S1[[2]], "in")
 ```
@@ -40,9 +38,9 @@ fig_S1[[1]]
 fig_S2_width <- 7.5
 fig_S2bc_height <- 2.5
 yeast_results <- read_csv(
-  "figure_data/yeast-GEMv9.0.0_test-results.csv", show_col_types = FALSE
+  "../figure_data/yeast-GEMv9.0.0_test-results.csv", show_col_types = FALSE
 ) %>% select(-diphosphate_test)
-fig_S2_stuff <- load_image_as_panel("figures/fig_S2a.png")
+fig_S2_stuff <- load_image_as_panel("../figures/fig_S2a.png")
 fig_S2a_height <- (fig_S2_width * (fig_S2_stuff[[2]]))
 fig_S2a <- fig_S2_stuff[[1]] + theme(plot.tag.position = c(-0.001,0.98))
 fig_S2b <- make_hists(yeast_results, 1300, 300) +
@@ -77,9 +75,9 @@ fig_S2
 fig_S3_width <- 7.5
 fig_S3bc_height <- 2.75
 ecoli_results <- read_csv(
-  "figure_data/iML1515_test-results.csv", show_col_types = FALSE
+  "../figure_data/iML1515_test-results.csv", show_col_types = FALSE
 ) %>% select(-diphosphate_test)
-fig_S3_stuff <- load_image_as_panel("figures/fig_S3a.png")
+fig_S3_stuff <- load_image_as_panel("../figures/fig_S3a.png")
 fig_S3a_height <- (fig_S3_width * (fig_S3_stuff[[2]]))
 fig_S3a <- fig_S3_stuff[[1]] +
   theme(
@@ -117,11 +115,11 @@ fig_S3
 ```{r fig.height=ggplot2::unit(7.5,"in"), fig.width=ggplot2::unit(4.25,"in")}
 # get the summarized test results for all versions of Human-GEM
 fig_S4a_data_raw <- read_csv(
-  "figure_data/fig_S4a_data.csv", show_col_types = FALSE, col_types = "fiiiii"
+  "../figure_data/fig_S4a_data.csv", show_col_types = FALSE, col_types = "fiiiii"
 )
 # get the simplified test results for only versions 1.15 and 1.18 of Human-GEM
 # that have reactions annotated by KEGG group
-fig_S4b_data_raw <- read_csv("figure_data/fig_S4b_data.csv", show_col_types = F)
+fig_S4b_data_raw <- read_csv("../figure_data/fig_S4b_data.csv", show_col_types = F)
 
 fig_S4a_data <- fig_S4a_data_raw %>%
   # replace counts with proportions, then drop the counts
@@ -268,11 +266,11 @@ fig_S4b <- ggplot() +
 \newpage
 
 ```{r fig.height=ggplot2::unit(1.5,"in"), fig.width=ggplot2::unit(6.5,"in")}
-fig_S5a <- load_image_as_panel("figures/fig_S5a.png")[[1]] +
+fig_S5a <- load_image_as_panel("../figures/fig_S5a.png")[[1]] +
   theme(plot.tag.position = c(-0.05, 0.91))
-fig_S5b <- load_image_as_panel("figures/fig_S5b.png")[[1]] +
+fig_S5b <- load_image_as_panel("../figures/fig_S5b.png")[[1]] +
   theme(plot.tag.position = c(0, 0.91))
-fig_S5c <- load_image_as_panel("figures/fig_S5c.png")[[1]] +
+fig_S5c <- load_image_as_panel("../figures/fig_S5c.png")[[1]] +
   theme(plot.tag.position = c(0, 0.91))
 
 (free(fig_S5a) | free(fig_S5b) | free(fig_S5c)) +
