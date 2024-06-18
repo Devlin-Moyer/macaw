@@ -1,4 +1,4 @@
-# macaw_structural.py
+# structural.py
 '''
 Functions for finding (and optionally, fixing) sets of reactions with problems
 that are detectable just by examining their definitions, bounds, and/or
@@ -7,9 +7,9 @@ predicting fluxes through reactions)
 '''
 
 import pandas as pd
-from macaw.macaw_utils import add_reaction_equations
+from macaw.utils import add_reaction_equations
 import itertools as it
-from macaw.macaw_utils import flip_reaction
+from macaw.utils import flip_reaction
 
 def dead_end_test(
     given_model, use_names = False, add_suffixes = False, verbose = 1

@@ -1,4 +1,4 @@
-# macaw_dilution.py
+# dilution.py
 '''
 Adds a "dilution reaction" for each metabolite in the model (or a given list of
 metabolites in the given model) and constrains the flux through that reaction to
@@ -20,7 +20,7 @@ https://doi.org/10.1371/journal.pcbi.1003126
 '''
 
 import cobra
-from macaw.macaw_fva import fva
+from macaw.fva import fva
 import re
 import pandas as pd
 import itertools as it

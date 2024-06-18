@@ -1,4 +1,4 @@
-# macaw_fva.py
+# fva.py
 '''
 Slight modification of Cobrapy's implementation of FVA that uses pebble instead
 of multiprocessing when running in parallel because for whatever reason pebble

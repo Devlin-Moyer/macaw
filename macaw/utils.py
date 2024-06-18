@@ -1,4 +1,4 @@
-# macaw_utils.py
+# utils.py
 '''
 Miscellaneous minor utility functions
 '''
