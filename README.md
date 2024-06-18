@@ -52,7 +52,7 @@ All of the code in `figure_scripts` is only necessary to reproduce the figures u
 <details>
   <summary><code>dilution_test</code></summary>
 
-  Separately tests each metabolite in the given GSMM to see if adding a dilution reaction and dilution constraint for that metabolite renders all reactions that it participates in incapable of non-zero steady-state fluxes. A dilution reaction just consumes a single metabolite and produces nothing, and dilution constraint sets the flux through a particular metabolite's dilution reaction equal to some fraction of the sum of the absolute values of the fluxes through all other reactions that that metabolite participates in. Dilution constraints generally only block fluxes through metabolites that can only be recycled within a GSMM and lack a biosynthesis or uptake pathway.
+  Separately tests each metabolite in the given GSMM to see if adding a dilution reaction and dilution constraint for that metabolite renders all reactions that it participates in incapable of non-zero steady-state fluxes. A dilution reaction just consumes a single metabolite and produces nothing, and dilution constraint sets the flux through a particular metabolite's dilution reaction equal to some fraction of the sum of the absolute values of the fluxes through all other reactions that that metabolite participates in. Dilution constraints generally only block fluxes through metabolites that can only be recycled within a GSMM and lack a biosynthesis or uptake pathway. If you run the dilution test multiple times on the same GSMM, it will sometimes flag 1-3 more or fewer reactions on different runs. I haven't figured out why.
 
   Arguments:
 
