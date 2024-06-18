@@ -6,16 +6,17 @@ MACAW is a collection of tests for automatically highlighting reactions in an ar
 
 ## Quick Start
 
-1. Clone this GitHub repository
-2. `cd macaw/`
-3. Make a Python virtual environment & install appropriate versions of packages:
- - `python -m venv .`
- - `pip install -r requirements.txt`
-4. Read in a GSMM and run the tests:
+0. Requires Python 3.8 or newer
+
+1. Install with pip:
+
+`pip install git+https://github.com/Devlin-Moyer/macaw.git@main`
+
+2. Read in a GSMM and run the tests:
 
 ```python
 import cobra
-from macaw_main import run_all_tests
+from macaw.main import run_all_tests
 
 model = cobra.io.read_sbml_model('GSMMs/iML1515.xml')
 (test_results, edge_list) = run_all_tests(model)
@@ -24,7 +25,7 @@ model = cobra.io.read_sbml_model('GSMMs/iML1515.xml')
 `test_results` will be a `Pandas.DataFrame` with one row for each reaction in the model and columns containing the results of each test (described in detail below).
 `edge_list` will be a list of lists where each sub-list has two reaction IDs; you can use it to visualize a network connecting all reactions flagged by any of the tests (with e.g. Cytoscape, Networkx, etc.)
 
-Everything in `figure_scripts` is only necessary to reproduce the figures used in the paper; only the Python scripts with "macaw" in the name are necessary to run the tests.
+All of the code in `figure_scripts` is only necessary to reproduce the figures used in the paper; the only code that actually constitutes MACAW is in `macaw`.
 
 ## The Tests
 
