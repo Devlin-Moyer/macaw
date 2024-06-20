@@ -50,4 +50,4 @@ Rscript figure_scripts/fig_2_S4.R
 Rscript figure_scripts/fig_3_S2_S3.R
 Rscript figure_scripts/fig_4.R
 Rscript figure_scripts/fig_6.R
-Rscript -e "rmarkdown::render('figure_scripts/additional_file_1.Rmd', output_file = 'figures/Additional File 1')"
+Rscript -e "rmarkdown::render('figure_scripts/additional_file_1.Rmd', output_file = '../figures/Additional File 1.pdf')"

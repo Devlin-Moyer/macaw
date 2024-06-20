@@ -29,7 +29,9 @@ model_paths = [f'{d}/{f}' for f in os.listdir(d) if f.startswith('Human-GEM')]
 # skip any models we already have results for in the output file
 out_fname = 'figure_data/fig_S4a_data.csv'
 if os.path.exists(out_fname):
-    already_done = pd.read_csv(out_fname)['model_version'].to_list()
+    already_done = pd.read_csv(
+        out_fname, dtype = str # will fuck up version numbers otherwise
+    )['model_version'].to_list()
     model_paths = [
         p for p in model_paths
         if not any(p.endswith(f'v{x}.xml') for x in already_done)
