@@ -261,7 +261,7 @@ fig_S4b <- ggplot() +
   theme(plot.tag = element_text(size = 8, face = "bold"))
 ```
 
-**Supplementary Figure 4. Comparison of test results in different versions of Human-GEM.** (A) Proportions of reactions flagged by tests across all versions of Human-GEM. (B) Proportions of reactions flagged by tests in versions 1.15 and 1.18 of Human-GEM. Reactions grouped according to the second-highest levels of the KEGG functional ortholog hierarchy containing the genes associated with each reaction; see **Methods**. Individual reactions may be associated with more than one group of KEGG functional orthologs. Names of KEGG functional ortholog groups have been abbreviated.
+**Supplementary Figure 4. Comparison of test results in different versions of Human-GEM.** (A) Proportions of reactions flagged by tests across all versions of Human-GEM. (B) Proportions of reactions flagged by tests in versions 1.15 and 1.18 of Human-GEM. Reactions grouped according to the second-highest levels of the KEGG functional ortholog hierarchy containing the genes associated with each reaction; see "Methods". Individual reactions may be associated with more than one group of KEGG functional orthologs. Names of KEGG functional ortholog groups have been abbreviated.
 
 \newpage
 
