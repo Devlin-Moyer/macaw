@@ -75,8 +75,12 @@ fig_6c <- fig_6c_data %>%
 
 # now that we've made the plot, read in the Escher maps to use as the other two
 # panels and patchwork them all together
-fig_6a <- load_image_as_panel("figures/fig_6a.png")
-fig_6b <- load_image_as_panel("figures/fig_6b.png")
+fig_6a <- load_image_as_panel("figures/fig_6a.png") +
+  labs(title = "Human-GEM Version 1.15") +
+  theme(plot.title = element_text(hjust = 0.5, size = 8))
+fig_6b <- load_image_as_panel("figures/fig_6b.png") +
+  labs(title = "Human-GEM Version 1.18+") +
+  theme(plot.title = element_text(hjust = 0.5, size = 8))
 
 fig_6 <- (fig_6a / fig_6b / free(fig_6c)) +
   plot_layout(heights = unit(c(1.8, 2.75, 1.5), "in")) +
@@ -86,7 +90,7 @@ fig_6 <- (fig_6a / fig_6b / free(fig_6c)) +
 ggsave(
   "figures/fig_6.tif",
   fig_6,
-  height = 6.6,
+  height = 6.7,
   width = 5,
   units = "in",
   dpi = 300,

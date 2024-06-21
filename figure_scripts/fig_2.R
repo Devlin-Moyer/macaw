@@ -68,10 +68,10 @@ add_kegg_groups <- function(
       kegg_group == "Biosynthesis of other secondary metabolites" ~
         "Secondary metabolites",
       kegg_group == "Carbohydrate metabolism" ~ "Carbohydrates",
-      kegg_group == "Energy metabolism" ~ "Energy",
       kegg_group == "Glycan biosynthesis and metabolism" ~ "Glycans",
       kegg_group == "Lipid metabolism" ~ "Lipids",
-      kegg_group == "Metabolism of cofactors and vitamins" ~ "Cofactors",
+      kegg_group == "Metabolism of cofactors and vitamins" ~
+        "Cofactors and vitamins",
       kegg_group == "Metabolism of other amino acids" ~ "Other amino acids",
       kegg_group == "Metabolism of terpenoids and polyketides" ~ "Terpenoids",
       kegg_group == "Nucleotide metabolism" ~ "Nucleotides",
@@ -239,7 +239,7 @@ fig_2 <- ggplot() +
   ) +
   scale_y_continuous(expand = expansion(mult = c(0, .1))) +
   facet_grid(rows = vars(test), scales = "free_y") +
-  labs(x = "Metabolism of ___", y = "% Reactions in Group") +
+  labs(x = "Reaction Group", y = "% Reactions in Group") +
   theme(
     text = element_text(color = "black", size = 8),
     axis.text = element_text(color = "black", size = 6),

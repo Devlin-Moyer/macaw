@@ -241,7 +241,7 @@ fig_S4b <- ggplot() +
   ) +
   scale_y_continuous(expand = expansion(mult = c(0, .1))) +
   facet_grid(rows = vars(test), scales = "free_y") +
-  labs(x = "Metabolism of ___", y = "% Reactions in Group") +
+  labs(x = "Reaction Group", y = "% Reactions in Group") +
   theme(
     text = element_text(color = "black", size = 8),
     strip.text = element_text(size = 8),
