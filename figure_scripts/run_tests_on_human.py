@@ -17,7 +17,7 @@ Configuration()
 model = cobra.io.read_sbml_model(f'GSMMs/Human-GEMv{version}.xml')
 
 # get list of IDs of metabolites that are in DMEM or FBS
-media_df = pd.read_csv('figure_data/Table S2.csv')
+media_df = pd.read_csv('figure_data/Additional File 3: Table S2.csv')
 media_mets = media_df['metabolite_id'].to_list()
 
 redox_pairs = [
