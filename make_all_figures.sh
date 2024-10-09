@@ -41,7 +41,7 @@ python figure_scripts/fig_6_data.py $threads
 python figure_scripts/fig_S4a_data.py $threads >> logs/fig_S4a_log.txt
 python figure_scripts/fig_S5_data.py
 
-# fig_4_data.py and fig_S4_data.py need lots of threads (>=16) and considerable
+# fig_4_data.py and fig_S4a_data.py need lots of threads (>=16) and considerable
 # memory (>500GB) to finish in anything under a week
 
 # make figures (note that all Escher maps were manually created)
