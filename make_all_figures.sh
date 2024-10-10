@@ -11,7 +11,7 @@ threads=4
 # set up the virtual environment
 python -m virtualenv .
 source bin/activate
-pip install -r requirements.txt
+pip install git+https://github.com/Devlin-Moyer/macaw.git@main
 
 # download all of the AGORA2 models and extract the zip archives they come in
 mkdir -p GSMMs/AGORA2

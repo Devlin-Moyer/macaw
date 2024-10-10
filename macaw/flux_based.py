@@ -616,8 +616,8 @@ def new_dilution_test(
                         # blocked
                         one_fva = fva_before[fva_before['reaction_id'] == r.id]
                         if (
-                            (one_fva['minimum'] == 0) &
-                            (one_fva['maximum'] == 0)
+                            (one_fva['minimum'] == 0).all() &
+                            (one_fva['maximum'] == 0).all()
                         ):
                             rxn_dict[r.id] = 'always blocked'
                         else:
