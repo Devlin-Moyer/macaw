@@ -142,13 +142,11 @@ def _dead_end_test_inner(
                     rev_rxns[0].lower_bound = 0
                     fwd_only.append(rev_rxns[0].id)
                 elif met_to_check in rev_rxns[0].products:
-                    # just setting the upper bound to 0 would mean the products
-                    # could only be consumed and the reactants could only be
-                    # produced, which is confusing, so instead flip the reaction
-                    # around (i.e. switch products and reactants and bounds),
-                    # then set the lower bound to zero
+                    # if we're setting the upper bound to 0, we're also gonna
+                    # flip the reaction so it can't only go backwards (unless
+                    # it's an exchange reaction, which flip_reaction ignores)
+                    rev_rxns[0].upper_bound = 0
                     flip_reaction(rev_rxns[0])
-                    rev_rxns[0].lower_bound = 0
                     rev_only.append(rev_rxns[0].id)
                 # then make sure the other metabolites that participate in the
                 # formerly reversible reaction aren't dead-ends now
@@ -164,8 +162,8 @@ def _dead_end_test_inner(
                     rev_rxns[0].lower_bound = 0
                     fwd_only.append(rev_rxns[0].id)
                 elif met_to_check in rev_rxns[0].reactants:
+                    rev_rxns[0].upper_bound = 0
                     flip_reaction(rev_rxns[0])
-                    rev_rxns[0].lower_bound = 0
                     rev_only.append(rev_rxns[0].id)
                 for m in rev_rxns[0].metabolites:
                     if (m not in dead_end_mets) and (m != met_to_check):

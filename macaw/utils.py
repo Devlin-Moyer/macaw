@@ -26,18 +26,24 @@ def time_str(start, end):
 def flip_reaction(reaction):
     '''
     Switch the products and reactants and upper and lower bounds for the given
-    Cobra.Reaction object
+    Cobra.Reaction object, unless it has only one metabolite, in which case it's
+    an exchange reaction, and those conventionally always have the one
+    metabolite on the left so that positive fluxes always represent secretion
+    and negative fluxes always represent uptake
     '''
-    orig_ub = reaction.upper_bound
-    orig_lb = reaction.lower_bound
-    # make a dict with 2 * the current stoichiometric coefficient of each
-    # metabolite, then "subtract" this dict from the current reaction to negate
-    # the existing coefficients on all metabolites
-    new_met_dict = {m : 2 * s for (m, s) in reaction.metabolites.items()}
-    reaction.subtract_metabolites(new_met_dict)
-    reaction.lower_bound = -1 * orig_ub
-    reaction.upper_bound = -1 * orig_lb
-    # everything should be modified in-place
+    if len(reaction.metabolites) == 1:
+        pass
+    else:
+        orig_ub = reaction.upper_bound
+        orig_lb = reaction.lower_bound
+        # make a dict with 2 * the current stoichiometric coefficient of each
+        # metabolite, then "subtract" this dict from the current reaction to
+        # negate the existing coefficients on all metabolites
+        new_met_dict = {m : 2 * s for (m, s) in reaction.metabolites.items()}
+        reaction.subtract_metabolites(new_met_dict)
+        reaction.lower_bound = -1 * orig_ub
+        reaction.upper_bound = -1 * orig_lb
+        # everything should be modified in-place
 
 def sigfig_round(x, sfs):
     '''
@@ -127,8 +133,8 @@ def edit_dead_end_bounds(given_model, results):
             if row['dead_end_test'] == 'only when going backwards':
                 rxn.lower_bound = 0
             elif row['dead_end_test'] == 'only when going forwards':
+                rxn.upper_bound = 0
                 flip_reaction(rxn)
-                rxn.lower_bound = 0
             else:
                 # if it wasn't "ok" and wasn't "only when going forwards/
                 # backwards", it must be a list of metabolite IDs and thus a
