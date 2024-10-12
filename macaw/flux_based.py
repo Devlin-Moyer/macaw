@@ -111,14 +111,30 @@ def loop_test(
         print(f' - Found {count} reactions involved in infinite loops.')
     return((out_df, edge_list))
 
-def prep_for_dilution_test(
-    given_model, dead_end_results, media_mets, mets_to_test, zero_thresh,
-    use_names, add_suffixes, verbose, threads
+def dilution_test(
+    given_model, dead_end_results = None, media_mets = None,
+    mets_to_test = None, zero_thresh = 10**-8, timeout = 1800, max_attempts = 3,
+    use_names = False, add_suffixes = False, verbose = 1, threads = 1
 ):
     '''
-    A separate function to facilitate testing/debugging/comparing the two
-    versions of the dilution test that only differ in the main loop and not
-    these preparatory steps
+    Use dead-end test results to set both bounds to zero for all reactions that
+    were part of dead-ends (sometimes adding dilution reactions allows them to
+    carry fluxes, which significantly increases the space of possible solutions
+    to the model and thus the time it takes to do FVA, so blocking them first
+    speeds things up significantly) and to set the appropriate bounds to zero
+    for the reversible reactions that couldn't go in just one of their two
+    directions due to dead-ends.
+    Then do FVA to determine the range of feasible fluxes for each reaction both
+    before and after imposing dilution constraints. Report all reactions whose
+    fluxes were only capable of being zero with dilution constraints but could
+    be non-zero without, zero without dilution constraints but non-zero with, or
+    only zero either way.
+    GLPK sometimes hangs when doing FVA on models with dilution constraints, so
+    the timeout argument is the number of seconds to wait for the minimum or
+    maximum flux for a single reaction before killing that process and starting
+    over (each reaction is handled on a separate process through Pebble)
+    Any minimum or maximum fluxes within zero_thresh of zero are rounded to zero
+    to handle rounding errors
     '''
     model = given_model.copy()
     if dead_end_results is None:
@@ -194,340 +210,7 @@ def prep_for_dilution_test(
         initializer = _pool_init,
         initargs = (model, zero_thresh)
     )
-    return((
-        model, dead_end_results, mets_to_test, fva_before, met_dict, rxn_dict,
-        pool
-    ))
-
-def dilution_test(
-    given_model, dead_end_results = None, media_mets = None,
-    mets_to_test = None, zero_thresh = 10**-8, timeout = 1800, max_attempts = 3,
-    use_names = False, add_suffixes = False, verbose = 1, threads = 1
-):
-    '''
-    Use dead-end test results to set both bounds to zero for all reactions that
-    were part of dead-ends (sometimes adding dilution reactions allows them to
-    carry fluxes, which significantly increases the space of possible solutions
-    to the model and thus the time it takes to do FVA, so blocking them first
-    speeds things up significantly) and to set the appropriate bounds to zero
-    for the reversible reactions that couldn't go in just one of their two
-    directions due to dead-ends.
-    Then do FVA to determine the range of feasible fluxes for each reaction both
-    before and after imposing dilution constraints. Report all reactions whose
-    fluxes were only capable of being zero with dilution constraints but could
-    be non-zero without, zero without dilution constraints but non-zero with, or
-    only zero either way.
-    GLPK sometimes hangs when doing FVA on models with dilution constraints, so
-    the timeout argument is the number of seconds to wait for the minimum or
-    maximum flux for a single reaction before killing that process and starting
-    over (each reaction is handled on a separate process through Pebble)
-    Any minimum or maximum fluxes within zero_thresh of zero are rounded to zero
-    to handle rounding errors
-    '''
-    (
-        model, dead_end_results, mets_to_test, fva_before, met_dict, rxn_dict,
-        pool
-    ) = prep_for_dilution_test(
-        given_model, dead_end_results, media_meta, mets_to_test, zero_thresh,
-        use_names, add_suffixes, verbose, threads
-    )
-    fva_before = fva_before.rename(
-        columns = {'minimum' : 'min_before', 'maximum' : 'max_before'}
-    )
     future = pool.map(dilution_test_inner, mets_to_test, timeout = timeout)
-    iterator = future.result()
-    # do a nested while loop so that we can retry metabolites we encounter
-    # errors for on the first try cuz optimizing models with dilution
-    # constraints sometimes leads to rare intermittent errors
-    attempts = 0
-    while mets_to_test:
-        attempts += 1
-        to_redo = list()
-        # we'll get output in the same order as the metabolite IDs we mapped to 
-        # the pool, so keep track of which metabolite we're on
-        i = 0
-        while True:
-            try:
-                fva_after = next(iterator)
-                # make sure all mins and maxes in fva_after weren't NA
-                all_mins_na = fva_after['min_after'].isna().all()
-                all_maxs_na = fva_after['max_after'].isna().all()
-                # compare FVA results for the reactions involving this
-                # metabolite from before and after adding its dilution
-                # constraint
-                fva_both = fva_after.merge(fva_before)
-                min_zero_before = (fva_both['min_before'] == 0).all()
-                max_zero_before = (fva_both['max_before'] == 0).all()
-                both_zero_before = min_zero_before and max_zero_before
-                min_zero_after = (fva_both['min_after'] == 0).all()
-                max_zero_after = (fva_both['max_after'] == 0).all()
-                both_zero_after = min_zero_after and max_zero_after
-                if all_mins_na or all_maxs_na:
-                    result = 'error'
-                elif both_zero_after and not both_zero_before:
-                    result = 'blocked by dilution'
-                elif both_zero_before and not both_zero_after:
-                    result = 'unblocked by dilution'
-                elif both_zero_before and both_zero_after:
-                    result = 'always blocked'
-                else:
-                    result = 'ok'
-                # add this result for this metabolite and all the reactions it
-                # participates in
-                met_dict[mets_to_test[i]] = result
-                met_obj = given_model.metabolites.get_by_id(mets_to_test[i])
-                for r in met_obj.reactions:
-                    # if we've already labeled this reaction as "blocked by
-                    # dilution", then don't overwrite it with an "ok" because a
-                    # different metabolite that participates in this reaction
-                    # isn't blocked by its dilution constraint
-                    if rxn_dict[r.id] != 'blocked by dilution':
-                        # then see if this reaction was always blocked, cuz it
-                        # is possible for some but not all reactions that a
-                        # particular metabolite participates in to always be
-                        # blocked
-                        one_fva = fva_both.iloc[r.id]
-                        if (one_fva == 0).all():
-                            rxn_dict[r.id] = 'always blocked'
-                        else:
-                            rxn_dict[r.id] = result
-            except (StopIteration, IndexError):
-                # should only happen if we've reached the end of the list
-                break
-            except TimeoutError as error:
-                # doing FBA on models with dilution constraints sometimes makes
-                # Python/Cobrapy/optlang/GLPK/who knows what hang; add it to the
-                # list of metabolites to redo
-                to_redo.append(mets_to_test[i])
-                if verbose > 1:
-                    met_name = model.metabolites.get_by_id(mets_to_test[i]).name
-                    if timeout >= 60:
-                        t = f'{int(timeout/60)} minutes'
-                    else:
-                        t = f'{timeout} seconds'
-                    msg = f' - Took longer than {t} to test dilution '
-                    msg += 'constraint for {met_name} ({mets_to_test[i]}).'
-                    print(msg)
-            except ProcessExpired as error:
-                # same thing for other kinds of errors; just a different message
-                to_redo.append(mets_to_test[i])
-                if verbose > 1:
-                    met_name = model.metabolites.get_by_id(mets_to_test[i]).name
-                    msg = ' - Encountered an error when testing dilution '
-                    msg += f'constraint for {met_name} ({mets_to_test[i]}): '
-                    msg += f'{error}'
-                    # some errors don't come with tracebacks, but if they do,
-                    # print them cuz those are useful
-                    if hasattr(error, 'traceback'):
-                        msg += f'\n{error.traceback}'
-                    print(msg)
-            finally:
-                # increment iterator regardless of success or failure
-                i += 1
-        # make sure every single metabolite's result wasn't N/A; that always
-        # means something is very wrong
-        if all(v == 'error' for v in met_dict.values()):
-            msg = 'Every single dilution constraint rendered the model '
-            msg += 'infeasible; something is seriously wrong with either the '
-            msg += 'code or the model.'
-            raise ValueError(msg)
-        elif all(v == '' for v in met_dict.values()):
-            msg = 'There was an error for every single metabolite; increase '
-            msg += 'verbosity if you see no error messages'
-            raise ValueError(msg)
-        # now see if we have any metabolites to redo
-        if to_redo:
-            mets_to_test = to_redo
-            if verbose > 0:
-                msg = ' - Encountered errors when testing dilution constraints '
-                msg += f'for {len(to_redo)} metabolites'
-                if attempts < max_attempts:
-                    msg += '; trying to test them again.'
-                else:
-                    msg += '; result will be "error" for those reactions'
-                    for m in met_dict.keys():
-                        if met_dict[m] == '':
-                            met_dict[m] = 'error'
-                        for r in model.metabolites.get_by_id(m).reactions:
-                            if rxn_dict[r] == '':
-                                rxn_dict[r] = 'error'
-                print(msg)
-            # avoid infinite loops if some errors are not in fact intermittent
-            if attempts >= max_attempts:
-                break
-        else:
-            if (attempts > 1) and (verbose > 0):
-                msg = ' - Successfully tested all dilution constraints after '
-                msg += f'{attempts} tries.'
-                print(msg)
-            break
-    pool.close()
-    pool.join()
-    # make lists of blocked metabolites and reactions
-    blocked_mets = [
-        given_model.metabolites.get_by_id(m) for m in met_dict.keys()
-        if met_dict[m] == 'blocked by dilution'
-    ]
-    blocked_rxns = [
-        given_model.reactions.get_by_id(r) for r in rxn_dict.keys()
-        if (rxn_dict[r] == 'blocked by dilution') and ('leakage' not in r)
-    ]
-    # count number of metabolites that are blocked by their own dilution
-    # constraint and not by an upstream or downstream metabolite's constraint
-    direct_mets = len(blocked_mets)
-    # use dead-end test algorithm to figure out if any of these blocked_mets
-    # also block reactions beyond those that directly involve them
-    for met in given_model.metabolites:
-        _dead_end_test_inner(met, blocked_mets, blocked_rxns, list(), list())
-    # remove all metabolites and reactions from these lists that were already
-    # already flagged as dead-ends cuz _dead_end_test_inner will find those in
-    # addition to other reactions indirectly blocked by dilution constraints
-    # for metabolites that do not participate in those reactions
-    dead_end_mets = set()
-    for result in dead_end_results['dead_end_test']:
-        if not result.startswith('only') and (result != 'ok'):
-            # dead-end reactions have semicolon-delimited lists of all dead-end
-            # metabolites that participate in them
-            dead_end_mets.update(result.split(';'))
-    blocked_mets = [m.id for m in blocked_mets if m.id not in dead_end_mets]
-    blocked_rxns = [
-        r.id for r in blocked_rxns
-        if all(m.id not in dead_end_mets for m in r.metabolites)
-    ]
-    # just as we did with dead-end test, make a list of the blocked metabolites
-    # for each blocked reaction to make it clear why each reaction was blocked
-    results_dict = dict()
-    edge_list = list()
-    for r in given_model.reactions:
-        if r.id in blocked_rxns:
-            mets = [m.id for m in r.metabolites if m.id in blocked_mets]
-            results_dict[r.id] = ';'.join(mets)
-            edge_list.extend([(m, r.id) for m in mets])
-        else:
-            results_dict[r.id] = rxn_dict[r.id]
-    dilution_test_results = pd.DataFrame({
-        'reaction_id' : [r.id for r in model.reactions]
-    })
-    dilution_test_results['dilution_test'] = dilution_test_results[
-        'reaction_id'
-    ].map(results_dict)
-    # merge with the dead-end test results before returning
-    out_df = dilution_test_results.merge(dead_end_results)
-    # reorder columns for consistency with other tests
-    out_df = out_df[[
-        'reaction_id', 'reaction_equation', 'dead_end_test', 'dilution_test'
-    ]]
-    # print a summary of the findings
-    if verbose > 0:
-        msg = f' - Found {direct_mets} metabolites for which adding a '
-        msg += 'dilution constraint prevented fluxes through all associated '
-        msg += f'reactions.\n - Found {len(blocked_rxns)} reactions that '
-        msg += 'are blocked by one or more dilution constraints.'
-        print(msg)
-    # don't need to add a column for reaction equations cuz it's already in the
-    # dead-end test results
-    return((out_df, edge_list))
-
-def _pool_init(m, z):
-    global model, zero_thresh
-    (model, zero_thresh) = (m, z)
-
-def dilution_test_inner(met_id):
-    '''
-    Create a dilution reaction and constraint for a single metabolite in the
-    given model (expected as a global variable)
-    Do FVA for all reactions the given metabolite participates in
-    Round all FVA results within zero_thresh (expected as a global variable)
-    to zero to handle rounding errors
-    Don't use macaw_fva.fva() cuz that creates a ProcessPool and nesting
-    those seems to dramatically increase the amount of memory used
-    '''
-    # create a dilution reaction and constraint for this metabolite
-    dil_model = add_dilution_constraints(
-        # don't need to do FVA and set bounds on reversible reactions or add
-        # leakage reactions cuz we already did both of those things
-        model, [met_id], preprocess = False, leak_flux = 0, verbose = 0
-    )
-    dil_model.objective = Zero
-    # now do FVA for all reactions this metabolite participates in (except the
-    # leakage reactions cuz those were just added and not in the original model)
-    rxns = [
-        r for r in dil_model.metabolites.get_by_id(met_id).reactions
-        if ('leakage' not in r.id) and ('dilution' not in r.id)
-    ]
-    dil_model.solver.objective.direction = 'min'
-    mins = [handle_one_reaction(dil_model, r) for r in rxns]
-    dil_model.solver.objective.direction = 'max'
-    maxes = [handle_one_reaction(dil_model, r) for r in rxns]
-    fva_results = pd.DataFrame({
-        'reaction_id' : [r.id for r in rxns],
-        'min_after' : mins,
-        'max_after' : maxes
-    })
-    fva_results['min_after'] = fva_results['min_after'].apply(
-        lambda x: 0 if abs(x) < zero_thresh else x
-    )
-    fva_results['max_after'] = fva_results['max_after'].apply(
-        lambda x: 0 if abs(x) < zero_thresh else x
-    )
-    return(fva_results)
-
-def handle_one_reaction(model, reaction):
-    model.solver.objective.set_linear_coefficients({
-        reaction.forward_variable : 1, reaction.reverse_variable : -1
-    })
-    model.slim_optimize()
-    # handle non-optimal solver statuses
-    if model.solver.status == OPTIMAL:
-        obj_val = model.solver.objective.value
-    elif model.solver.status == UNBOUNDED:
-        # this means the objective value was infinite
-        if model.solver.objective.direction == 'min':
-            obj_val = -float('inf')
-        else:
-            obj_val = float('inf')
-    else:
-        # if it wasn't optimal or unbounded, use NaN
-        obj_val = float('nan')
-    # reset objective coefficients to 0
-    model.solver.objective.set_linear_coefficients({
-        reaction.forward_variable: 0, reaction.reverse_variable : 0
-    })
-    return(obj_val)
-
-def new_dilution_test(
-    given_model, dead_end_results = None, media_mets = None,
-    mets_to_test = None, zero_thresh = 10**-8, timeout = 1800, max_attempts = 3,
-    use_names = False, add_suffixes = False, verbose = 1, threads = 1
-):
-    '''
-    Use dead-end test results to set both bounds to zero for all reactions that
-    were part of dead-ends (sometimes adding dilution reactions allows them to
-    carry fluxes, which significantly increases the space of possible solutions
-    to the model and thus the time it takes to do FVA, so blocking them first
-    speeds things up significantly) and to set the appropriate bounds to zero
-    for the reversible reactions that couldn't go in just one of their two
-    directions due to dead-ends.
-    Then do FVA to determine the range of feasible fluxes for each reaction both
-    before and after imposing dilution constraints. Report all reactions whose
-    fluxes were only capable of being zero with dilution constraints but could
-    be non-zero without, zero without dilution constraints but non-zero with, or
-    only zero either way.
-    GLPK sometimes hangs when doing FVA on models with dilution constraints, so
-    the timeout argument is the number of seconds to wait for the minimum or
-    maximum flux for a single reaction before killing that process and starting
-    over (each reaction is handled on a separate process through Pebble)
-    Any minimum or maximum fluxes within zero_thresh of zero are rounded to zero
-    to handle rounding errors
-    '''
-    (
-        model, dead_end_results, mets_to_test, fva_before, met_dict, rxn_dict,
-        pool
-    ) = prep_for_dilution_test(
-        given_model, dead_end_results, media_mets, mets_to_test, zero_thresh,
-        use_names, add_suffixes, verbose, threads
-    )
-    future = pool.map(new_dilution_test_inner, mets_to_test, timeout = timeout)
     iterator = future.result()
     # do a nested while loop so that we can retry metabolites we encounter
     # errors for on the first try cuz optimizing models with dilution
@@ -717,7 +400,12 @@ def new_dilution_test(
     # dead-end test results
     return((out_df, edge_list))
 
-def new_dilution_test_inner(met_id):
+def _pool_init(m, z):
+    global model, zero_thresh
+    (model, zero_thresh) = (m, z)
+
+
+def dilution_test_inner(met_id):
     '''
     Create a dilution reaction and constraint for a single metabolite in the
     given model (expected as a global variable) and find the maximum possible
