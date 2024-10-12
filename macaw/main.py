@@ -21,7 +21,7 @@ def run_all_tests(
     # raising an exception if not provided
     diphosphate_met_ids = list(), phosphate_met_ids = list(),
     # optional parameters for dilution_test and/or loop_test
-    media_mets = None, timeout = 1800, max_retries = 3, zero_thresh = 10**-8,
+    media_mets = None, timeout = 1800, max_attempts = 3, zero_thresh = 10**-8,
     corr_thresh = 0.9,
     # arguments affecting how the reaction equation column in the table of test
     # results are created: with metabolite IDs (default) or names (use_names =
@@ -61,8 +61,9 @@ def run_all_tests(
     # identify reactions that become incapable of sustaining non-zero fluxes
     # when dilution constraints are added to the model
     (dilution_results, dilution_edges) = dilution_test(
-        model, dead_end_results, media_mets, zero_thresh, timeout, max_retries,
-        use_names, add_suffixes, verbose, threads
+        model, dead_end_results, media_mets, zero_thresh = zero_thresh,
+        timeout = timeout, max_attempts = max_attempts, use_names = use_names,
+        add_suffixes = add_suffixes, verbose = verbose, threads = threads
     )
     # merge the dataframes containing the results of all tests (dead-end and
     # dilution test results were already merged into dilution_test_results)
