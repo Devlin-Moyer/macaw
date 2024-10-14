@@ -5,17 +5,17 @@ Patients,LIAS,Both blocked
 Patients,LIPT1,"PDH blocked, no impact on GCS"
 Human-GEM 1.15 without Dilution,GLRX5,No impact on either
 Human-GEM 1.15 with Dilution,GLRX5,No impact on either
-Human-GEM 1.18+ without Dilution,GLRX5,No impact on either
-Human-GEM 1.18+ with Dilution,GLRX5,Both blocked
+Human-GEM 1.19+ without Dilution,GLRX5,No impact on either
+Human-GEM 1.19+ with Dilution,GLRX5,Both blocked
 Human-GEM 1.15 without Dilution,IBA57,No impact on either
 Human-GEM 1.15 with Dilution,IBA57,No impact on either
-Human-GEM 1.18+ without Dilution,IBA57,No impact on either
-Human-GEM 1.18+ with Dilution,IBA57,Both blocked
+Human-GEM 1.19+ without Dilution,IBA57,No impact on either
+Human-GEM 1.19+ with Dilution,IBA57,Both blocked
 Human-GEM 1.15 without Dilution,LIAS,No impact on either
 Human-GEM 1.15 with Dilution,LIAS,No impact on either
-Human-GEM 1.18+ without Dilution,LIAS,No impact on either
-Human-GEM 1.18+ with Dilution,LIAS,Both blocked
+Human-GEM 1.19+ without Dilution,LIAS,No impact on either
+Human-GEM 1.19+ with Dilution,LIAS,Both blocked
 Human-GEM 1.15 without Dilution,LIPT1,No impact on either
 Human-GEM 1.15 with Dilution,LIPT1,No impact on either
-Human-GEM 1.18+ without Dilution,LIPT1,No impact on either
-Human-GEM 1.18+ with Dilution,LIPT1,"PDH blocked, no impact on GCS"
+Human-GEM 1.19+ without Dilution,LIPT1,No impact on either
+Human-GEM 1.19+ with Dilution,LIPT1,"PDH blocked, no impact on GCS"

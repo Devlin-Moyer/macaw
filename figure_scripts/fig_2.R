@@ -89,7 +89,7 @@ human15_tests <- read_csv(
   "figure_data/Human-GEMv1.15_test-results.csv", show_col_types = FALSE
 ) %>% simplify_results()
 human18_tests <- read_csv(
-  "figure_data/Human-GEMv1.18_test-results.csv", show_col_types = FALSE
+  "figure_data/Human-GEMv1.19_test-results.csv", show_col_types = FALSE
 ) %>% simplify_results()
 yeast_tests <- read_csv(
   "figure_data/yeast-GEMv9.0.0_test-results.csv", show_col_types = FALSE
@@ -165,7 +165,7 @@ ecoli_kegg <- add_kegg_groups(ecoli_tests, ecoli_to_gene, ecoli_to_ortholog)
 
 bind_rows(
   human15_kegg %>% mutate(Version = "1.15"),
-  human18_kegg %>% mutate(Version = "1.18")
+  human18_kegg %>% mutate(Version = "1.19")
 ) %>%
   write_csv("figure_data/fig_S4b_data.csv")
 

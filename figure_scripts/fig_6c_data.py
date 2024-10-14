@@ -218,11 +218,11 @@ except:
 print('setting up')
 optlang.glpk_interface.Configuration()
 old_model = cobra.io.read_sbml_model('GSMMs/Human-GEMv1.15.xml')
-newer_model = cobra.io.read_sbml_model('GSMMs/Human-GEMv1.18.xml')
+newer_model = cobra.io.read_sbml_model('GSMMs/Human-GEMv1.19.xml')
 new_model = fix_lipoate_biosynth(newer_model)
 # set lower bounds on exchange reactions to -1000 for everything that's in
 # DMEM or FBS or 0 for everything else
-media_concs = pd.read_csv('input_data/DMEM-FBS_ingredients.csv')
+media_concs = pd.read_csv('figure_data/Additional File 3: Table S2.csv')
 in_media = media_concs[
     (media_concs['DMEM'] != '0') | (media_concs['FBS'] != '0')
 ]['metabolite_id'].to_list()
@@ -239,12 +239,12 @@ new_model.objective = optlang.symbolics.Zero
 # dilution constraints
 old_fva = fva(old_model, threads = threads)
 new_fva = fva(new_model, threads = threads)
-fva_dict = {'Human-GEM 1.15' : old_fva, 'Human-GEM 1.18+' : new_fva}
+fva_dict = {'Human-GEM 1.15' : old_fva, 'Human-GEM 1.19+' : new_fva}
 
 # get % reduction in maximum possible flux through GCS and PDH reactions in
 # both models after knocking out LIPT1 with and without also imposing dilution
 # constraints
-model_dict = {'Human-GEM 1.15' : old_model, 'Human-GEM 1.18+' : new_model}
+model_dict = {'Human-GEM 1.15' : old_model, 'Human-GEM 1.19+' : new_model}
 gene_dict = {
     'GLRX5': 'ENSG00000182512', 'IBA57' : 'ENSG00000181873',
     'LIAS' : 'ENSG00000121897', 'LIPT1' : 'ENSG00000144182'
@@ -257,7 +257,7 @@ ko_results = {
     'impact' : ['Both blocked'] * 3 + ['PDH blocked, no impact on GCS'],
 }
 for gene in gene_dict.keys():
-    for model_name in ['Human-GEM 1.15', 'Human-GEM 1.18+']:
+    for model_name in ['Human-GEM 1.15', 'Human-GEM 1.19+']:
         for dilution in ['without', 'with']:
             # get appropriate model and make a copy
             model = model_dict[model_name].copy()

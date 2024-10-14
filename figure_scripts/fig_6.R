@@ -32,8 +32,8 @@ fig_6c <- fig_6c_data %>%
   mutate(condition = factor(
     condition,
     c(
-      "Human-GEM 1.18+ with Dilution",
-      "Human-GEM 1.18+ without Dilution",
+      "Human-GEM 1.19+ with Dilution",
+      "Human-GEM 1.19+ without Dilution",
       "Human-GEM 1.15 with Dilution",
       "Human-GEM 1.15 without Dilution",
       "Patients"
@@ -79,7 +79,7 @@ fig_6a <- load_image_as_panel("figures/fig_6a.png") +
   labs(title = "Human-GEM Version 1.15") +
   theme(plot.title = element_text(hjust = 0.5, size = 8))
 fig_6b <- load_image_as_panel("figures/fig_6b.png") +
-  labs(title = "Human-GEM Version 1.18+") +
+  labs(title = "Human-GEM Version 1.19+") +
   theme(plot.title = element_text(hjust = 0.5, size = 8))
 
 fig_6 <- (fig_6a / fig_6b / free(fig_6c)) +
