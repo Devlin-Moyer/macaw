@@ -10,20 +10,17 @@ from macaw.utils import simplify_test_results
 def categorize_rxn(row):
     dupe = row['duplicate_test'] != 'ok'
     dead_end = row['dead_end_test'] != 'ok'
-    ppi = row['diphosphate_test'] != 'ok'
     loop = row['loop_test'] != 'ok'
     dil = row['dilution_test'] != 'ok'
-    if not any([dupe, dead_end, ppi, loop, dil]):
+    if not any([dupe, dead_end, loop, dil]):
         return('None')
-    elif dupe and not any([dead_end, ppi, loop, dil]):
+    elif dupe and not any([dead_end, loop, dil]):
         return('Duplicate')
-    elif dead_end and not any([dupe, ppi, loop, dil]):
+    elif dead_end and not any([dupe, loop, dil]):
         return('Dead-End')
-    elif ppi and not any([dupe, dead_end, loop, dil]):
-        return('Diphosphate')
-    elif loop and not any([dupe, dead_end, ppi, dil]):
+    elif loop and not any([dupe, dead_end, dil]):
         return('Loop')
-    elif dil and not any([dupe, dead_end, ppi, loop]):
+    elif dil and not any([dupe, dead_end, loop]):
         return('Dilution')
     else:
         return('Multiple')
@@ -36,8 +33,10 @@ for (figure, model) in [
     ('fig_S2a', 'yeast-GEMv9.0.0'),
     ('fig_S3a', 'iML1515')
 ]:
-    edge_list = pd.read_csv(f'figure_data/{figure}_edge-list.csv')
+    edge_list = pd.read_csv(f'figure_data/{model}_edge-list.csv')
     all_test_results = pd.read_csv(f'figure_data/{model}_test-results.csv')
+    # ignore the results of the diphosphate test
+    all_test_results = all_test_results.drop('diphosphate_test', axis = 1)
     # filter down to reactions that appear in the edge list
     rxn_ids = set(edge_list['source'].unique().tolist())
     rxn_ids.update(edge_list['target'].unique().tolist())
@@ -49,3 +48,4 @@ for (figure, model) in [
     test_results[['reaction_id', 'category']].to_csv(
         f'figure_data/{figure}_node-list.csv', index = False
     )
+    edge_list.to_csv(f'figure_data/{figure}_edge-list.csv', index = False)
