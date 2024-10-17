@@ -15,7 +15,6 @@ setup(
         'cobra~=0.29.0',
         'networkx~=3.1',
         'pandas~=2.0.3',
-        'Pebble~=5.0.7',
-        'numpy~=1.20.3'
+        'Pebble~=5.0.7'
     ],
 )

@@ -269,7 +269,7 @@ fig_S4b <- ggplot() +
 
 ```{r}
 fig_S5 <- load_image_as_panel("../figures/fig_S5.png")
-fig_S5_width <- 7.5
+fig_S5_width <- 3
 fig_S5_height <- unit(fig_S5_width * fig_S5[[2]], "in")
 ```
 
