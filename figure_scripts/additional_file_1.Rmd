@@ -31,7 +31,7 @@ fig_S1_height <- unit(fig_S1_width * fig_S1[[2]], "in")
 fig_S1[[1]]
 ```
 
-**Supplementary Figure 1. Escher map of a pathway of reactions flagged by the dead-end test in version 9.0.0 of yeast-GEM.**
+**Supplementary Figure 1. Escher map of a pathway of reactions flagged by the dead-end test in version 9.0.0 of yeast-GEM.** This is an example of a pathway where all metabolites can participate in more than one reaction, but none of these reactions are capable of sustaining steady-state fluxes, which would be missed by dead-end tests that only look for metabolites that can only participate in 1 reaction. Alanyl-histidine (Ala-His) can only be consumed in both the extracellular compartment (by r_4511) and the vacuolar compartment (by r_4515), and the only other reactions involving alanyl-histidine in yeast-GEM are only capable of transporting it between different compartments. This dead-end reaction could be resolved by adding a reaction that produced alanyl-histidine from free alanine and histidine in any of these compartments.
 
 \newpage
 
@@ -277,7 +277,7 @@ fig_S5_height <- unit(fig_S5_width * fig_S5[[2]], "in")
 fig_S5[[1]]
 ```
 
-**Supplementary Figure 5. Duplicate redox reactions in iML1515.** Escher map showing two reactions representing the activity of malate:oxaloacetate oxidoreductase in iML1515. Each arrow is labeled with the ID of the corresponding reaction in iML1515, and each circle is labeled with the name of the corresponding metabolite in iML1515.
+**Supplementary Figure 5. Duplicate redox reactions in iML1515.** Escher map showing two reactions representing the activity of Malate:Quinone Oxidoreductase (MQO) in iML1515. Each arrow is labeled with the ID of the corresponding reaction in iML1515, and each circle is labeled with the name of the corresponding metabolite in iML1515. The reaction MOX is not associated with any genes in iML1515, but is annotated with the Enzyme Commission (E.C.) number 1.1.5.4, which describes the reaction catalyzed by MQO. MQO cannot directly reduce molecular oxygen to hydrogen peroxide, but ubiquinone can shuttle electrons from MQO to electron transport chains which can ultimately use them to reduce molecular oxygen. iML1515 contains other reactions representing these interactions between ubiquinone and various components of electron transport chains, so the MOX reaction is a redundant representation of this series of other reactions starting with MDH2.
 
 \newpage
 
@@ -292,7 +292,7 @@ fig_S6b <- load_image_as_panel("../figures/fig_S6b.png")[[1]]
   ))
 ```
 
-**Supplementary Figure 6. Correcting errors in lipoic acid metabolism in yeast-GEM.** Escher maps of several reactions in version 9.0.0 of yeast-GEM involving lipoic acid derivatives. Each arrow is labeled with the ID of the corresponding reaction in yeast-GEM, and each circle is labeled with the name of the corresponding metabolite in yeast-GEM. Suffixes of [c] and [m] in metabolite names indicate cytosolic and mitochondrial metabolites, respectively. Protons have been omitted for clarity. (A) Lipoic acid metabolism as it appeared in version 9.0.0 of yeast-GEM. The colors of the arrows representing each reaction indicates which test(s) in MACAW each reaction was flagged by according to the same color scheme used in figures 3, 4, S2, S3, and S4. (B) Lipoic acid metabolism in yeast-GEM after correcting the errors present in version 9.0.0.
+**Supplementary Figure 6. Correcting errors in lipoic acid metabolism in yeast-GEM.** Arrows are labeled with the IDs of the corresponding reactions in yeast-GEM, and circles are labeled with the names of the corresponding metabolites in yeast-GEM. [c] and [m] indicate cytosolic and mitochondrial metabolites, respectively. Protons have been omitted for clarity. (A) Escher map of lipoic acid metabolism as it appeared in version 9.0.0 of yeast-GEM. The colors of the arrows representing each reaction indicates which test(s) in MACAW each reaction was flagged by according to the same color scheme used in figures 3, 4, S2, S3, and S4. Reactions r_4256 and r_4258 were flagged by the dead-end test; r_4324, r_4281, r_4280, and r_4323 were flagged by both the dilution and loop tests; the remaining reactions were all flagged by the dilution test. (B) Escher map of lipoic acid metabolism in yeast-GEM after correcting the errors present in version 9.0.0. Reactions r_4256 and r_4258 were removed and replaced by a new reaction (right) that converts lipoylprotein into lipoamide in order to correct the misrepresentation of the catalytic activity of LIP3, the only gene associated with either reaction. Reactions r_4234 and r_4281 were removed because LIP2 (associated with r_4324) transfers an octanoyl moiety from the Acyl Carrier Protein (ACP) to GCV3 before LIP5 (associated with r_4281) converts it into a lipoyl moiety, which is already accurately represented by r_4280 and r_4323. The product of r_4323 was changed from Protein N6-(lipoyl)lysine to dihydrolipoylprotein in order to accurately represent the fact that lipoic acid is synthesized in its reduced (dihydrolipoyl) form rather than its oxidized (lipoyl) form, as well as connect lipoic acid biosynthesis to the reactions representing its role as a cofactor in the Glycine Cleavage System (GCS) and 2-Oxoglutarate Dehydrogenase (OGDH). 
 
 \newpage
 
