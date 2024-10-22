@@ -11,7 +11,7 @@ library(patchwork, lib.loc = lib)
 suppressMessages(library(tidyverse, lib.loc = lib))
 theme_set(theme_bw())
 
-source("figure_scripts/shared_funcs.R")
+source("scripts/shared_funcs.R")
 
 fig_3_width <- 6
 fig_3bc_height <- 2.25
