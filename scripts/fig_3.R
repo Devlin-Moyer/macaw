@@ -16,7 +16,7 @@ source("figure_scripts/shared_funcs.R")
 fig_3_width <- 6
 fig_3bc_height <- 2.25
 human_results <- read_csv(
-  "figure_data/Human-GEMv1.15_test-results.csv", show_col_types = FALSE
+  "data/Human-GEMv1.15_test-results.csv", show_col_types = FALSE
 ) %>% select(-diphosphate_test)
 fig_3_stuff <- load_image_as_panel("figures/fig_3a.png")
 fig_3a_height <- (fig_3_width * (fig_3_stuff[[2]]))

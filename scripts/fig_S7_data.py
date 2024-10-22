@@ -59,9 +59,9 @@ i = 0
 for model in [normal_model, dil_only_model, dil_leak_model]:
     fluxes = model.optimize().fluxes.reset_index()
     fluxes.columns = ['reaction_id', 'flux']
-    fluxes.to_csv(f'figure_data/fig_S7{panels[i]}_data.csv', index = False)
+    fluxes.to_csv(f'data/fig_S7{panels[i]}_data.csv', index = False)
     i += 1
 
 # only need to save the model with both leakage and dilution reactions to
 # make Escher maps cuz it contains all reactions present in the other two
-cobra.io.save_json_model(dil_leak_model, 'figure_data/fig_S7_model.json')
+cobra.io.save_json_model(dil_leak_model, 'data/fig_S7_model.json')

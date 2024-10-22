@@ -33,8 +33,8 @@ for (figure, model) in [
     ('fig_S2a', 'yeast-GEMv9.0.0'),
     ('fig_S3a', 'iML1515')
 ]:
-    edge_list = pd.read_csv(f'figure_data/{model}_edge-list.csv')
-    all_test_results = pd.read_csv(f'figure_data/{model}_test-results.csv')
+    edge_list = pd.read_csv(f'data/{model}_edge-list.csv')
+    all_test_results = pd.read_csv(f'data/{model}_test-results.csv')
     # ignore the results of the diphosphate test
     all_test_results = all_test_results.drop('diphosphate_test', axis = 1)
     # filter down to reactions that appear in the edge list
@@ -46,6 +46,6 @@ for (figure, model) in [
         categorize_rxn, axis = 1
     )
     test_results[['reaction_id', 'category']].to_csv(
-        f'figure_data/{figure}_node-list.csv', index = False
+        f'data/{figure}_node-list.csv', index = False
     )
-    edge_list.to_csv(f'figure_data/{figure}_edge-list.csv', index = False)
+    edge_list.to_csv(f'data/{figure}_edge-list.csv', index = False)

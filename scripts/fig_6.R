@@ -19,7 +19,7 @@ load_image_as_panel <- function(path) {
 }
 
 # read in data
-fig_6c_data <- read_csv("figure_data/fig_6c_data.csv", show_col_types = FALSE)
+fig_6c_data <- read_csv("data/fig_6c_data.csv", show_col_types = FALSE)
 
 fig_6c <- fig_6c_data %>%
   # add a newline to "PDH blocked, no impact on GCS"

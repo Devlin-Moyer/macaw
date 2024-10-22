@@ -34,5 +34,5 @@ for model_name in ['Human-GEMv1.15', 'yeast-GEMv9.0.0', 'iML1515']:
                 rxn_to_gene['gene_id'].append(g.id)
     # save as CSV
     pd.DataFrame(rxn_to_gene).to_csv(
-        f'figure_data/{model_name}_reactions-to-genes.csv', index = False
+        f'data/{model_name}_reactions-to-genes.csv', index = False
     )

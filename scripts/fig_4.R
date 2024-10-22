@@ -8,7 +8,7 @@ library(ggbeeswarm)
 suppressMessages(library(tidyverse))
 theme_set(theme_bw())
 
-fig_4a_data_raw <- read_csv("figure_data/fig_4a_data.csv", show_col_types = F)
+fig_4a_data_raw <- read_csv("data/fig_4a_data.csv", show_col_types = F)
 fig_4a_data <- fig_4a_data_raw %>%
   # unpack information in model filenames into separate columns
   separate(model, c("organism", "method", NA)) %>%
@@ -118,7 +118,7 @@ fig_4a <- Heatmap(
   width = unit(1.4, "in")
 ) 
 
-fig_4b_data_raw <- read_csv("figure_data/fig_4b_data.csv", show_col_types = F)
+fig_4b_data_raw <- read_csv("data/fig_4b_data.csv", show_col_types = F)
 fig_4b_data <- fig_4b_data_raw %>%
   # strip the extensions off of the filenames to get AGORA2's "MicrobeIDs"
   mutate(organism = gsub(".mat", "", model)) %>%

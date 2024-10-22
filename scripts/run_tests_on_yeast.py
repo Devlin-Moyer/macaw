@@ -12,13 +12,12 @@ try:
 except IndexError:
     sys.exit('provide number of threads to use')
 
-pd.set_option('display.max_columns', None)
 # silence annoying optlang message that prints when you read in a model
 Configuration()
 model = cobra.io.read_sbml_model(f'GSMMs/yeast-GEMv{version}.xml')
 
 # get list of IDs of metabolites in the Verduyn minimal mineral medium
-media_df = pd.read_csv('figure_data/Additional File 4: Table S3.csv')
+media_df = pd.read_csv('data/Additional File 4: Table S3.csv')
 media_mets = media_df['metabolite_id'].to_list()
 
 # set lower bound on ATP maintenance reaction to 0 for consistency with
@@ -65,6 +64,6 @@ pi_ids = [
     use_names = True, add_suffixes = True, threads = threads, verbose = 2
 )
 
-fname = f'figure_data/yeast-GEMv{version}'
+fname = f'data/yeast-GEMv{version}'
 test_results.to_csv(f'{fname}_test-results.csv', index = False)
 edge_list.to_csv(f'{fname}_edge-list.csv', index = False)

@@ -19,7 +19,7 @@ for m in model.metabolites:
 for r in model.reactions:
     r.name = r.id
 # save this as the model for figure S5A
-cobra.io.save_json_model(model, 'figure_data/fig_S6a_model.json')
+cobra.io.save_json_model(model, 'data/fig_S6a_model.json')
 
 # replace Protein N6-(lipoyl)lysine with dihydrolipoylprotein in the
 # biosynthesis reaction that we're keeping
@@ -52,4 +52,4 @@ to_remove = ['s_3947', 's_3887', 's_3916', 's_3946']
 model.remove_metabolites([model.metabolites.get_by_id(m) for m in to_remove])
 
 # save this as the model for figure S5B
-cobra.io.save_json_model(model, 'figure_data/fig_S6b_model.json')
+cobra.io.save_json_model(model, 'data/fig_S6b_model.json')

@@ -20,14 +20,14 @@ Configuration()
 logging.getLogger('cobra').setLevel(logging.ERROR)
 
 # get list of IDs of metabolites that are in DMEM or FBS
-media_df = pd.read_csv('figure_data/Additional File 3: Table S2.csv')
+media_df = pd.read_csv('data/Additional File 3: Table S2.csv')
 media_mets_all = media_df['metabolite_id'].to_list()
 
 # get paths to all versions of Human-GEM
 d = 'GSMMs'
 model_paths = [f'{d}/{f}' for f in os.listdir(d) if f.startswith('Human-GEM')]
 # skip any models we already have results for in the output file
-out_fname = 'figure_data/fig_S4a_data.csv'
+out_fname = 'data/fig_S4a_data.csv'
 if os.path.exists(out_fname):
     already_done = pd.read_csv(
         out_fname, dtype = str # will fuck up version numbers otherwise
@@ -36,7 +36,6 @@ if os.path.exists(out_fname):
         p for p in model_paths
         if not any(p.endswith(f'v{x}.xml') for x in already_done)
     ]
-    print(model_paths)
 
 for model_path in model_paths:
     start_time = time.time()

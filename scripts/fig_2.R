@@ -79,52 +79,52 @@ add_kegg_groups <- function(
       TRUE ~ kegg_group
     ))
 }
-source("figure_scripts/shared_funcs.R")
+source("scripts/shared_funcs.R")
 
 ##### Load and Reformat Data #####
 
 # read in the test results for both versions of Yeast-GEM, iML1515, and both
 # versions of Human-GEM
 human15_tests <- read_csv(
-  "figure_data/Human-GEMv1.15_test-results.csv", show_col_types = FALSE
+  "data/Human-GEMv1.15_test-results.csv", show_col_types = FALSE
 ) %>% simplify_results()
 human18_tests <- read_csv(
-  "figure_data/Human-GEMv1.19_test-results.csv", show_col_types = FALSE
+  "data/Human-GEMv1.19_test-results.csv", show_col_types = FALSE
 ) %>% simplify_results()
 yeast_tests <- read_csv(
-  "figure_data/yeast-GEMv9.0.0_test-results.csv", show_col_types = FALSE
+  "data/yeast-GEMv9.0.0_test-results.csv", show_col_types = FALSE
 ) %>% simplify_results()
 ecoli_tests <- read_csv(
-  "figure_data/iML1515_test-results.csv", show_col_types = FALSE
+  "data/iML1515_test-results.csv", show_col_types = FALSE
 ) %>% simplify_results()
 
 # get tables of reaction IDs and NCBI gene IDs
 human_to_gene <- read_csv(
-  "figure_data/Human-GEMv1.15_reactions-to-genes.csv", show_col_types = FALSE
+  "data/Human-GEMv1.15_reactions-to-genes.csv", show_col_types = FALSE
 )
 yeast_to_gene <- read_csv(
-  "figure_data/yeast-GEMv9.0.0_reactions-to-genes.csv", show_col_types = FALSE
+  "data/yeast-GEMv9.0.0_reactions-to-genes.csv", show_col_types = FALSE
 )
 ecoli_to_gene <- read_csv(
-  "figure_data/iML1515_reactions-to-genes.csv", show_col_types = FALSE
+  "data/iML1515_reactions-to-genes.csv", show_col_types = FALSE
 )
 
 # get tables of gene IDs and KEGG ortholog IDs
 human_to_ortholog <- read.delim(
-  "figure_data/Human-GEMv1.15_genes-to-KEGG.tsv", header = FALSE
+  "data/Human-GEMv1.15_genes-to-KEGG.tsv", header = FALSE
 ) %>%
   # remove the prefixes KEGG added to all IDs just to inconvenience us
   separate(V1, c(NA, "ortholog_id"), sep = ":", extra = "drop") %>%
   separate(V2, c(NA, "gene_id"), sep = ":", extra = "drop")
 
 yeast_to_ortholog <- read.delim(
-  "figure_data/yeast-GEMv9.0.0_genes-to-KEGG.tsv", header = FALSE
+  "data/yeast-GEMv9.0.0_genes-to-KEGG.tsv", header = FALSE
 ) %>%
   separate(V1, c(NA, "ortholog_id"), sep = ":", extra = "drop") %>%
   separate(V2, c(NA, "gene_id"), sep = ":", extra = "drop")
 
 ecoli_to_ortholog <- read.delim(
-  "figure_data/iML1515_genes-to-KEGG.tsv", header = FALSE
+  "data/iML1515_genes-to-KEGG.tsv", header = FALSE
 ) %>%
   separate(V1, c(NA, "ortholog_id"), sep = ":", extra = "drop") %>%
   separate(V2, c(NA, "gene_id"), sep = ":", extra = "drop")
@@ -132,7 +132,7 @@ ecoli_to_ortholog <- read.delim(
 # turn JSON file with hierarchy of all KEGG functional orthologs into a two-
 # column dataframe we can use to map individual KEGG ortholog IDs to the top-
 # level groupings of KEGG orthologs deemed to be "metabolic"
-ortholog_to_group <- fromJSON("figure_data/KEGG_ortholog_hierarchy.json") %>%
+ortholog_to_group <- fromJSON("data/KEGG_ortholog_hierarchy.json") %>%
   # this hierarchy includes a bunch of genes that are not metabolic enzymes, so
   # start by filtering down to those
   pluck("children") %>%
@@ -167,7 +167,7 @@ bind_rows(
   human15_kegg %>% mutate(Version = "1.15"),
   human18_kegg %>% mutate(Version = "1.19")
 ) %>%
-  write_csv("figure_data/fig_S4b_data.csv")
+  write_csv("data/fig_S4b_data.csv")
 
 ##### Make Figure #####
 

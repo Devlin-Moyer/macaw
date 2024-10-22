@@ -17,7 +17,7 @@ Configuration()
 model = cobra.io.read_sbml_model(f'GSMMs/Human-GEMv{version}.xml')
 
 # get list of IDs of metabolites that are in DMEM or FBS
-media_df = pd.read_csv('figure_data/Additional File 3: Table S2.csv')
+media_df = pd.read_csv('data/Additional File 3: Table S2.csv')
 media_mets = media_df['metabolite_id'].to_list()
 
 redox_pairs = [
@@ -67,6 +67,6 @@ pi_ids = [m.id for m in model.metabolites if m.id.startswith('MAM02751')]
     use_names = True, add_suffixes = True, threads = threads
 )
 
-fname = f'figure_data/Human-GEMv{version}'
+fname = f'data/Human-GEMv{version}'
 test_results.to_csv(f'{fname}_test-results.csv', index = False)
 edge_list.to_csv(f'{fname}_edge-list.csv', index = False)

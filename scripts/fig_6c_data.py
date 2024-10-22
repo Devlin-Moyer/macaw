@@ -222,7 +222,7 @@ newer_model = cobra.io.read_sbml_model('GSMMs/Human-GEMv1.19.xml')
 new_model = fix_lipoate_biosynth(newer_model)
 # set lower bounds on exchange reactions to -1000 for everything that's in
 # DMEM or FBS or 0 for everything else
-media_concs = pd.read_csv('figure_data/Additional File 3: Table S2.csv')
+media_concs = pd.read_csv('data/Additional File 3: Table S2.csv')
 in_media = media_concs[
     (media_concs['DMEM'] != '0') | (media_concs['FBS'] != '0')
 ]['metabolite_id'].to_list()
@@ -314,5 +314,5 @@ for gene in gene_dict.keys():
                 ko_results['impact'].append(f'GCS: {gcs_diff}; PDH: {pdh_diff}')
 
 # save knockout results as DataFrame and edited version of Human-GEM 1.18 model
-pd.DataFrame(ko_results).to_csv('figure_data/fig_6c_data.csv', index = False)
-cobra.io.save_json_model(new_model, 'figure_data/fig_6bc_model.json')
+pd.DataFrame(ko_results).to_csv('data/fig_6c_data.csv', index = False)
+cobra.io.save_json_model(new_model, 'data/fig_6bc_model.json')

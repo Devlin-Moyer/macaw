@@ -16,7 +16,7 @@ Configuration()
 model = cobra.io.read_sbml_model(f'GSMMs/iML1515.xml')
 
 # get list of IDs of metabolites that are in M9 media
-media_df = pd.read_csv('figure_data/Additional File 5: Table S4.csv')
+media_df = pd.read_csv('data/Additional File 5: Table S4.csv')
 media_mets = media_df['metabolite_id'].to_list()
 
 # set lower bound on ATP maintenance reaction to 0
@@ -51,6 +51,6 @@ proton_ids = ['h_c', 'h_e', 'h_p']
     use_names = True, add_suffixes = True, threads = threads
 )
 
-fname = 'figure_data/iML1515'
+fname = 'data/iML1515'
 test_results.to_csv(f'{fname}_test-results.csv', index = False)
 edge_list.to_csv(f'{fname}_edge-list.csv', index = False)

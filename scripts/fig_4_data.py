@@ -135,7 +135,7 @@ model_paths = np.array_split(
     model_paths, tot_batches
 )[batch_idx - 1].tolist() # SGE task IDs are 1-indexed, Python is 0-indexed
 # skip any models we already have test results for
-out_dir = 'figure_data'
+out_dir = 'data'
 already_done = set()
 for f in os.listdir(out_dir):
     if f.startswith(out_fname):

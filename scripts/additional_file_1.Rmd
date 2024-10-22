@@ -39,7 +39,7 @@ fig_S1[[1]]
 fig_S2_width <- 7.5
 fig_S2bc_height <- 2.5
 yeast_results <- read_csv(
-  "../figure_data/yeast-GEMv9.0.0_test-results.csv", show_col_types = FALSE
+  "../data/yeast-GEMv9.0.0_test-results.csv", show_col_types = FALSE
 ) %>% select(-diphosphate_test)
 fig_S2_stuff <- load_image_as_panel("../figures/fig_S2a.png")
 fig_S2a_height <- (fig_S2_width * (fig_S2_stuff[[2]]))
@@ -76,7 +76,7 @@ fig_S2
 fig_S3_width <- 7.5
 fig_S3bc_height <- 2.75
 ecoli_results <- read_csv(
-  "../figure_data/iML1515_test-results.csv", show_col_types = FALSE
+  "../data/iML1515_test-results.csv", show_col_types = FALSE
 ) %>% select(-diphosphate_test)
 fig_S3_stuff <- load_image_as_panel("../figures/fig_S3a.png")
 fig_S3a_height <- (fig_S3_width * (fig_S3_stuff[[2]]))
@@ -116,11 +116,11 @@ fig_S3
 ```{r fig.height=ggplot2::unit(7.5,"in"), fig.width=ggplot2::unit(4.25,"in")}
 # get the summarized test results for all versions of Human-GEM
 fig_S4a_data_raw <- read_csv(
-  "../figure_data/fig_S4a_data.csv", show_col_types = FALSE, col_types = "fiiiii"
+  "../data/fig_S4a_data.csv", show_col_types = FALSE, col_types = "fiiiii"
 )
 # get the simplified test results for only versions 1.15 and 1.19 of Human-GEM
 # that have reactions annotated by KEGG group
-fig_S4b_data_raw <- read_csv("../figure_data/fig_S4b_data.csv", show_col_types = F)
+fig_S4b_data_raw <- read_csv("../data/fig_S4b_data.csv", show_col_types = F)
 
 fig_S4a_data <- fig_S4a_data_raw %>%
   # replace counts with proportions, then drop the counts
