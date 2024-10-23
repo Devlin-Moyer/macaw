@@ -33,21 +33,22 @@ python scripts/run_tests_on_human.py 1.15 $threads > logs/Human-GEMv1.15_log.txt
 python scripts/run_tests_on_human.py 1.19 $threads > logs/Human-GEMv1.19_log.txt
 python scripts/run_tests_on_yeast.py 9.0.0 $threads > logs/yeast-GEMv9.0.0_log.txt
 python scripts/run_tests_on_ecoli.py $threads > logs/iML1515_log.txt
-python scripts/fig_2_S4b_data.py
-python scripts/fig_3a_S2a_S3a_data.py
+python scripts/fig_2_S5b_data.py
+python scripts/fig_3a_S3a_S4a_data.py
 python scripts/fig_4_data.py GSMMs/mendoza_2019 fig_4a_data $threads 1 1 > logs/fig_4a_log.txt
 python scripts/fig_4_data.py GSMMs/AGORA2 fig_4b_data $threads 1 1 >> logs/fig_4b_log.txt
 python scripts/fig_6c_data.py $threads
-python scripts/fig_S4a_data.py $threads >> logs/fig_S4a_log.txt
-python scripts/fig_S5_data.py
+python scripts/fig_S5a_data.py $threads >> logs/fig_S5a_log.txt
+python scripts/fig_S7_data.py
+python scripts/fig_S8_data.py
 
-# fig_4_data.py and fig_S4a_data.py need lots of threads (>=16) and considerable
+# fig_4_data.py and fig_S5a_data.py need lots of threads (>=16) and considerable
 # memory (>500GB) to finish in anything under a week
 
 # make figures (note that all Escher maps were manually created)
 # this was all done with R version 4.3.2
-Rscript scripts/fig_2_S4.R
-Rscript scripts/fig_3_S2_S3.R
+Rscript scripts/fig_2_S5.R
+Rscript scripts/fig_3_S3_S4.R
 Rscript scripts/fig_4.R
 Rscript scripts/fig_6.R
 Rscript -e "rmarkdown::render('scripts/additional_file_1.Rmd', output_file = '../figures/Additional File 1.pdf')"

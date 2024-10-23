@@ -22,107 +22,134 @@ source("shared_funcs.R")
 ```
 
 ```{r}
-fig_S1 <- load_image_as_panel("../figures/fig_S1.png")
-fig_S1_width <- 7.5
-fig_S1_height <- unit(fig_S1_width * fig_S1[[2]], "in")
+fig_S1_stuff <- load_image_as_panel("../figures/fig_S1a.png")
+fig_S1_width <- unit(6, "in")
+fig_S1_height <- 3 * fig_S1_width * fig_S1_stuff[[2]]
+
+fig_S1a <- fig_S1_stuff[[1]]
+fig_S1b <- load_image_as_panel("../figures/fig_S1b.png")[[1]]
+fig_S1c <- load_image_as_panel("../figures/fig_S1c.png")[[1]]
+fig_S1d <- load_image_as_panel("../figures/fig_S1d.png")[[1]]
+fig_S1e <- load_image_as_panel("../figures/fig_S1e.png")[[1]]
+
+fig_S1 <- (fig_S1a / fig_S1b / fig_S1c / fig_S1d / fig_S1e) +
+  plot_annotation(tag_levels = "A") &
+  theme(
+    plot.tag = element_text(size = 8, face = "bold"),
+    plot.tag.location = "panel",
+  )
 ```
 
-```{r fig.height=fig_S1_height, fig.width=ggplot2::unit(fig_S1_width,"in")}
-fig_S1[[1]]
+```{r fig.height=fig_S1_height, fig.width=fig_S1_width}
+fig_S1
 ```
 
-**Supplementary Figure 1. Escher map of a pathway of reactions flagged by the dead-end test in version 9.0.0 of yeast-GEM.** This is an example of a pathway where all metabolites can participate in more than one reaction, but none of these reactions are capable of sustaining steady-state fluxes, which would be missed by dead-end tests that only look for metabolites that can only participate in 1 reaction. Alanyl-histidine (Ala-His) can only be consumed in both the extracellular compartment (by r_4511) and the vacuolar compartment (by r_4515), and the only other reactions involving alanyl-histidine in yeast-GEM are only capable of transporting it between different compartments. This dead-end reaction could be resolved by adding a reaction that produced alanyl-histidine from free alanine and histidine in any of these compartments.
+**Supplementary Figure 1. The Dilution Test.** Escher maps of toy models demonstrating how the dilution test in MACAW works. Circles represent metabolites and arrows represent reactions. (A) A toy model with 4 metabolites (A-D) and 4 reactions (v1-v4) that represents the GSMM given to MACAW before the dilution test begins. (B) The toy model from (A) while the dilution test is evaluating metabolite A. A dilution reaction for metabolite A has been added to the model. The dilution reacion consumes metabolite A and produces nothing and is constrained to have a flux equal to 1/1000th of the sum of all other fluxes involving metabolite A. The numbers shown next to each reaction indicate the flux through that reaction when the flux through the dilution reaction is maximized and the maximum possible flux through v1 (i.e. the maximum allowed uptake of metabolite A) is 100 (arbitrary units). Since the maximum possible flux through the dilution reaction is non-zero, the dilution test labels metabolite A as "ok". (C) The toy model from (A) while the dilution test is evaluating metabolite B, which is also labeled as "ok". (D-E) The toy model from (A) while the dilution test is evaluating metabolite C or D, respectively. Since the maximum possible dilution fluxes for both metabolites is zero, the dilution test labels both metabolites and all reactions that they participate in (v2 and v4) as "blocked by dilution".
 
 \newpage
 
 ```{r}
-fig_S2_width <- 7.5
-fig_S2bc_height <- 2.5
+fig_S2 <- load_image_as_panel("../figures/fig_S2.png")
+fig_S2_width <- unit(7.5, "in")
+fig_S2_height <- fig_S2_width * fig_S2[[2]]
+```
+
+```{r fig.height=fig_S2_height, fig.width=fig_S2_width}
+fig_S2[[1]]
+```
+
+**Supplementary Figure 2. Escher map of a pathway of reactions flagged by the dead-end test in version 9.0.0 of yeast-GEM.** This is an example of a pathway where all metabolites can participate in more than one reaction, but none of these reactions are capable of sustaining steady-state fluxes, which would be missed by dead-end tests that only look for metabolites that can only participate in 1 reaction. Alanyl-histidine (Ala-His) can only be consumed in both the extracellular compartment (by r_4511) and the vacuolar compartment (by r_4515), and the only other reactions involving alanyl-histidine in yeast-GEM are only capable of transporting it between different compartments. This dead-end reaction could be resolved by adding a reaction that produced alanyl-histidine from free alanine and histidine in any of these compartments.
+
+\newpage
+
+```{r}
+fig_S3_width <- unit(7.5, "in")
+fig_S3bc_height <- unit(2.5, "in")
 yeast_results <- read_csv(
   "../data/yeast-GEMv9.0.0_test-results.csv", show_col_types = FALSE
 ) %>% select(-diphosphate_test)
-fig_S2_stuff <- load_image_as_panel("../figures/fig_S2a.png")
-fig_S2a_height <- (fig_S2_width * (fig_S2_stuff[[2]]))
-fig_S2a <- fig_S2_stuff[[1]] + theme(plot.tag.position = c(-0.001,0.98))
-fig_S2b <- make_hists(yeast_results, 1300, 300) +
+fig_S3_stuff <- load_image_as_panel("../figures/fig_S3a.png")
+fig_S3a_height <- fig_S3_width * fig_S3_stuff[[2]]
+fig_S3a <- fig_S3_stuff[[1]] + theme(plot.tag.position = c(-0.001,0.98))
+fig_S3b <- make_hists(yeast_results, 1300, 300) +
   theme(
     plot.tag.position = c(-0.13, 1.06),
     plot.margin = unit(c(0,0,0.1,0), "in")
   )
-fig_S2c <- make_upset(yeast_results) +
+fig_S3c <- make_upset(yeast_results) +
   theme(
     plot.tag.position = c(-0.26, 0.95),
     plot.margin = unit(c(0,0.05,0.1,0.52), "in")
   )
-fig_S2 <- (fig_S2a / (free(fig_S2b) | free(fig_S2c))) +
-  plot_layout(heights = unit(c(fig_S2a_height, fig_S2bc_height), "in")) +
+fig_S3 <- (fig_S3a / (free(fig_S3b) | free(fig_S3c))) +
+  plot_layout(heights = c(fig_S3a_height, fig_S3bc_height)) +
   plot_annotation(tag_levels = "A") &
   theme(
     plot.tag.location = "panel",
     plot.tag = element_text(size = 8, face = "bold")
   )
-fig_S2_height <- unit(fig_S2a_height + fig_S2bc_height, "in")
+fig_S3_height <- fig_S3a_height + fig_S3bc_height
 ```
 
-```{r fig.height=fig_S2_height, fig.width=ggplot2::unit(fig_S2_width, "in")}
-fig_S2
+```{r fig.height=fig_S3_height, fig.width=fig_S3_width}
+fig_S3
 ```
 
-**Supplementary Figure 2. Overview of reactions in version 9.0.0 of yeast-GEM flagged by one or more tests in MACAW.** (A) Each node represents a single reaction; see Methods for explanation of how reactions were connected. The color of each node indicates which test(s) the reaction was flagged by. (B) Distributions of numbers of reactions in each connected component ("pathway") shown in (A) for all pathways or only pathways containing at least one reaction flagged by the specified test. The C50 of each distribution is the median number of reactions flagged by each test weighted by the total number of reactions in the same pathway as each reaction. (C) UpSET plot showing number of reactions flagged by each observed combination of tests in MACAW.
+**Supplementary Figure 3. Overview of reactions in version 9.0.0 of yeast-GEM flagged by one or more tests in MACAW.** (A) Each node represents a single reaction; see Methods for explanation of how reactions were connected. The color of each node indicates which test(s) the reaction was flagged by. (B) Distributions of numbers of reactions in each connected component ("pathway") shown in (A) for all pathways or only pathways containing at least one reaction flagged by the specified test. The C50 of each distribution is the median number of reactions flagged by each test weighted by the total number of reactions in the same pathway as each reaction. (C) UpSET plot showing number of reactions flagged by each observed combination of tests in MACAW.
 
 \newpage
 
 ```{r}
-fig_S3_width <- 7.5
-fig_S3bc_height <- 2.75
+fig_S4_width <- unit(7.5, "in")
+fig_S4bc_height <- unit(2.75, "in")
 ecoli_results <- read_csv(
   "../data/iML1515_test-results.csv", show_col_types = FALSE
 ) %>% select(-diphosphate_test)
-fig_S3_stuff <- load_image_as_panel("../figures/fig_S3a.png")
-fig_S3a_height <- (fig_S3_width * (fig_S3_stuff[[2]]))
-fig_S3a <- fig_S3_stuff[[1]] +
+fig_S4_stuff <- load_image_as_panel("../figures/fig_S4a.png")
+fig_S4a_height <- fig_S4_width * fig_S4_stuff[[2]]
+fig_S4a <- fig_S4_stuff[[1]] +
   theme(
     plot.tag.position = c(0.005,0.99),
     plot.margin = unit(c(0,0,0,0), "in")
   )
-fig_S3b <- make_hists(ecoli_results, 1000, 125) +
+fig_S4b <- make_hists(ecoli_results, 1000, 125) +
   theme(
     plot.tag.position = c(-0.13,1.09),
     plot.margin = unit(c(0,0,0.1,0), "in")
   )
-fig_S3c <- make_upset(ecoli_results) +
+fig_S4c <- make_upset(ecoli_results) +
   theme(
     plot.tag.position = c(-0.25,0.95),
     plot.margin = unit(c(0,0,0.1,0.52), "in")
   )
-fig_S3 <- (fig_S3a / (free(fig_S3b) | free(fig_S3c))) +
-  plot_layout(heights = unit(c(fig_S3a_height, fig_S3bc_height), "in")) +
+fig_S4 <- (fig_S4a / (free(fig_S4b) | free(fig_S4c))) +
+  plot_layout(heights = c(fig_S4a_height, fig_S4bc_height)) +
   plot_annotation(tag_levels = "A") &
   theme(
     plot.tag = element_text(size = 8, face = "bold"),
     plot.tag.location = "panel"
   )
-fig_S3_height <- unit(fig_S3a_height + fig_S3bc_height, "in")
+fig_S4_height <- fig_S4a_height + fig_S4bc_height
 ```
 
-```{r fig.height=fig_S3_height, fig.width=ggplot2::unit(fig_S3_width, "in")}
-fig_S3
+```{r fig.height=fig_S4_height, fig.width=fig_S4_width}
+fig_S4
 ```
 
-**Supplementary Figure 3. Overview of reactions in iML1515 flagged by one or more tests in MACAW.** (A) Each node represents a single reaction; see Methods for explanation of how reactions were connected. The color of each node indicates which test(s) the reaction was flagged by. (B) Distributions of numbers of reactions in each connected component ("pathway") shown in (A) for all pathways or only pathways containing at least one reaction flagged by the specified test. The C50 of each distribution is the median number of reactions flagged by each test weighted by the total number of reactions in the same pathway as each reaction. (C) UpSET plot showing number of reactions flagged by each observed combination of tests in MACAW.
+**Supplementary Figure 4. Overview of reactions in iML1515 flagged by one or more tests in MACAW.** (A) Each node represents a single reaction; see Methods for explanation of how reactions were connected. The color of each node indicates which test(s) the reaction was flagged by. (B) Distributions of numbers of reactions in each connected component ("pathway") shown in (A) for all pathways or only pathways containing at least one reaction flagged by the specified test. The C50 of each distribution is the median number of reactions flagged by each test weighted by the total number of reactions in the same pathway as each reaction. (C) UpSET plot showing number of reactions flagged by each observed combination of tests in MACAW.
 
 \newpage
 
 ```{r fig.height=ggplot2::unit(7.5,"in"), fig.width=ggplot2::unit(4.25,"in")}
 # get the summarized test results for all versions of Human-GEM
-fig_S4a_data_raw <- read_csv(
-  "../data/fig_S4a_data.csv", show_col_types = FALSE, col_types = "fiiiii"
+fig_S5a_data_raw <- read_csv(
+  "../data/fig_S5a_data.csv", show_col_types = FALSE, col_types = "fiiiii"
 )
 # get the simplified test results for only versions 1.15 and 1.19 of Human-GEM
 # that have reactions annotated by KEGG group
-fig_S4b_data_raw <- read_csv("../data/fig_S4b_data.csv", show_col_types = F)
+fig_S5b_data_raw <- read_csv("../data/fig_S5b_data.csv", show_col_types = F)
 
-fig_S4a_data <- fig_S4a_data_raw %>%
+fig_S5a_data <- fig_S5a_data_raw %>%
   # replace counts with proportions, then drop the counts
   mutate(any_prop = flagged/all_rxns) %>%
   mutate(dead_prop = `dead-ends`/all_rxns) %>%
@@ -151,14 +178,14 @@ fig_S4a_data <- fig_S4a_data_raw %>%
   arrange(model_version)
 
 # label every other version
-fig_S4a_labs <- unique(as.character(fig_S4a_data$model_version))
-fig_S4a_labs[c(FALSE, TRUE)] <- ""
+fig_S5a_labs <- unique(as.character(fig_S5a_data$model_version))
+fig_S5a_labs[c(FALSE, TRUE)] <- ""
 
-fig_S4a <- ggplot(
-  fig_S4a_data, aes(x = model_version, y = prop, col = test, group = test)
+fig_S5a <- ggplot(
+  fig_S5a_data, aes(x = model_version, y = prop, col = test, group = test)
 ) +
   geom_line() +
-  scale_x_discrete(labels = c(fig_S4a_labs)) +
+  scale_x_discrete(labels = c(fig_S5a_labs)) +
   scale_color_manual(
     values = c("#8DD3C7", "#FB8072", "#B3DE69", "#FCCDE5", "#80B1D3"),
     guide = guide_legend(
@@ -181,11 +208,11 @@ fig_S4a <- ggplot(
     plot.margin = unit(c(0,1,0,0), "mm")
   )
 
-fig_S4b_data_1 <- fig_S4b_data_raw %>%
+fig_S5b_data_1 <- fig_S5b_data_raw %>%
   group_by(Version, kegg_group) %>%
   summ_func()
 
-fig_S4b_data_2 <- fig_S4b_data_raw %>%
+fig_S5b_data_2 <- fig_S5b_data_raw %>%
   # drop KEGG group and filter out duplicate rows since many reactions were
   # associated with multiple KEGG groups and we don't want to double-count them
   select(-kegg_group) %>%
@@ -194,7 +221,7 @@ fig_S4b_data_2 <- fig_S4b_data_raw %>%
   summ_func() %>%
   mutate(kegg_group = "All Reactions")
 
-fig_S4b_data <- bind_rows(fig_S4b_data_1, fig_S4b_data_2) %>%
+fig_S5b_data <- bind_rows(fig_S5b_data_1, fig_S5b_data_2) %>%
   pivot_longer(
     c(
       any_pct,
@@ -219,11 +246,11 @@ fig_S4b_data <- bind_rows(fig_S4b_data_1, fig_S4b_data_2) %>%
 # make a separate dataframe of coordinates to use for grey rectangles to put
 # behind every other group of bars instead of using normal gridlines
 rect_df <- data.frame(
-  starts = seq(0.5, n_distinct(fig_S4b_data$kegg_group), by = 2),
-  ends = seq(1.5, n_distinct(fig_S4b_data$kegg_group)+1, by = 2)
+  starts = seq(0.5, n_distinct(fig_S5b_data$kegg_group), by = 2),
+  ends = seq(1.5, n_distinct(fig_S5b_data$kegg_group)+1, by = 2)
 )
 
-fig_S4b <- ggplot() +
+fig_S5b <- ggplot() +
   scale_x_discrete() +
   geom_rect(
     data = rect_df,
@@ -235,7 +262,7 @@ fig_S4b <- ggplot() +
     alpha = 0.5
   ) +
   geom_bar(
-    data = fig_S4b_data,
+    data = fig_S5b_data,
     mapping = aes(x = kegg_group, y = pct_rxns, fill = Version),
     stat = "identity",
     position = "dodge",
@@ -257,54 +284,56 @@ fig_S4b <- ggplot() +
     legend.box.spacing = unit(0, "in")
   )
 
-(fig_S4 <- (free(fig_S4a) / free(fig_S4b)) +
+(fig_S5 <- (free(fig_S5a) / free(fig_S5b)) +
   plot_layout(heights = c(1,3.5)) +
   plot_annotation(tag_levels = "A") &
   theme(plot.tag = element_text(size = 8, face = "bold")))
 ```
 
-**Supplementary Figure 4. Comparison of test results in different versions of Human-GEM.** (A) Proportions of reactions flagged by tests across all versions of Human-GEM. (B) Proportions of reactions flagged by tests in versions 1.15 and 1.19 of Human-GEM. Reactions grouped according to the second-highest levels of the KEGG functional ortholog hierarchy containing the genes associated with each reaction; see "Methods". Individual reactions may be associated with more than one group of KEGG functional orthologs. Names of KEGG functional ortholog groups have been abbreviated.
+**Supplementary Figure 5. Comparison of test results in different versions of Human-GEM.** (A) Proportions of reactions flagged by tests across all versions of Human-GEM. (B) Proportions of reactions flagged by tests in versions 1.15 and 1.19 of Human-GEM. Reactions grouped according to the second-highest levels of the KEGG functional ortholog hierarchy containing the genes associated with each reaction; see "Methods". Individual reactions may be associated with more than one group of KEGG functional orthologs. Names of KEGG functional ortholog groups have been abbreviated.
 
 \newpage
 
-```{r}
-fig_S5 <- load_image_as_panel("../figures/fig_S5.png")
-fig_S5_width <- 3
-fig_S5_height <- unit(fig_S5_width * fig_S5[[2]], "in")
-```
-
-```{r fig.height=fig_S5_height, fig.width=ggplot2::unit(fig_S5_width,"in")}
-fig_S5[[1]]
-```
-
-**Supplementary Figure 5. Duplicate redox reactions in iML1515.** Escher map showing two reactions representing the activity of Malate:Quinone Oxidoreductase (MQO) in iML1515. Each arrow is labeled with the ID of the corresponding reaction in iML1515, and each circle is labeled with the name of the corresponding metabolite in iML1515. The reaction MOX is not associated with any genes in iML1515, but is annotated with the Enzyme Commission (E.C.) number 1.1.5.4, which describes the reaction catalyzed by MQO. MQO cannot directly reduce molecular oxygen to hydrogen peroxide, but ubiquinone can shuttle electrons from MQO to electron transport chains which can ultimately use them to reduce molecular oxygen. iML1515 contains other reactions representing these interactions between ubiquinone and various components of electron transport chains, so the MOX reaction is a redundant representation of this series of other reactions starting with MDH2.
-
-\newpage
-
-```{r fig.height = ggplot2::unit(6,"in"), fig.width=ggplot2::unit(7,"in")}
+```{r fig.height=ggplot2::unit(2.5,"in"), fig.width=ggplot2::unit(7.5,"in")}
 fig_S6a <- load_image_as_panel("../figures/fig_S6a.png")[[1]]
 fig_S6b <- load_image_as_panel("../figures/fig_S6b.png")[[1]]
-(fig_S6 <- (fig_S6a / fig_S6b) +
+(fig_S6 <- (fig_S6a | fig_S6b) +
   plot_annotation(tag_levels = "A") &
   theme(
     plot.tag = element_text(size = 8, face = "bold"),
-    plot.tag.location = "panel",
+    plot.tag.location = "panel"
+   )
+)
+```
+
+**Supplementary Figure 6. Duplicate reactions in iML1515.** Escher maps showing two pairs of duplicate reactions in iML1515. Each arrow is labeled with the ID of the corresponding reaction in iML1515, and each circle is labeled with the name of the corresponding metabolite in iML1515. (A) Reactions representing the activity of Malate:Quinone Oxidoreductase (MQO) in iML1515. The reaction MOX is not associated with any genes in iML1515, but is annotated with the Enzyme Commission (E.C.) number 1.1.5.4, which describes the reaction catalyzed by MQO. MQO cannot directly reduce molecular oxygen to hydrogen peroxide, but ubiquinone can shuttle electrons from MQO to electron transport chains which can ultimately use them to reduce molecular oxygen. iML1515 contains other reactions representing these interactions between ubiquinone and various components of electron transport chains, so the MOX reaction is a redundant representation of this series of other reactions starting with MDH2. (B) Reactions representing the formation and degradation of 5-formylmethyltetrahydrofolate. The two reactions involve exactly the same metabolites with the same stoichiometric coefficients and only differ in their directions and the genes associated with each reaction. They also form a loop capable of arbitrarily large steady-state fluxes. FOMETRi would no longer involve exactly the same metabolites as THFAT if it accurately represented the fact that ygfA, the only gene associated with FOMETRi, encodes a strictly ATP-dependent enzyme.
+
+\newpage
+
+```{r fig.height=ggplot2::unit(6,"in"), fig.width=ggplot2::unit(7,"in")}
+fig_S7a <- load_image_as_panel("../figures/fig_S7a.png")[[1]]
+fig_S7b <- load_image_as_panel("../figures/fig_S7b.png")[[1]]
+(fig_S7 <- (fig_S7a / fig_S7b) +
+  plot_annotation(tag_levels = "A") &
+  theme(
+    plot.tag = element_text(size = 8, face = "bold"),
+    plot.tag.location = "panel"
   ))
 ```
 
-**Supplementary Figure 6. Correcting errors in lipoic acid metabolism in yeast-GEM.** Arrows are labeled with the IDs of the corresponding reactions in yeast-GEM, and circles are labeled with the names of the corresponding metabolites in yeast-GEM. [c] and [m] indicate cytosolic and mitochondrial metabolites, respectively. Protons have been omitted for clarity. (A) Escher map of lipoic acid metabolism as it appeared in version 9.0.0 of yeast-GEM. The colors of the arrows representing each reaction indicates which test(s) in MACAW each reaction was flagged by according to the same color scheme used in figures 3, 4, S2, S3, and S4. Reactions r_4256 and r_4258 were flagged by the dead-end test; r_4324, r_4281, r_4280, and r_4323 were flagged by both the dilution and loop tests; the remaining reactions were all flagged by the dilution test. (B) Escher map of lipoic acid metabolism in yeast-GEM after correcting the errors present in version 9.0.0. Reactions r_4256 and r_4258 were removed and replaced by a new reaction (right) that converts lipoylprotein into lipoamide in order to correct the misrepresentation of the catalytic activity of LIP3, the only gene associated with either reaction. Reactions r_4234 and r_4281 were removed because LIP2 (associated with r_4324) transfers an octanoyl moiety from the Acyl Carrier Protein (ACP) to GCV3 before LIP5 (associated with r_4281) converts it into a lipoyl moiety, which is already accurately represented by r_4280 and r_4323. The product of r_4323 was changed from Protein N6-(lipoyl)lysine to dihydrolipoylprotein in order to accurately represent the fact that lipoic acid is synthesized in its reduced (dihydrolipoyl) form rather than its oxidized (lipoyl) form, as well as connect lipoic acid biosynthesis to the reactions representing its role as a cofactor in the Glycine Cleavage System (GCS) and 2-Oxoglutarate Dehydrogenase (OGDH). 
+**Supplementary Figure 7. Correcting errors in lipoic acid metabolism in yeast-GEM.** Arrows are labeled with the IDs of the corresponding reactions in yeast-GEM, and circles are labeled with the names of the corresponding metabolites in yeast-GEM. [c] and [m] indicate cytosolic and mitochondrial metabolites, respectively. Protons have been omitted for clarity. (A) Escher map of lipoic acid metabolism as it appeared in version 9.0.0 of yeast-GEM. The colors of the arrows representing each reaction indicates which test(s) in MACAW each reaction was flagged by according to the same color scheme used in figures 3, 4, S2, S3, and S4. Reactions r_4256 and r_4258 were flagged by the dead-end test; r_4324, r_4281, r_4280, and r_4323 were flagged by both the dilution and loop tests; the remaining reactions were all flagged by the dilution test. (B) Escher map of lipoic acid metabolism in yeast-GEM after correcting the errors present in version 9.0.0. Reactions r_4256 and r_4258 were removed and replaced by a new reaction (right) that converts lipoylprotein into lipoamide in order to correct the misrepresentation of the catalytic activity of LIP3, the only gene associated with either reaction. Reactions r_4234 and r_4281 were removed because LIP2 (associated with r_4324) transfers an octanoyl moiety from the Acyl Carrier Protein (ACP) to GCV3 before LIP5 (associated with r_4281) converts it into a lipoyl moiety, which is already accurately represented by r_4280 and r_4323. The product of r_4323 was changed from Protein N6-(lipoyl)lysine to dihydrolipoylprotein in order to accurately represent the fact that lipoic acid is synthesized in its reduced (dihydrolipoyl) form rather than its oxidized (lipoyl) form, as well as connect lipoic acid biosynthesis to the reactions representing its role as a cofactor in the Glycine Cleavage System (GCS) and 2-Oxoglutarate Dehydrogenase (OGDH). 
 
 \newpage
 
 ```{r fig.height=ggplot2::unit(1.5,"in"), fig.width=ggplot2::unit(6.5,"in")}
-fig_S7a <- load_image_as_panel("../figures/fig_S7a.png")[[1]] +
+fig_S8a <- load_image_as_panel("../figures/fig_S8a.png")[[1]] +
   theme(plot.tag.position = c(-0.05, 0.91))
-fig_S7b <- load_image_as_panel("../figures/fig_S7b.png")[[1]] +
+fig_S8b <- load_image_as_panel("../figures/fig_S8b.png")[[1]] +
   theme(plot.tag.position = c(0, 0.91))
-fig_S7c <- load_image_as_panel("../figures/fig_S7c.png")[[1]] +
+fig_S8c <- load_image_as_panel("../figures/fig_S8c.png")[[1]] +
   theme(plot.tag.position = c(0, 0.91))
 
-(fig_S7 <- (free(fig_S7a) | free(fig_S7b) | free(fig_S7c)) +
+(fig_S8 <- (free(fig_S8a) | free(fig_S8b) | free(fig_S8c)) +
   plot_layout(widths = c(1, 1.25, 1.25)) +
   plot_annotation(tag_levels = "A") &
   theme(
@@ -313,4 +342,4 @@ fig_S7c <- load_image_as_panel("../figures/fig_S7c.png")[[1]] +
   ))
 ```
 
-**Supplementary Figure 7. "Leakage" reactions prevent the dilution test from flagging unproblematic antiport reactions.** (A) Toy model with two metabolites that can exist in two different compartments: "out" and "in", and move between them via the antiport reaction v2. Numbers in parentheses next to reaction labels are the minimum and maximum allowed fluxes through that reaction. Numbers following reaction bounds are the optimal fluxes through each reaction when maximizing flux through v4. (B) Same as (A) except one dilution reaction has been added for each metabolite whose flux is constrained to be exactly equal to 0.1% of the sum of the absolute values of all other fluxes that involve that metabolite. (C) Same as in (B) except one leakage reaction has been added connecting each pair of metabolites that exist in two separate compartments. Fluxes through leakage reactions are constrained to be between -1 and 1.
+**Supplementary Figure 8. "Leakage" reactions prevent the dilution test from flagging unproblematic antiport reactions.** (A) Toy model with two metabolites that can exist in two different compartments: "out" and "in", and move between them via the antiport reaction v2. Numbers in parentheses next to reaction labels are the minimum and maximum allowed fluxes through that reaction. Numbers following reaction bounds are the optimal fluxes through each reaction when maximizing flux through v4. (B) Same as (A) except one dilution reaction has been added for each metabolite whose flux is constrained to be exactly equal to 0.1% of the sum of the absolute values of all other fluxes that involve that metabolite. (C) Same as in (B) except one leakage reaction has been added connecting each pair of metabolites that exist in two separate compartments. Fluxes through leakage reactions are constrained to be between -1 and 1.
