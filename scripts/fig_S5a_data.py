@@ -1,4 +1,4 @@
-# fig_S4a_data.py
+# fig_S5a_data.py
 
 import sys
 from optlang.glpk_interface import Configuration
@@ -27,7 +27,7 @@ media_mets_all = media_df['metabolite_id'].to_list()
 d = 'GSMMs'
 model_paths = [f'{d}/{f}' for f in os.listdir(d) if f.startswith('Human-GEM')]
 # skip any models we already have results for in the output file
-out_fname = 'data/fig_S4a_data.csv'
+out_fname = 'data/fig_S5a_data.csv'
 if os.path.exists(out_fname):
     already_done = pd.read_csv(
         out_fname, dtype = str # will fuck up version numbers otherwise
