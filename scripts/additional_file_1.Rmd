@@ -95,7 +95,7 @@ fig_S3_height <- fig_S3a_height + fig_S3bc_height
 fig_S3
 ```
 
-**Supplementary Figure 3. Overview of reactions in version 9.0.0 of yeast-GEM flagged by one or more tests in MACAW.** (A) Each node represents a single reaction; see Methods for explanation of how reactions were connected. The color of each node indicates which test(s) the reaction was flagged by. (B) Distributions of numbers of reactions in each connected component ("pathway") shown in (A) for all pathways or only pathways containing at least one reaction flagged by the specified test. The C50 of each distribution is the median number of reactions flagged by each test weighted by the total number of reactions in the same pathway as each reaction. (C) UpSET plot showing number of reactions flagged by each observed combination of tests in MACAW.
+**Supplementary Figure 3. Overview of reactions in version 9.0.0 of yeast-GEM flagged by MACAW tests.** (A) Each node represents a single reaction; see Methods for explanation of how reactions were connected. The color of each node indicates which test(s) the reaction was flagged by. (B) Distributions of numbers of reactions in each connected component ("pathway") shown in (A) for all pathways or only pathways containing at least one reaction flagged by the specified test. The C50 of each distribution is the median number of reactions flagged by each test weighted by the total number of reactions in the same pathway as each reaction. (C) UpSET plot showing number of reactions flagged by each observed combination of tests in MACAW.
 
 \newpage
 
@@ -136,7 +136,7 @@ fig_S4_height <- fig_S4a_height + fig_S4bc_height
 fig_S4
 ```
 
-**Supplementary Figure 4. Overview of reactions in iML1515 flagged by one or more tests in MACAW.** (A) Each node represents a single reaction; see Methods for explanation of how reactions were connected. The color of each node indicates which test(s) the reaction was flagged by. (B) Distributions of numbers of reactions in each connected component ("pathway") shown in (A) for all pathways or only pathways containing at least one reaction flagged by the specified test. The C50 of each distribution is the median number of reactions flagged by each test weighted by the total number of reactions in the same pathway. (C) UpSET plot showing number of reactions flagged by each observed combination of tests in MACAW.
+**Supplementary Figure 4. Overview of reactions in iML1515 flagged by MACAW tests.** (A) Each node represents a single reaction; see Methods for explanation of how reactions were connected. The color of each node indicates which test(s) the reaction was flagged by. (B) Distributions of numbers of reactions in each connected component ("pathway") shown in (A) for all pathways or only pathways containing at least one reaction flagged by the specified test. The C50 of each distribution is the median number of reactions flagged by each test weighted by the total number of reactions in the same pathway. (C) UpSET plot showing number of reactions flagged by each observed combination of tests in MACAW.
 
 \newpage
 

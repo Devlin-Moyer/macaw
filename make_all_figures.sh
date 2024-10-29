@@ -47,8 +47,8 @@ python scripts/fig_S8_data.py
 
 # make figures (note that all Escher maps were manually created)
 # this was all done with R version 4.3.2
-Rscript scripts/fig_2_S5.R
-Rscript scripts/fig_3_S3_S4.R
+Rscript scripts/fig_2.R
+Rscript scripts/fig_3.R
 Rscript scripts/fig_4.R
 Rscript scripts/fig_6.R
 Rscript -e "rmarkdown::render('scripts/additional_file_1.Rmd', output_file = '../figures/Additional File 1.pdf')"
