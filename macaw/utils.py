@@ -26,24 +26,18 @@ def time_str(start, end):
 def flip_reaction(reaction):
     '''
     Switch the products and reactants and upper and lower bounds for the given
-    Cobra.Reaction object, unless it has only one metabolite, in which case it's
-    an exchange reaction, and those conventionally always have the one
-    metabolite on the left so that positive fluxes always represent secretion
-    and negative fluxes always represent uptake
+    Cobra.Reaction object
     '''
-    if len(reaction.metabolites) == 1:
-        pass
-    else:
-        orig_ub = reaction.upper_bound
-        orig_lb = reaction.lower_bound
-        # make a dict with 2 * the current stoichiometric coefficient of each
-        # metabolite, then "subtract" this dict from the current reaction to
-        # negate the existing coefficients on all metabolites
-        new_met_dict = {m : 2 * s for (m, s) in reaction.metabolites.items()}
-        reaction.subtract_metabolites(new_met_dict)
-        reaction.lower_bound = -1 * orig_ub
-        reaction.upper_bound = -1 * orig_lb
-        # everything should be modified in-place
+    orig_ub = reaction.upper_bound
+    orig_lb = reaction.lower_bound
+    # make a dict with 2 * the current stoichiometric coefficient of each
+    # metabolite, then "subtract" this dict from the current reaction to
+    # negate the existing coefficients on all metabolites
+    new_met_dict = {m : 2 * s for (m, s) in reaction.metabolites.items()}
+    reaction.subtract_metabolites(new_met_dict)
+    reaction.lower_bound = -1 * orig_ub
+    reaction.upper_bound = -1 * orig_lb
+    # everything should be modified in-place
 
 def sigfig_round(x, sfs):
     '''
@@ -122,7 +116,7 @@ def edit_dead_end_bounds(given_model, results):
     '''
     # make sure the dataframe has a column called dead_end_test
     if 'dead_end_test' not in results.columns:
-        msg = 'The DataFrame passed to the results argument of macaw_utils.'
+        msg = 'The DataFrame passed to the results argument of macaw.utils.'
         msg += 'edit_dead_end_bounds did not have a column called "dead_end_'
         msg += 'test".'
         raise ValueError(msg)
