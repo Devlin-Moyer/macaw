@@ -132,7 +132,8 @@ def _dead_end_test_inner(
                     _dead_end_test_inner(
                         met, dead_end_mets, dead_end_rxns, fwd_only, rev_only
                     )
-            elif (len(rev_rxns) == 1) and all_prod:
+            # leave exchange reactions alone in this next bit
+            elif (len(rev_rxns) == 1) and all_prod and not rev_rxns[0].boundary:
                 # this reaction participates in exactly one reversible reaction
                 # but all other reactions can only produce it, so make that
                 # reversible reaction irreversible in the direction that
@@ -155,7 +156,7 @@ def _dead_end_test_inner(
                         _dead_end_test_inner(
                             m, dead_end_mets, dead_end_rxns, fwd_only, rev_only
                         )
-            elif (len(rev_rxns) == 1) and all_cons:
+            elif (len(rev_rxns) == 1) and all_cons and not rev_rxns[0].boundary:
                 # make the one reversible reaction irreversible in the direction
                 # that produces this metabolite
                 if met_to_check in rev_rxns[0].products:
