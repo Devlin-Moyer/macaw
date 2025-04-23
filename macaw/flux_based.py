@@ -335,13 +335,18 @@ def dilution_test(
             break
     pool.close()
     pool.join()
+    # make yet another copy of the given_model so that we can use the dead-end
+    # test to figure out which reactions each dilution-blocked metabolite blocks
+    # without making any changes to the reactions in given_model and without
+    # letting the dilution reactions resolve all dead-ends
+    model_copy = given_model.copy()
     # make lists of blocked metabolites and reactions
     blocked_mets = [
-        given_model.metabolites.get_by_id(m) for m in met_dict.keys()
+        model_copy.metabolites.get_by_id(m) for m in met_dict.keys()
         if met_dict[m] == 'blocked by dilution'
     ]
     blocked_rxns = [
-        given_model.reactions.get_by_id(r) for r in rxn_dict.keys()
+        model_copy.reactions.get_by_id(r) for r in rxn_dict.keys()
         if (rxn_dict[r] == 'blocked by dilution') and ('leakage' not in r)
     ]
     # count number of metabolites that are blocked by their own dilution
@@ -349,7 +354,7 @@ def dilution_test(
     direct_mets = len(blocked_mets)
     # use dead-end test algorithm to figure out if any of these blocked_mets
     # also block reactions beyond those that directly involve them
-    for met in given_model.metabolites:
+    for met in model_copy.metabolites:
         _dead_end_test_inner(met, blocked_mets, blocked_rxns, list(), list())
     # remove all metabolites and reactions from these lists that were already
     # already flagged as dead-ends cuz _dead_end_test_inner will find those in
@@ -361,6 +366,7 @@ def dilution_test(
             # dead-end reactions have semicolon-delimited lists of all dead-end
             # metabolites that participate in them
             dead_end_mets.update(result.split(';'))
+    # also switch back to lists of IDs rather than Metabolites/Reactions
     blocked_mets = [m.id for m in blocked_mets if m.id not in dead_end_mets]
     blocked_rxns = [
         r.id for r in blocked_rxns
@@ -378,7 +384,7 @@ def dilution_test(
         else:
             results_dict[r.id] = rxn_dict[r.id]
     dilution_test_results = pd.DataFrame({
-        'reaction_id' : [r.id for r in model.reactions]
+        'reaction_id' : [r.id for r in given_model.reactions]
     })
     dilution_test_results['dilution_test'] = dilution_test_results[
         'reaction_id'
