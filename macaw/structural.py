@@ -27,12 +27,18 @@ def dead_end_test(
         print('Starting dead-end test...')
     # work with a copy of the given model so the original object is left as-is
     model = given_model.copy()
+    # if the model contains any reactions that can only go backwards, flip them
+    # around so that they can only go forwards, so that the reaction.products
+    # are always metabolites that the reaction can actually produce
+    for r in model.reactions:
+        if (r.lower_bound != 0) and (r.upper_bound == 0) and not r.boundary:
+            flip_reaction(r)
+    # loop over metabolites and assess their dead-ended-ness and the dead-ended
+    # ness of any reactions that involve them
     dead_end_rxns = list()
     dead_end_mets = list()
     fwd_only = list()
     rev_only = list()
-    # loop over metabolites and assess their dead-ended-ness and the dead-ended
-    # ness of any reactions that involve them
     for met in model.metabolites:
         _dead_end_test_inner(
             met, dead_end_mets, dead_end_rxns, fwd_only, rev_only
